@@ -2,10 +2,10 @@
 function getHeaders(token){
     let headers = !token ? {
       'Access-Control-Allow-Origin':'*',
-      "Content-Type": "application/json",
+      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
     } : {
       'Access-Control-Allow-Origin':'*',
-      "Content-Type": "application/json",
+      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
       "Authorization": `${token}`
     }
     return headers
@@ -20,7 +20,7 @@ function getHeaders(token){
     return headers
   }
   export const config= {
-      endpoint: "http://localhost/visionet/api",
+      endpoint: "http://localhost/visionet-api/api",
       getUrlParams: function(url,params){
         let query = Object.keys(params).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`).join('&');
         return `${url}?${query}`;
@@ -33,11 +33,17 @@ function getHeaders(token){
         }
       },
       postdataconfig: function(data){
+        let formBody = [];
+        
+        for(let key in data) {
+          formBody.push(`${key}=${data[key]}`);
+        }
+        
         let result = {
           method: 'POST',
           mode: 'cors',
           headers: getHeaders(localStorage.getItem('token')),
-          body: JSON.stringify(data)
+          body: formBody.join('&')
         }
         return result
       },

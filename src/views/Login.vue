@@ -3,6 +3,13 @@
       <v-container fluid fill-height>
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md4>
+          <v-alert
+            :value="errStatus"
+            color="error"
+            type="warning"
+            transition="fade-transition">
+            {{errMessage}}
+          </v-alert>
             <v-card class="elevation-6">
               <v-toolbar dark color="primary">
                 <v-toolbar-title>Login</v-toolbar-title>
@@ -24,7 +31,7 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary">Login</v-btn>
+                <v-btn color="primary" @click="authentication" :loading="isLoading" :disabled="isLoading">Login</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -34,36 +41,7 @@
 </template>
 
 <script>
-import {
-  VMain, 
-  VContainer, 
-  VLayout, 
-  VFlex, 
-  VCard, 
-  VToolbar, 
-  VToolbarTitle, 
-  VSpacer, 
-  VCardText, 
-  VForm, 
-  VTextField, 
-  VSelect, 
-  VCardActions} from 'vuetify/lib'
 export default {
-  components: {
-    VMain,
-    VContainer,
-    VLayout, 
-    VFlex, 
-    VCard, 
-    VToolbar, 
-    VSpacer, 
-    VCardText, 
-    VForm, 
-    VTextField,  
-    VSelect, 
-    VCardActions,
-    VToolbarTitle
-  },
   data() {
     return {
         valid: false,
@@ -71,16 +49,42 @@ export default {
         password: "",
         passRules: [ 
             (v) => !!v || "password is required",
-            (v) => v && v.length > 6 || "Password must more than 6 character"
+            (v) => v && v.length >= 6 || "Password must more than 6 character"
             ],
         userRules: [ 
             v => !!v || "Username is required",
-            v => v && v.length > 5 || "Username must more than 5 character"
+            v => v && v.length >= 5 || "Username must more than 5 character"
             ],
         loadaction: false,
-        errMessage: '',
-        type: 'Enginner',
-        typeList: ['Enginner', 'Leader', 'Backup Leader', 'Admin']
+        type: 'Admin',
+        typeList: ['Admin', 'Leader', 'Backup Leader', 'Enginner']
+    }
+  },
+  methods: {
+    authentication() {
+      const {username, password, type} = this;
+      const {dispatch} = this.$store;
+      
+      if(this.$refs.form.validate()) {
+        dispatch('auth/login', {username, password, type})
+      }
+    }
+  },
+  computed: {
+    isLoading: function() {
+      return this.$store.getters['auth/getLoading'];
+    },
+    errStatus: function() {
+      return this.$store.getters['auth/getError'] === null ? false : true;
+    },
+    errMessage: function() {
+      return this.$store.getters['auth/getError'];
+    },
+    getType: function() {
+      return this.$store.getters['auth/getUserType']
+    },
+    isLogged: function() {
+      return this.$store.getters['auth/logStatus'];
     }
   }
 }

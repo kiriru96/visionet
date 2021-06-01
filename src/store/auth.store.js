@@ -1,17 +1,49 @@
+import {login} from '../method';
+import router from '../router';
+
 const token = localStorage.getItem("token");
 const user_type = localStorage.getItem("user_type");
 
-const initState = token ? {isLogged: true, token: token, loading: false, err_msg: null, user_type: user_type} : {isLogged: false, token: null, loading: false, err_msg: null, user_type: null};
+const initState = token ? {isLogged: true, token: token, loading: false, err_msg: null, user_type: user_type} : {isLogged: false, token: 'null', loading: false, err_msg: null, user_type: null};
+const typeList = ['Admin', 'Leader', 'Backup Leader', 'Enginner'];
 
 export const auth = {
     namespaced: true,
     state: initState,
     actions: {
-        // login({commit}, {username, password}) {
+        async login({commit}, data) {
+            commit('setLoading', true)
+            commit('setErrMsg', null)
 
-        // }
+            let typeIndex = typeList.indexOf(data.type);
+
+            let res = await login.authentication(data.username, data.password, typeIndex);
+
+            if(!res.err) {
+                console.log(res.json.token);
+                commit('saveUser', {token: res.json.token, user_type: typeIndex})
+                commit('setLogged', true)
+                router.push('/')
+            } else {
+                commit('setErrMsg', res.err)
+                setTimeout(()=> {
+                    commit('setErrMsg', null)
+                }, 2500)
+            }
+
+            setTimeout(()=> {
+                commit('setLoading', false)
+            }, 500)
+        },
+        logout({commit}) {
+            commit('setLogout')
+            router.push('/login')
+        }
     },
     getters: {
+        getLoading(state) {
+            return state.loading
+        },
         getError(state) {
             return state.err_msg;
         },
@@ -29,23 +61,23 @@ export const auth = {
         saveUser(state, {token, user_type}) {
             localStorage.setItem("token", token);
             localStorage.setItem("user_type", user_type);
-            state.token = token;
+            state.token     = token;
             state.user_type = user_type;
         },
-        setLogged(state) {
-            state.isLogged = true;
+        setLogged(state, status) {
+            state.isLogged = status;
         },
         setLogout(state) {
             localStorage.clear();
-            state.isLogged = false;
-            state.token = null;
+            state.isLogged  = false;
+            state.token     = null;
             state.user_type = null;
         },
-        setLoading(state, {status}) {
+        setLoading(state, status) {
             state.loading = status;
         },
-        setErrMsg(state, {err}) {
-            state.err_msg = err;
+        setErrMsg(state, error) {
+            state.err_msg = error;
         }
     }
 }

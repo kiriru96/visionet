@@ -12,7 +12,7 @@
       <v-btn icon @click="$router.push('/notification')">
         <v-icon>mdi-bell</v-icon>
       </v-btn>
-      <v-btn icon @click="{}">
+      <v-btn icon @click="logout">
         <v-icon>mdi-logout</v-icon>
       </v-btn>
     </v-app-bar>
@@ -35,7 +35,7 @@
               v-model="selectedItem"
               color="primary">
               <v-list-item
-                v-for="(item, i) in items"
+                v-for="(item, i) in items[userType]"
                 :key="i"
                 @click="$router.push(item.link)">
                 <v-list-item-icon>
@@ -56,25 +56,6 @@
 <script>
 export default {
   name: 'App',
-  components: {
-    VApp, 
-    VBtn, 
-    VAppBar, 
-    VAppBarNavIcon, 
-    VToolbarTitle, 
-    VSpacer, 
-    VIcon, 
-    VNavigationDrawer, 
-    VSystemBar, 
-    VList, 
-    VListItem, 
-    VListItemAvatar, 
-    VImg, 
-    VListItemGroup,
-    VListItemIcon,
-    VListItemContent,
-    VListItemTitle
-  },
   data: () => ({
     drawer: null,
     drawers: {
@@ -92,14 +73,42 @@ export default {
     },
     selectedItem: 0,
     items: [
-      { text: "Dashboard", icon: 'mdi-home', link: '/'},
-      { text: "Location", icon: 'mdi-map  ', link: '/location'},
-      { text: "System Log", icon: 'mdi-history  ', link: '/history'}
+      [
+        { text: "Dashboard", icon: 'mdi-home', link: '/'},
+        { text: "Location", icon: 'mdi-map  ', link: '/location'},
+        { text: "Brand", icon: 'mdi-office', link: '/brand'},
+        { text: "Device", icon: 'mdi-office', link: '/device'},
+        { text: "Customer", icon: 'mdi-office', link: '/customer'},
+        { text: "System Log", icon: 'mdi-history  ', link: '/history'}
+      ],
+      [
+        { text: "Dashboard", icon: 'mdi-home', link: '/'},
+        { text: "WO", icon: 'mdi-map  ', link: '/location'},
+        { text: "WO confirm", icon: 'mdi-history  ', link: '/history'}
+      ],
+      [
+        { text: "Dashboard", icon: 'mdi-home', link: '/'},
+        { text: "WO", icon: 'mdi-map  ', link: '/location'},
+        { text: "WO confirm", icon: 'mdi-history  ', link: '/history'}
+      ],
+      [
+        { text: "Dashboard", icon: 'mdi-home', link: '/'},
+        { text: "WO", icon: 'mdi-map  ', link: '/location'},
+        { text: "History", icon: 'mdi-history  ', link: '/history'}
+      ]
     ]
   }),
+  methods: {
+    logout() {
+      this.$store.dispatch('auth/logout')
+    }
+  },
   computed: {
     logged() {
       return this.$store.getters['auth/logStatus']
+    },
+    userType() {
+      return this.$store.getters['auth/getUserType']
     }
   }
 };
