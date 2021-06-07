@@ -1,6 +1,6 @@
 // let token = localStorage.getItem("user");
 function getHeaders(token){
-    let headers = !token ? {
+    let headers = !token || token.trim() === '' ? {
       'Access-Control-Allow-Origin':'*',
       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
     } : {
@@ -11,7 +11,7 @@ function getHeaders(token){
     return headers
   }
   function getHeadersv2(token){
-    let headers = !token ? {
+    let headers = !token || token.trim() === '' ? {
       'Access-Control-Allow-Origin':'*',
     } : {
       'Access-Control-Allow-Origin':'*',
