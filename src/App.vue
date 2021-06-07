@@ -6,8 +6,8 @@
       color="primary"
       dark
       >
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Visionet</v-toolbar-title>
+      <v-app-bar-nav-icon @click="appNavAction"><v-icon v-if="backBar">mdi-arrow-left</v-icon></v-app-bar-nav-icon>
+      <v-toolbar-title>{{titleBar}}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon @click="$router.push('/notification')">
         <v-icon>mdi-bell</v-icon>
@@ -19,7 +19,7 @@
     <v-navigation-drawer
       v-if="logged"
       v-model="drawer"
-      absolute
+      fixed
       temporary>
       <v-system-bar></v-system-bar>
       <v-list shaped>
@@ -75,6 +75,7 @@ export default {
     items: [
       [
         { text: "Dashboard", icon: 'mdi-home', link: '/'},
+        { text: "Asset", icon: 'mdi-folder', link: '/asset'},
         { text: "Location", icon: 'mdi-map  ', link: '/location'},
         { text: "Brand", icon: 'mdi-office', link: '/brand'},
         { text: "Device", icon: 'mdi-office', link: '/device'},
@@ -88,7 +89,7 @@ export default {
       ],
       [
         { text: "Dashboard", icon: 'mdi-home', link: '/'},
-        { text: "WO", icon: 'mdi-map  ', link: '/location'},
+        { text: "WO", icon: 'mdi-map  ', link: '/leader/workorder'},
         { text: "WO confirm", icon: 'mdi-history  ', link: '/history'}
       ],
       [
@@ -101,6 +102,13 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch('auth/logout')
+    },
+    appNavAction() {
+      if(this.backBar) {
+        this.$router.go(-1)
+      } else {
+        this.drawer = !this.drawer
+      }
     }
   },
   computed: {
@@ -109,6 +117,12 @@ export default {
     },
     userType() {
       return this.$store.getters['auth/getUserType']
+    },
+    titleBar() {
+      return this.$route.meta.title
+    },
+    backBar() {
+      return this.$route.meta.back
     }
   }
 };
