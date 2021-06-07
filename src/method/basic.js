@@ -86,4 +86,6 @@ async function submit(path, data) {
 
 export const basic = {
     submit,
+    del,
+    list
 }

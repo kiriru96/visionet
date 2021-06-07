@@ -1,6 +1,18 @@
 <template>
     <v-main>
         <v-container fluid fill-width>
+            <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Search"
+                single-line
+                hide-details
+                @keyup="searchAction">
+            </v-text-field>
+            <v-btn
+                color="primary"
+                class="mb-2">
+            </v-btn>
             <v-data-table
                 :headers="headers"
                 :items="items"
@@ -31,6 +43,7 @@ export default {
     },
     data() {
         return {
+            search: '',
             headers: [
                 {text: 'ID', value: 'id', sortable: false},
                 {text: 'Device', value: 'device', sortable: false},
@@ -50,6 +63,9 @@ export default {
         this.initialize()
     },
     methods: {
+        searchAction() {
+            
+        },
         editAction(item) {
             console.log('edit')
             console.log(item)
