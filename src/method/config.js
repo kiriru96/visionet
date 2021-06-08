@@ -20,7 +20,7 @@ function getHeaders(token){
     return headers
   }
   export const config= {
-      endpoint: "http://localhost/visionet-api/api",
+      endpoint: "http://127.0.0.1/visionet-api/api",
       getUrlParams: function(url,params){
         let query = Object.keys(params).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`).join('&');
         return `${url}?${query}`;

@@ -20,7 +20,6 @@ export const auth = {
             let res = await login.authentication(data.username, data.password, typeIndex);
 
             if(!res.err) {
-                console.log(res.json.token);
                 commit('saveUser', {token: res.json.token, user_type: typeIndex})
                 commit('setLogged', true)
                 router.push('/')
