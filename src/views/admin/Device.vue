@@ -1,53 +1,138 @@
 <template>
-    <v-container fluid fill-width>
-        <v-dialog persistent v-model="dialogStatus" max-width="500px">
-            <v-card>
-                <v-alert
-                    :value="errorMsg"
-                    dismissible
-                    color="error">
-                    {{errorMsg}}
-                </v-alert>
-                <v-card-title>
-                    <span class="headline">{{formTitle}}</span>
-                </v-card-title>
+    <v-main>
+        <v-container fill-width>
+            <v-dialog persistent v-model="dialogStatus" max-width="500px">
+                <v-card>
+                    <v-alert
+                        :value="errorMsg"
+                        dismissible
+                        color="error">
+                        {{errorMsg}}
+                    </v-alert>
+                    <v-card-title>
+                        <span class="headline">{{formTitle}}</span>
+                    </v-card-title>
 
-                <v-card-text>
-                    
-                </v-card-text>
-            </v-card>
-        </v-dialog>
-        <Dialog :dialog="alert" :title="Delete" :text="`Are you sure delete this?`" v-on:ok="OkButton" v-on:no="NoButton"/>
-        <v-data-table
-            :headers="headers"
-            :items="items"
-            class="elevation-1">
-            <template v-slot:[`item.actions`]="{ item }">
-                <v-icon
+                    <v-card-text>
+                        <SubmitPanel ref="submitpanel" :forminput="forminput"/>
+                    </v-card-text>
+
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" text @click="closeDialog">Cancel</v-btn>
+                        <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+            <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Search"
+                single-line
+                hide-details
+                @keyup="searchAction">
+            </v-text-field>
+            <v-spacer></v-spacer>
+            <v-fab-transition>
+                <v-btn
+                    v-show="!hidden"
+                    color="primary"
+                    class="mb-2"
+                    fab
+                    dark
                     small
-                    class="mr-2"
-                    @click="editAction(item)">
-                    mdi-pencil
-                </v-icon>
-                <v-icon
-                    small
-                    class="mr-2"
-                    @click="deleteAction(item)">
-                    mdi-delete
-                </v-icon>
-            </template>
-        </v-data-table>
-    </v-container>
+                    fixed
+                    bottom
+                    right
+                    @click="addAction">
+                    <v-icon>mdi-plus</v-icon>
+                </v-btn>
+            </v-fab-transition>
+            <Dialog :dialog="alert" :title="`Delete`" :text="`Are you sure delete this?`" v-on:ok="OkButton" v-on:no="NoButton"/>
+            <v-data-table
+                v-model="selected"
+                :headers="headers"
+                :items="table"
+                :options.sync="options"
+                :server-items-length="lentable"
+                :loading="isLoading"
+                class="elevation-1">
+                <template v-slot:[`item.actions`]="{ item }">
+                    <v-icon
+                        small
+                        class="mr-2"
+                        @click="editAction(item)">
+                        mdi-pencil
+                    </v-icon>
+                    <v-icon
+                        small
+                        class="mr-2"
+                        @click="deleteAction(item)">
+                        mdi-delete
+                    </v-icon>
+                </template>
+            </v-data-table>
+            <v-snackbar
+            :value="responseMsg"
+            :color="color"
+            :multi-line="mode === 'multi-line'"
+            :timeout="timeout"
+            :vertical="mode === 'vertical'"
+            >
+                {{ responseMsg }}
+                <v-divider
+                class="mx-4"
+                inset
+                vertical
+                ></v-divider>
+                <v-btn
+                    dark
+                    text
+                    @click="removeError()"
+                >
+                    Close
+                </v-btn>
+            </v-snackbar>
+            <v-snackbar
+            :value="errorMsg"
+            :color="color"
+            :multi-line="mode === 'multi-line'"
+            :timeout="timeout"
+            :vertical="mode === 'vertical'"
+            >
+                {{ errorMsg }}
+                <v-divider
+                class="mx-4"
+                inset
+                vertical
+                ></v-divider>
+                <v-btn
+                    dark
+                    text
+                    @click="removeError()"
+                >
+                    Close
+                </v-btn>
+            </v-snackbar>
+        </v-container>
+    </v-main>
 </template>
 
 <script>
 export default {
     components: {
-        AssetInput: () => import('@components/AssetInput'),
-        Dialog: () => import('@components/Dialog')
+        SubmitPanel: () => import('../../components/SubmitPanel.vue'),
+        Dialog: () => import('../../components/Dialog.vue')
     },
     data() {
         return {
+            forminput: {
+                id: -1,
+                name: '',
+                submit: 'brand',
+                type: 1
+            },
+            selected: [],
             alert: false,
             idselected: -1,
             search: '',
@@ -56,7 +141,6 @@ export default {
                 {text: 'Name', value: 'name', sortable: false},
                 {text: 'Actions', value: 'actions', sortable: false}
             ],
-            items: [],
             sortbylast: null,
             sorting: "ASC",
             editedIndex: -1,
@@ -64,24 +148,69 @@ export default {
                 id: -1,
                 name: ''
             },
-            formTitle: 'Brand'
+            formTitle: 'Device',
+            hidden: false,
+            options: {},
+            timeout: 6000,
+            color: '',
+            mode: '',
         }
     },
     created () {
-        this.initialize()
+        window.addEventListener('scroll', this.handleScroll)
+    },
+    destroyed () {
+        window.removeEventListener('scroll', this.handleScroll)
     },
     methods: {
+        searchAction() {
+            
+        },
+        removeError(){
+            const {dispatch} = this.$store;
+            dispatch('device/removeError')
+        },
+        removeMsg() {
+            const {dispatch} = this.$store;
+            dispatch('device/removeMsg')
+        },
+        handleScroll () {
+            this.currentY = window.top.scrollY
+            if(this.currentY > this.lastY){
+                this.hidden = true
+            }else{
+                this.hidden = false
+            }
+            this.lastY = this.currentY
+        },
+        addAction() {
+            const {dispatch} = this.$store
+
+            this.idselected = -1
+
+            this.formTitle = 'Add Device'
+
+            dispatch('device/removeError')
+            dispatch('device/openDialog')
+        },
         editAction(item) {
             const {id, name} = item
             this.editedIndex = -1
-            this.formInput = {
+
+            this.idselected = this.table.indexOf(item)
+
+            console.log(this.idselected)
+
+            this.forminput = {
                 id : id,
                 name: name
             }
 
-            this.formTitle = 'Edit Brand'
+            this.formTitle = 'Edit Device'
+
             const {dispatch} = this.$store
-            dispatch('brand/openDialog')
+
+            dispatch('device/openDialog')
         },
         deleteAction(item) {
             const index = this.table.indexOf(item)
@@ -90,10 +219,19 @@ export default {
         },
         closeDialog() {
             const {dispatch} = this.$store
-            dispatch('brand/closeDialog')
+            dispatch('device/closeDialog')
+            this.$refs.submitpanel.resetForm()
+        },
+        save() {
+            if(this.idselected === -1) {
+                this.submitAPI()
+            } else {
+                this.editAPI()
+            }
         },
         OkButton(){
             const {dispatch} = this.$store
+            dispatch('device/deleteList', this.table[this.idselected].id)
 
             this.alert = false
             this.idselected = -1
@@ -105,6 +243,9 @@ export default {
             this.dialog = false
         },
         getDataFromAPI() {
+            if(this.isLoading) return
+            console.log('get api');
+
             const {dispatch} = this.$store
             let {sortBy, sortDesc, page, itemsPerPage} = this.options
             
@@ -116,24 +257,61 @@ export default {
                 this.sorting = !sortDesc[0] ? "ASC" : "DESC"
             }
 
-            dispatch('brand/reqList', {index: page, rows: itemsPerPage, search: this.search, sortby: this.sortbylast, sort: this.sortingDesc})
+            dispatch('device/reqList', {index: page, rows: itemsPerPage, search: this.search, sortby: this.sortbylast, sort: this.sorting})
+        },
+        submitAPI() {
+            if(this.isLoading) return
+
+            const {dispatch} = this.$store
+
+            if(this.$refs.submitpanel.isValid()) {
+                let data = {name: this.forminput.name}
+                dispatch('device/insertList', data)
+            }
+
+            dispatch('device/closeDialog')
+
+            setTimeout(()=> {
+                this.getDataFromAPI()
+            }, 1000)
+        },
+        editAPI() {
+            if(this.isLoading) return
+
+            const {dispatch} = this.$store
+
+            if(this.$refs.submitpanel.isValid()) {
+                let data = {id: this.forminput.id, name: this.forminput.name}
+                dispatch('device/updateList', data)
+            }
+
+            dispatch('device/closeDialog')
+
+            this.idselected = -1
+
+            setTimeout(()=> {
+                this.getDataFromAPI()
+            }, 1000)
         }
     },
     computed: {
         table() {
-            return this.$store.getters['brand/getAllItems']
+            return this.$store.getters['device/getAllItems']
         },
         isLoading() {
-            return this.$store.getters['brand/getLoading']
+            return this.$store.getters['device/getLoading']
         },
         lentable() {
-            return this.$store.getters['brand/getLenItems']
+            return this.$store.getters['device/getLenItems']
         },
         errorMsg() {
-            return this.$store.getters['brand/getError']
+            return this.$store.getters['device/getError']
         },
         dialogStatus() {
-            return this.$store.getters['brand/getDialog']
+            return this.$store.getters['device/getDialog']
+        },
+        responseMsg() {
+            return this.$store.getters['device/getMessage']
         },
         params() {
             return {

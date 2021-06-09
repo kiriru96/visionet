@@ -9,6 +9,7 @@ export const location = {
         loading: false,
         submit: false,
         dialog: false,
+        msg: null,
         lightSeach: []
     },
     actions: {
@@ -44,7 +45,7 @@ export const location = {
             commit('setLoading', true)
             commit('setSubmit', true)
 
-            let res = await basic.submit('location', data)
+            let res = await basic.update('location', data)
 
             if(!res.err) {
                 
@@ -64,6 +65,21 @@ export const location = {
             } else {
                 commit('setError', res.err)
             }
+        },
+        openDialog({commit}) {
+            commit('setDialog', true)
+        },
+        closeDialog({commit}) {
+            commit('setDialog', false)
+        },
+        removeError({commit}) {
+            commit('removeError')
+        },
+        removeError({commit}) {
+            commit('removeError')
+        },
+        removeMsg({commit}) {
+            commit('removeMessage')
         }
     },
     getters: {
@@ -84,6 +100,9 @@ export const location = {
         },
         getDialog(state) {
             return state.dialog
+        },
+        getMessage(state) {
+            return state.msg
         }
     },
     mutations: {
@@ -92,6 +111,14 @@ export const location = {
         },
         setDialog(state, status) {
             state.dialog = status
+        },
+        setMessage(state, msg) {
+            state.msg = msg
+        },
+        removeMessage(state) {
+            if(state.msg) {
+                state.msg = null
+            }
         },
         setError(state, err) {
             state.error = err

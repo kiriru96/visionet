@@ -1,6 +1,10 @@
 <template>
     <v-main>
-        <v-container fluid fill-width>
+        <v-container fill-width>
+            <v-dialog persistent max-width="500px">
+                <v-card>
+                </v-card>
+            </v-dialog>
             <v-text-field
                 v-model="search"
                 append-icon="mdi-magnify"
@@ -9,10 +13,23 @@
                 hide-details
                 @keyup="searchAction">
             </v-text-field>
-            <v-btn
-                color="primary"
-                class="mb-2">
-            </v-btn>
+            <v-spacer></v-spacer>
+            <v-fab-transition>
+                <v-btn
+                    v-show="!hidden"
+                    color="primary"
+                    class="mb-2"
+                    fab
+                    dark
+                    small
+                    fixed
+                    bottom
+                    right
+                    @click="dialog = true">
+                    <v-icon>mdi-plus</v-icon>
+                </v-btn>
+            </v-fab-transition>
+            <Dialog :dialog="alert" :title="`Delete`" :text="`Are you sure delete this?`" v-on:ok="OkButton" v-on:no="NoButton"/>
             <v-data-table
                 :headers="headers"
                 :items="items"
@@ -39,10 +56,12 @@
 <script>
 export default {
     components: {
-        'asset-input': import('../../components/AssetInput')
+        AssetInput: () => import('../../components/AssetInput.vue'),
+        Dialog: () => import('../../components/Dialog.vue')
     },
     data() {
         return {
+            alert: false,
             search: '',
             headers: [
                 {text: 'ID', value: 'id', sortable: false},
@@ -56,13 +75,29 @@ export default {
                 {text: 'Date Out', value: 'dateout', sortable: false},
                 {text: 'Actions', value: 'actions', sortable: false}
             ],
-            items: []
+            items: [],
+            currentY: 0,
+            lastY:0,
+            hidden: false
         }
     },
     created () {
         this.initialize()
+        window.addEventListener('scroll', this.handleScroll)
+    },
+    destroyed () {
+        window.removeEventListener('scroll', this.handleScroll)
     },
     methods: {
+        handleScroll () {
+            this.currentY = window.top.scrollY
+            if(this.currentY > this.lastY){
+                this.hidden = true
+            }else{
+                this.hidden = false
+            }
+            this.lastY = this.currentY
+        },
         searchAction() {
             
         },
@@ -71,8 +106,17 @@ export default {
             console.log(item)
         },
         deleteAction(item) {
-            console.log('delete')
-            console.log(item)
+            const index = this.items.indexOf(item)
+            this.alert = true
+        },
+        OkButton(){
+            const {dispatch} = this.$store
+
+            this.alert = false
+            this.idselected = -1
+        },
+        NoButton() {
+            this.alert = false
         },
         initialize() {
             this.items = [

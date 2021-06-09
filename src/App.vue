@@ -75,7 +75,7 @@ export default {
     items: [
       [
         { text: "Dashboard", icon: 'mdi-home', link: '/'},
-        { text: "Asset", icon: 'mdi-folder', link: '/asset'},
+        // { text: "Asset", icon: 'mdi-folder', link: '/asset'},
         { text: "Location", icon: 'mdi-map  ', link: '/location'},
         { text: "Brand", icon: 'mdi-office', link: '/brand'},
         { text: "Device", icon: 'mdi-office', link: '/device'},

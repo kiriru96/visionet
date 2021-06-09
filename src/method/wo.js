@@ -10,7 +10,5 @@ async function insertWorkOrderEngginer() {
 
 export const wo = {
     getWorkOrderList,
-    insertWorkOrder,
-    deleteWorkOder,
-    updateWorkOrder
+    insertWorkOrderEngginer
 }

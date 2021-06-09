@@ -6,7 +6,7 @@ function getHeaders(token){
     } : {
       'Access-Control-Allow-Origin':'*',
       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      "Authorization": `${token}`
+      "Authorization": `Barear ${token}`
     }
     return headers
   }
@@ -15,7 +15,7 @@ function getHeaders(token){
       'Access-Control-Allow-Origin':'*',
     } : {
       'Access-Control-Allow-Origin':'*',
-      "Authorization": `${token}`
+      "Authorization": `Barear ${token}`
     }
     return headers
   }

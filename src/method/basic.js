@@ -15,7 +15,7 @@ async function list(path,{index, rows, search, sortby, sort}) {
                 {page: index, search: search, sortby: sortby, sort: sort, rows: rows}), 
                 reqconf)
         const fetchres  = await response.json()
-
+        
         if(response.status === 200) {
             if(fetchres.status) {
                 result.json = fetchres
@@ -38,10 +38,10 @@ async function del(path, id) {
         err: null
     }
 
-    let reqconf = config.postdataconfig(`${config.endpoint}/delete/${path}`, reqconf)
+    let reqconf = config.postdataconfig({id: id})
 
     try {
-        const response  = await fetch(`${config.endpoint}/delete/${path}, reward`)
+        const response  = await fetch(`${config.endpoint}/delete/${path}`, reqconf)
         const fetchres  = await response.json()
 
         if(response.status === 200) {
@@ -97,7 +97,7 @@ async function submit(path, data) {
     let reqconf = config.postdataconfig(data);
 
     try{
-        const response = await fetch(`${config.endpoint}/insert/${path}`, reqconf)
+        const response = await fetch(`${config.endpoint}/add/${path}`, reqconf)
         const fetchres = await response.json()
 
         if(response.status === 200) {
@@ -119,5 +119,6 @@ async function submit(path, data) {
 export const basic = {
     submit,
     del,
+    update,
     list
 }

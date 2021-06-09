@@ -9,6 +9,7 @@ export const brand = {
         loading: false,
         submit: false,
         dialog: false,
+        msg: null,
         lightSeach: []
     },
     actions: {
@@ -37,6 +38,7 @@ export const brand = {
             } else {
                 commit('setError', res.err)
             }
+
             commit('setLoading', false)
         },
         async updateList({commit}, data) {
@@ -44,13 +46,14 @@ export const brand = {
             commit('setLoading', true)
             commit('setSubmit', true)
 
-            let res = await basic.submit('brand', data)
+            let res = await basic.update('brand', data)
 
             if(!res.err) {
-                
+                commit('setMessage', res.json.msg)
             } else {
                 commit('setError', res.err)
             }
+            
             commit('setLoading', false)
         },
         async deleteList({commit}, id) {
@@ -60,16 +63,24 @@ export const brand = {
             let res = await basic.del('brand', id)
 
             if(!res.err) {
-
+                commit('setMessage', res.json.msg)
             } else {
                 commit('setError', res.err)
             }
+
+            commit('setLoading', false)
         },
         openDialog({commit}) {
             commit('setDialog', true)
         },
         closeDialog({commit}) {
             commit('setDialog', false)
+        },
+        removeError({commit}) {
+            commit('removeError')
+        },
+        removeMsg({commit}) {
+            commit('removeMessage')
         }
     },
     getters: {
@@ -90,6 +101,9 @@ export const brand = {
         },
         getDialog(state) {
             return state.dialog
+        },
+        getMessage(state) {
+            return state.msg
         }
     },
     mutations: {
@@ -98,6 +112,14 @@ export const brand = {
         },
         setDialog(state, status) {
             state.dialog = status
+        },
+        setMessage(state, msg) {
+            state.msg = msg
+        },
+        removeMessage(state) {
+            if(state.msg) {
+                state.msg = null
+            }
         },
         setError(state, err) {
             state.error = err

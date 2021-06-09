@@ -20,6 +20,14 @@ export default new Vuex.Store({
     auth,
     asset,
     dashboard,
-    location
+    location,
+    brand,
+    customer,
+    device,
+    warehouse,
+    admin,
+    leader,
+    backupleader,
+    engginer
   }
 })

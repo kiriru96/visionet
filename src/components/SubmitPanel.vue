@@ -1,32 +1,26 @@
 <template>
-    <v-content>
-        <v-form
-            ref="form"
-            v-model="valid"
-            lazy-validation>
-            <v-text-field
-                v-model="inputName"
-                :counter="10"
-                :rules="inputRules"
-                label="`${content}`"
-                required>
-            </v-text-field>
-            <v-btn color="primary" @click="submitContent" :loading="isLoading" :disabled="isLoading">Submit</v-btn>
-        </v-form>
-    </v-content>
+    <v-form
+        ref="form"
+        v-model="valid"
+        lazy-validation>
+        <v-text-field
+            ref="name"
+            v-model="forminput.name"
+            :counter="10"
+            :rules="inputRules"
+            label="Nama"
+            required>
+        </v-text-field>
+    </v-form>
 </template>
 
 <script>
 export default {
     props: {
-        content: {
-            type: String,
-            required: true
-        }
+        forminput: Object
     },
     data() {
         return {
-            inputName: '',
             valid: true,
             inputRules: [
                 v => !!v || 'Tidak boleh kosong',
@@ -35,12 +29,11 @@ export default {
         }
     },
     methods: {
-        submitContent() {
-            const {inputName} = this
-
-            if(this.$ref.form.validate()) {
-                
-            }
+        resetForm() {
+            this.$refs.form.reset()
+        },
+        isValid() {
+            return this.$refs.form.validate()
         }
     },
     computed: {
