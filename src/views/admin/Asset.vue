@@ -3,6 +3,7 @@
         <v-container fill-width>
             <v-dialog persistent max-width="500px">
                 <v-card>
+                    <asset-input/>
                 </v-card>
             </v-dialog>
             <v-text-field
@@ -47,6 +48,12 @@
                         @click="deleteAction(item)">
                         mdi-delete
                     </v-icon>
+                    <v-icon
+                        small
+                        class="mr-2"
+                        @click="woAction(item)">
+                        mdi-plus
+                    </v-icon>
                 </template>
             </v-data-table>
         </v-container>
@@ -56,8 +63,9 @@
 <script>
 export default {
     components: {
+        Dialog: () => import('../../components/Dialog.vue'),
         AssetInput: () => import('../../components/AssetInput.vue'),
-        Dialog: () => import('../../components/Dialog.vue')
+        WorkOrderInput: () => import('../../components/WorkOrderInput.vue')
     },
     data() {
         return {
@@ -108,6 +116,9 @@ export default {
         deleteAction(item) {
             const index = this.items.indexOf(item)
             this.alert = true
+        },
+        woAction(item) {
+
         },
         OkButton(){
             const {dispatch} = this.$store
