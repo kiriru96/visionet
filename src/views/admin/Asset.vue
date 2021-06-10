@@ -64,7 +64,6 @@
 export default {
     components: {
         Dialog: () => import('../../components/Dialog.vue'),
-        AssetInput: () => import('../../components/AssetInput.vue'),
         WorkOrderInput: () => import('../../components/WorkOrderInput.vue')
     },
     data() {

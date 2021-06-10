@@ -3,12 +3,6 @@
         <v-container fill-width>
             <v-dialog persistent v-model="dialogStatus" max-width="500px">
                 <v-card>
-                    <v-alert
-                        :value="errorMsg"
-                        dismissible
-                        color="error">
-                        {{errorMsg}}
-                    </v-alert>
                     <v-card-title>
                         <span class="headline">{{formTitle}}</span>
                     </v-card-title>
@@ -75,16 +69,9 @@
             <v-snackbar
             :value="responseMsg"
             :color="color"
-            :multi-line="mode === 'multi-line'"
             :timeout="timeout"
-            :vertical="mode === 'vertical'"
             >
                 {{ responseMsg }}
-                <v-divider
-                class="mx-4"
-                inset
-                vertical
-                ></v-divider>
                 <v-btn
                     dark
                     text
@@ -96,9 +83,7 @@
             <v-snackbar
             :value="errorMsg"
             :color="color"
-            :multi-line="mode === 'multi-line'"
             :timeout="timeout"
-            :vertical="mode === 'vertical'"
             >
                 {{ errorMsg }}
                 <v-divider
