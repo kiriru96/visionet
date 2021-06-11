@@ -6,7 +6,7 @@
         <v-text-field
             ref="name"
             v-model="forminput.name"
-            :counter="10"
+            :counter="50"
             :rules="inputRules"
             label="Nama"
             required>
@@ -24,7 +24,8 @@ export default {
             valid: true,
             inputRules: [
                 v => !!v || 'Tidak boleh kosong',
-                v => v && v.length >= 1 || "Input harus diisi"
+                v => v && v.length >= 1 || "Input harus diisi",
+                v => v && v.length <= 50 || "Tidak boleh lebih dari 50 karakter"
             ]
         }
     },
