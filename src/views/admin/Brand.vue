@@ -81,15 +81,14 @@
             >
                 {{ responseMsg }}
                 <v-divider
-                class="mx-4"
-                inset
-                vertical
-                ></v-divider>
+                    class="mx-4"
+                    inset
+                    vertical>
+                </v-divider>
                 <v-btn
                     dark
                     text
-                    @click="removeMsg()"
-                >
+                    @click="removeMsg()">
                     Close
                 </v-btn>
             </v-snackbar>
@@ -109,8 +108,7 @@
                 <v-btn
                     dark
                     text
-                    @click="removeError()"
-                >
+                    @click="removeError()">
                     Close
                 </v-btn>
             </v-snackbar>
@@ -184,6 +182,8 @@ export default {
             this.lastY = this.currentY
         },
         addAction() {
+            this.$refs.submitpanel.resetForm()
+
             const {dispatch} = this.$store
 
             this.idselected = -1

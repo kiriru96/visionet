@@ -1,9 +1,9 @@
 <template>
     <v-main>
         <v-container fill-width>
-            <v-dialog persistent max-width="500px">
+            <v-dialog v-model="dialogStat" persistent max-width="500px">
                 <v-card>
-                    <asset-input/>
+                    <AssetInput ref="submitpanel"/>
                 </v-card>
             </v-dialog>
             <v-text-field
@@ -26,7 +26,7 @@
                     fixed
                     bottom
                     right
-                    @click="dialog = true">
+                    @click="addAction">
                     <v-icon>mdi-plus</v-icon>
                 </v-btn>
             </v-fab-transition>
@@ -64,16 +64,21 @@
 export default {
     components: {
         Dialog: () => import('../../components/Dialog.vue'),
+        AssetInput: () => import('../../components/AssetInput.vue'),
         WorkOrderInput: () => import('../../components/WorkOrderInput.vue')
     },
     data() {
         return {
+            forminput: {
+
+            },
             alert: false,
             search: '',
             headers: [
                 {text: 'ID', value: 'id', sortable: false},
                 {text: 'Device', value: 'device', sortable: false},
                 {text: 'Brand', value: 'brand', sortable: false},
+                {text: 'Model', value: 'model', sortable: false},
                 {text: 'Serial Number', value: 'serial_number', sortable: false},
                 {text: 'Condition', value: 'condition', sortable: false},
                 {text: 'Description', value: 'description', sortable: false},
@@ -128,27 +133,36 @@ export default {
         NoButton() {
             this.alert = false
         },
+        addAction() {
+            const {dispatch} = this.$store
+            dispatch('asset/openDialog')  
+        },
         initialize() {
             this.items = [
-                {id: 0, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 1, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 2, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 3, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 4, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 5, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 6, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 7, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 8, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 9, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 10, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 11, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 12, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 13, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 14, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 15, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 16, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 17, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'}
+                {id: 0, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
+                {id: 1, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
+                {id: 2, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
+                {id: 3, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
+                {id: 4, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
+                {id: 5, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
+                {id: 6, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
+                {id: 7, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
+                {id: 8, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
+                {id: 9, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
+                {id: 10, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
+                {id: 11, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
+                {id: 12, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
+                {id: 13, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
+                {id: 14, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
+                {id: 15, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
+                {id: 16, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
+                {id: 17, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'}
             ]
+        }
+    },
+    computed: {
+        dialogStat() {
+            return this.$store.getters['asset/getDialog']
         }
     }
 }

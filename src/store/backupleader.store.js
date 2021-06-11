@@ -6,15 +6,31 @@ export const backupleader = {
         loading: false,
         insert: false,
         dialog: false,
-        lightSeach: []
+        lightSearchLocation: []
     },
     actions: {
         reqList({commit}, {index, rows, search, sortby, sort}) {
             
+        },
+        submitAccount({commit}, data) {
+
+        },
+        updateAccount({commit}, data) {
+
+        },
+        deleteAccount({commit}, id) {
+
+        },
+        searchLocation({commit}, name) {
+            if(name.length >= 3) {
+
+            }
         }
     },
     getters: {
-
+        getTotalItems(state) {
+            return state.totalitems
+        }
     },
     mutations: {
         

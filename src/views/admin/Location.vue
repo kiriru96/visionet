@@ -169,6 +169,8 @@ export default {
             this.lastY = this.currentY
         },
         addAction() {
+            this.$refs.submitpanel.resetForm()
+            
             const {dispatch} = this.$store
 
             this.idselected = -1
