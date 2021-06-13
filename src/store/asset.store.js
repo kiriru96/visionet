@@ -1,3 +1,5 @@
+import { assets } from "../method"
+
 export const asset = {
     namespaced: true,
     state: {
@@ -13,19 +15,157 @@ export const asset = {
         lightSearchWareHouse: [],
         lightSearchCondition: [],
         lightSearchLocation: [],
-        lightSearchCustomer: []
+        lightSearchCustomer: [],
+        loadingDevice: false,
+        loadingBrand: false,
+        loadingWarehouse: false
     },
     actions: {
-        reqList({commit}, {index, rows, search, sortby, sort}) {
+        async reqList({commit, state}, {index, rows, search, sortby, sort}) {
+            if(state.loading) return
+
+            commit('removeError')
+            commit('setLoading', true)
+
+            let res = await assets.list({index: index, rows: rows, search: search, sortby: sortby, sort: sort})
+
+            if(!res.err) {
+                commit('setList', {items: res.json.data.list, len: res.json.data.len})
+            } else {
+                commit('removeListItem')
+                commit('setError', res.err)
+            }
+            commit('setLoading', false)
+        },
+        async insertAsset({commit}, data) {
+            commit('removeError')
+            commit('setLoading', true)
+            commit('setInsert', true)
+
+            let res = await assets.create(data)
+
+            if(!res.err) {
+
+            } else {
+                commit('setError', res.err)
+            }
+
+            commit('setLoading', false)
+        },
+        async updateAsset({commit}, data) {
+            commit('removeError')
+            commit('setLoading', true)
+            commit('setInsert', true)
+
+            let res = await assets.update(data)
+
+            if(!res.err) {
+
+            } else {
+                commit('setError', res.err)
+            }
+
+            commit('setLoading', false)
+        },
+        async deleteAsset({commit}, id) {
+            commit('removeError')
+            commit('setLoading', true)
+
+            let res = await assets.deletes({id: id})
+
+            if(!res.err) {
+
+            } else {
+                commit('setError', res.err)
+            }
             
+            commit('setLoading', false)
         },
         openDialog({commit}) {
             commit('setDialog', true)
         },
         closeDialog({commit}) {
             commit('setDialog', false)
-        }
+        },
+        async searchDevice({commit}, search) {
+            if(search.trim().length >= 3) {
+                commit('removeError')
 
+                let result = await assets.searchLight('device', search)
+
+                if(!result.err) {
+                    commit('setListLightDevice', result.json.data.list)
+                } else {
+                    commit('setError', result.err)
+                }
+            }
+        },
+        async searchBrand({commit}, search) {
+            if(search.trim().length >= 3) {
+                commit('removeError')
+
+                let result = await assets.searchLight('brand', search)
+
+                if(!result.err) {
+                    commit('setListLightBrand', result.json.data.list)
+                } else {
+                    commit('setError', result.err)
+                }
+            }
+        },
+        async searchWarehouse({commit}, search) {
+            if(search.trim().length >= 3) {
+                commit('removeError')
+
+                let result = await assets.searchLight('warehouse', search)
+
+                if(!result.err) {
+                    commit('setListLightWarehouse', result.json.data.list)
+                } else {
+                    commit('serError', result.err)
+                }
+            }
+        },
+        async searchCondition({commit}) {
+            commit('removeError')
+
+            let result = await assets.searchLight('condition', '')
+
+            if(!result.err) {
+                commit('setListLightCondition', result.json.data.list)
+            } else {
+                commit('setError', result.err)
+            }
+        },
+        async searchLocation({commit}, search) {
+            if(search.trim().length >= 3) {
+                commit('removeError')
+
+                let result = await assets.searchLight('location', search)
+
+                if(!result.err) {
+                    commit('setListLightLocation', result.json.data.list)
+                } else {
+                    commit('setError', result.err)
+                }
+            }
+        },
+        async searchCustomer({commit}, search) {
+            if(search.trim().length >= 3) {
+                commit('removeError')
+
+                let result = await assets.searchLight('customer', search)
+
+                if(!result.err) {
+                    commit('setListLightCustomer', result.json.data.list)
+                } else {
+                    commit('serError', result.err)
+                }
+            }
+        },
+        removeError({commit}) {
+            commit('removeError')
+        }
     },
     getters: {
         getList(state) {
@@ -34,7 +174,7 @@ export const asset = {
         getDialog(state) {
             return state.dialog
         },
-        isLoading(state) {
+        getLoading(state) {
             return state.loading
         },
         getTotalItems(state) {
@@ -63,30 +203,45 @@ export const asset = {
         },
         getMsg(state) {
             return state.msg
+        },
+        getLoadingBrand(state) {
+            return state.loadingBrand
+        },
+        getLoadingDevice(state) {
+            return state.loadingDevice
+        },
+        getLoadingWarehouse(state) {
+            return state.loadingWarehouse
+        },
+        getConditions(state) {
+            return state.lightSearchCondition
         }
     },
     mutations: {
-        setList(state, {list, length}) {
-            state.listItems = list
-            state.totalitems = length
+        setList(state, {items, len}) {
+            state.listItems = items
+            state.totalitems = len
         },
         setListLightBrand(state, list) {
             state.lightSearchBrand = list
         },
         setListLightDevice(state, list) {
-            state.lightSearchBrand = list
+            state.lightSearchDevice = list
         },
         setListLightWarehouse(state, list) {
-            state.lightSearchBrand = list
+            state.lightSearchWareHouse = list
         },
         setListLightCondition(state, list) {
-            state.lightSearchBrand = list
+            state.lightSearchCondition = list
         },
         setListLightLocation(state, list) {
-            state.lightSearchBrand = list
+            state.lightSearchLocation = list
         },
         setListLightCustomer(state, list) {
-            state.lightSearchBrand = list
+            state.lightSearchCustomer = list
+        },
+        setLoading(state, stat) {
+            state.loading = stat
         },
         removeListItem(state) {
             state.listItems.length = 0

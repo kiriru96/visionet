@@ -50,7 +50,8 @@ const routes = [
     path: '/history',
     name: 'History',
     meta: {
-      title: 'History'
+      title: 'History',
+      back: true
     },
     component: () => import(/* webpackChunkName: "history" */ '../views/History.vue')
   },
@@ -58,7 +59,8 @@ const routes = [
     path: '/location',
     name: 'Location',
     meta: {
-      title: 'Location'
+      title: 'Location',
+      back: true
     },
     component: () => import(/* webpackChunkName: "location" */ '../views/admin/Location.vue')
   },
@@ -66,7 +68,8 @@ const routes = [
     path: '/brand',
     name: 'Brand',
     meta: {
-      title: 'Brand'
+      title: 'Brand',
+      back: true
     },
     component: () => import(/* webpackChunkName: "brand" */ '../views/admin/Brand.vue')
   },
@@ -74,7 +77,8 @@ const routes = [
     path: '/customer',
     name: 'Customer',
     meta: {
-      title: 'Customer'
+      title: 'Customer',
+      back: true
     },
     component: () => import(/* webpackChunkName: "customer" */'../views/admin/Customer.vue')
   },
@@ -82,7 +86,8 @@ const routes = [
     path: '/device',
     name: 'Device',
     meta: {
-      title: 'Device'
+      title: 'Device',
+      back: true
     },
     component: () => import(/* webpackChunkName: "device" */'../views/admin/Device.vue')
   },
@@ -90,7 +95,8 @@ const routes = [
     path: '/workorder',
     name: 'WorkOrder',
     meta: {
-      title: 'WorkOrder'
+      title: 'WorkOrder',
+      back: true
     },
     component: () => import(/* webpackChunkName: "workorder" */'../views/admin/WorkOrder.vue')
   },
@@ -98,7 +104,8 @@ const routes = [
     path: '/warehouse',
     name: 'Warehouse',
     meta: {
-      title: 'Warehouse'
+      title: 'Warehouse',
+      back: true
     },
     component: () => import(/* webpackChunkName: "warehouse" */'../views/admin/Warehouse.vue')
   },
@@ -106,7 +113,8 @@ const routes = [
     path: '/backupleader',
     name: 'Backupleader',
     meta: {
-      title: 'Backup Leader'
+      title: 'Backup Leader',
+      back: true
     },
     component: () => import(/* webpackChunkName: "backupleader" */'../views/admin/Backupleader.vue')
   },
@@ -114,7 +122,8 @@ const routes = [
     path: '/leader',
     name: 'Leader',
     meta: {
-      title: 'Leader'
+      title: 'Leader',
+      back: true
     },
     component: () => import(/* webpackChunkName: "leader" */'../views/admin/Leader.vue')
   },
@@ -122,7 +131,8 @@ const routes = [
     path: '/engginer',
     name: 'Engginer',
     meta: {
-      title: 'Engginer'
+      title: 'Engginer',
+      back: true
     },
     component: () => import(/* webpackChunkName: "engginer" */'../views/admin/Engginer.vue')
   },
@@ -130,7 +140,8 @@ const routes = [
     path: '/asset',
     name: 'Asset',
     meta: {
-      title: 'Asset'
+      title: 'Asset',
+      back: true
     },
     component: () => import(/* webpackChunkName: "asset" */'../views/admin/Asset.vue')
   },
@@ -151,6 +162,15 @@ const routes = [
       back: true
     },
     component: () => import(/* webpackChunkName: 'detailwo' */'../views/leader/EngginerWorkOrder.vue')
+  },
+  {
+    path: '/administrator',
+    name: 'Administrator',
+    meta: {
+      title: 'Administrator',
+      back: true
+    },
+    component: () => import(/* webpackChunkName: 'adminstrator' */'../views/admin/Administrator.vue')
   }
 ]
 

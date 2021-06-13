@@ -22,6 +22,7 @@ export const device = {
             if(!res.err) {
                 commit('addAll', {items: res.json.data.list, len: res.json.data.len})
             } else {
+                commit('clear')
                 commit('setError', res.err)
             }
             commit('setLoading', false)

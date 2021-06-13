@@ -1,8 +1,7 @@
 <template>
     <v-form
         ref="form"
-        v-model="valid"
-        lazy-validation>
+        v-model="valid">
         <v-text-field
             ref="name"
             v-model="forminput.name"

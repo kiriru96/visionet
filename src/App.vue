@@ -9,9 +9,6 @@
       <v-app-bar-nav-icon @click="appNavAction"><v-icon v-if="backBar">mdi-arrow-left</v-icon></v-app-bar-nav-icon>
       <v-toolbar-title>{{titleBar}}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon @click="$router.push('/notification')">
-        <v-icon>mdi-bell</v-icon>
-      </v-btn>
       <v-btn icon @click="logout">
         <v-icon>mdi-logout</v-icon>
       </v-btn>
@@ -80,6 +77,11 @@ export default {
         { text: "Brand", icon: 'mdi-office', link: '/brand'},
         { text: "Device", icon: 'mdi-office', link: '/device'},
         { text: "Customer", icon: 'mdi-office', link: '/customer'},
+        { text: "Warehouse", icon: 'mdi-office', link: '/warehouse'},
+        { text: "Admin", icon: 'mdi-account', link: '/administrator'},
+        { text: "Leader", icon: 'mdi-account', link: '/leader'},
+        { text: "Backup Leader", icon: 'mdi-account', link: '/backupleader'},
+        { text: "Engginer", icon: 'mdi-account', link: '/engginer'},
         { text: "System Log", icon: 'mdi-history  ', link: '/history'}
       ],
       [

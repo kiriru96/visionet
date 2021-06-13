@@ -182,7 +182,7 @@ export default {
             this.lastY = this.currentY
         },
         addAction() {
-            this.$refs.submitpanel.resetForm()
+             
 
             const {dispatch} = this.$store
 
@@ -218,6 +218,7 @@ export default {
         closeDialog() {
             const {dispatch} = this.$store
             dispatch('brand/closeDialog')
+
             this.$refs.submitpanel.resetForm()
         },
         save() {
@@ -226,6 +227,8 @@ export default {
             } else {
                 this.editAPI()
             }
+
+            this.$refs.submitpanel.resetForm()
         },
         OkButton(){
             const {dispatch} = this.$store
@@ -268,8 +271,6 @@ export default {
 
             dispatch('brand/closeDialog')
 
-            this.$refs.submitpanel.resetForm()
-
             setTimeout(()=> {
                 this.getDataFromAPI()
             }, 1000)
@@ -286,7 +287,7 @@ export default {
 
             dispatch('brand/closeDialog')
 
-            this.$refs.submitpanel.resetForm()
+             
 
             this.idselected = -1
 

@@ -3,7 +3,22 @@
         <v-container fill-width>
             <v-dialog v-model="dialogStat" persistent max-width="500px">
                 <v-card>
-                    <AssetInput ref="submitpanel"/>
+                    <v-card-title>
+                        <span class="headline">{{formTitle}}</span>
+                    </v-card-title>
+
+                    <v-card-text v-if="!wo">
+                        <AssetInput ref="submitpanel" :forminput="forminput"/>
+                    </v-card-text>
+                    <v-card-text v-else>
+                        <WorkOrderInput ref="workorderinput" />
+                    </v-card-text>
+                    
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" text @click="closeDialog">Cancel</v-btn>
+                        <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+                    </v-card-actions>
                 </v-card>
             </v-dialog>
             <v-text-field
@@ -33,29 +48,52 @@
             <Dialog :dialog="alert" :title="`Delete`" :text="`Are you sure delete this?`" v-on:ok="OkButton" v-on:no="NoButton"/>
             <v-data-table
                 :headers="headers"
-                :items="items"
+                :items="table"
+                :options.sync="options"
+                :server-items-length="lentable"
+                :loading="isLoading"
                 class="elevation-1">
                 <template v-slot:[`item.actions`]="{ item }">
                     <v-icon
                         small
-                        class="mr-2"
+                        class="mr-3"
                         @click="editAction(item)">
                         mdi-pencil
                     </v-icon>
                     <v-icon
                         small
-                        class="mr-2"
+                        class="mr-3"
                         @click="deleteAction(item)">
                         mdi-delete
                     </v-icon>
                     <v-icon
                         small
-                        class="mr-2"
+                        class="mr-3"
                         @click="woAction(item)">
-                        mdi-plus
+                        mdi-file
                     </v-icon>
                 </template>
             </v-data-table>
+            <v-snackbar
+                :value="errorMsg"
+                :color="color"
+                :multi-line="mode === 'multi-line'"
+                :timeout="timeout"
+                :vertical="mode === 'vertical'"
+                >
+                {{ errorMsg }}
+                <v-divider
+                class="mx-4"
+                inset
+                vertical
+                ></v-divider>
+                <v-btn
+                    dark
+                    text
+                    @click="removeError()">
+                    Close
+                </v-btn>
+            </v-snackbar>
         </v-container>
     </v-main>
 </template>
@@ -69,32 +107,52 @@ export default {
     },
     data() {
         return {
+            wo: false,
+            formTitle: '',
             forminput: {
-
+                device_name: null,
+                device_brand: null,
+                model: '',
+                serial_number: '',
+                status: {id: 0, name: ''},
+                description: '',
+                warehouse: null,
+                id: 0
             },
+            forminputWO: {
+                asset_id: -1,
+                customer: {id: -1, name: ''},
+                location: {id: -1, name: ''}
+            },
+            edit: false,
+            options: {},
+            selected: [],
             alert: false,
             search: '',
             headers: [
                 {text: 'ID', value: 'id', sortable: false},
-                {text: 'Device', value: 'device', sortable: false},
-                {text: 'Brand', value: 'brand', sortable: false},
+                {text: 'Device', value: 'devicename', sortable: false},
+                {text: 'Brand', value: 'brandname', sortable: false},
                 {text: 'Model', value: 'model', sortable: false},
                 {text: 'Serial Number', value: 'serial_number', sortable: false},
-                {text: 'Condition', value: 'condition', sortable: false},
+                {text: 'Condition', value: 'conditionstatus', sortable: false},
                 {text: 'Description', value: 'description', sortable: false},
-                {text: 'Warehouse', value: 'warehouse', sortable: false},
-                {text: 'Date In', value: 'datein', sortable: false},
-                {text: 'Date Out', value: 'dateout', sortable: false},
+                {text: 'Warehouse', value: 'warehousename', sortable: false},
+                {text: 'Date In', value: 'date_in', sortable: false},
+                {text: 'Date Out', value: 'date_out', sortable: false},
                 {text: 'Actions', value: 'actions', sortable: false}
             ],
+            idselected: -1,
             items: [],
             currentY: 0,
             lastY:0,
-            hidden: false
+            hidden: false,
+            timeout: 6000,
+            color: '',
+            mode: '',
         }
     },
     created () {
-        this.initialize()
         window.addEventListener('scroll', this.handleScroll)
     },
     destroyed () {
@@ -114,8 +172,26 @@ export default {
             
         },
         editAction(item) {
-            console.log('edit')
-            console.log(item)
+            this.edit = true
+
+            this.formTitle = "Edit Asset"
+
+            this.forminput = {
+                id: item.id,
+                device_name: {id: item.device_id, name: item.devicename},
+                device_brand: {id: item.brand_id, name: item.brandname},
+                model: item.model,
+                serial_number: item.serial_number,
+                status: {id: item.condition_id, name: item.conditionstatus},
+                description: item.description,
+                warehouse: {id: item.warehouse_id, name: item.warehousename}
+            }
+
+            this.idselected = this.table.indexOf(item)
+
+            const {dispatch} = this.$store
+
+            dispatch('asset/openDialog')
         },
         deleteAction(item) {
             const index = this.items.indexOf(item)
@@ -123,6 +199,27 @@ export default {
         },
         woAction(item) {
 
+        },
+        closeDialog() {
+            const {dispatch} = this.$store
+            dispatch('asset/closeDialog')
+            
+            this.$refs.submitpanel.resetForm()
+        },
+        save() {
+            if(this.wo) {
+
+            } else {
+                if(this.edit) {
+                    this.updateAPI()
+                } else {
+                    this.submitAPI()
+                }
+            }
+        },
+        removeError() {
+            const {dispatch} = this.$store
+            dispatch('asset/')
         },
         OkButton(){
             const {dispatch} = this.$store
@@ -134,35 +231,112 @@ export default {
             this.alert = false
         },
         addAction() {
+            this.edit = false
+            this.formTitle = "Add Asset"
+            
             const {dispatch} = this.$store
-            dispatch('asset/openDialog')  
+            dispatch('asset/openDialog')
         },
-        initialize() {
-            this.items = [
-                {id: 0, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 1, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 2, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 3, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 4, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 5, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 6, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 7, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 8, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 9, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 10, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 11, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 12, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 13, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 14, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 15, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 16, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 17, device: 'DCP', model: '123', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'}
-            ]
+        getDataFromAPI() {
+            if(this.isLoading) return
+
+            const {dispatch} = this.$store
+            let {sortBy, sortDesc, page, itemsPerPage} = this.options
+            
+            if(sortBy.length > 0) {
+                this.sortbylast = sortBy
+            }
+
+            if(sortDesc.length === 1) {
+                this.sorting = !sortDesc[0] ? "ASC" : "DESC"
+            }
+
+            dispatch('asset/reqList', {index: page, rows: itemsPerPage, search: this.search, sortby: this.sortbylast, sort: this.sorting})
+        },
+        submitAPI() {
+            if(this.isLoading) return
+
+            let data = {
+                device_id:      this.forminput.device_name.id, 
+                brand_id:       this.forminput.device_brand.id,
+                model:          this.forminput.model,
+                serial_number:  this.forminput.serial_number,
+                condition_id:   this.forminput.status.id,
+                condition_name: this.forminput.status.name,
+                description:    this.forminput.description,
+                warehouse_id:   this.forminput.warehouse.id,
+            }
+
+            const {dispatch} = this.$store
+
+            dispatch('asset/insertAsset', data)
+
+            dispatch('asset/closeDialog')
+            
+            this.$refs.submitpanel.resetForm()
+        },
+        updateAPI() {
+            if(this.isLoading) return
+
+            let data = {
+                id:             this.forminput.id,
+                device_id:      this.forminput.device_name.id,
+                brand_id:       this.forminput.device_brand.id,
+                model:          this.forminput.model,
+                serial_number:  this.forminput.serial_number,
+                condition_id:   this.forminput.status.id,
+                condition_name: this.forminput.status.name,
+                description:    this.forminput.description,
+                warehouse_id:   this.forminput.warehouse.id,
+            }
+
+            const {dispatch} = this.$store
+
+            dispatch('asset/updateAsset', data)
+            
+            dispatch('asset/closeDialog')
+            
+            this.$refs.submitpanel.resetForm()
+        },
+        deleteAPI() {
+            if(this.isLoading) return
         }
     },
     computed: {
+        table() {
+            return this.$store.getters['asset/getList']
+        },
+        lentable() {
+            return this.$store.getters['asset/getTotalItems']
+        },
         dialogStat() {
             return this.$store.getters['asset/getDialog']
+        },
+        isLoading() {
+            return this.$store.getters['customer/getLoading']
+        },
+        errorMsg() {
+            return this.$store.getters['customer/getError']
+        },
+        params() {
+            return {
+                ...this.options,
+                query: this.search
+            }
+        }
+    },
+    watch: {
+        options: {
+            handler(val) {
+                this.getDataFromAPI()
+            },
+            deep: true
+        },
+        params: {
+            handler(val) {
+                this.getDataFromAPI()
+            },
+            deep: true
         }
     }
 }

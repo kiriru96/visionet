@@ -169,8 +169,6 @@ export default {
             this.lastY = this.currentY
         },
         addAction() {
-            this.$refs.submitpanel.resetForm()
-            
             const {dispatch} = this.$store
 
             this.idselected = -1
@@ -185,8 +183,6 @@ export default {
             this.editedIndex = -1
 
             this.idselected = this.table.indexOf(item)
-
-            console.log(this.idselected)
 
             this.forminput = {
                 id : id,
@@ -207,6 +203,7 @@ export default {
         closeDialog() {
             const {dispatch} = this.$store
             dispatch('location/closeDialog')
+            
             this.$refs.submitpanel.resetForm()
         },
         save() {
@@ -215,6 +212,8 @@ export default {
             } else {
                 this.editAPI()
             }
+            
+            this.$refs.submitpanel.resetForm()
         },
         OkButton(){
             const {dispatch} = this.$store
@@ -231,7 +230,6 @@ export default {
         },
         getDataFromAPI() {
             if(this.isLoading) return
-            console.log('get api');
 
             const {dispatch} = this.$store
             let {sortBy, sortDesc, page, itemsPerPage} = this.options
@@ -308,14 +306,6 @@ export default {
         }
     },
     watch: {
-        dialogStatus: {
-            handler(val) {
-                if(!val) {
-                    this.close()
-                }
-            },
-            deep: true
-        },
         options: {
             handler(val) {
                 this.getDataFromAPI()
