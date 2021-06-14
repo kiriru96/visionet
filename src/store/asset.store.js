@@ -18,7 +18,9 @@ export const asset = {
         lightSearchCustomer: [],
         loadingDevice: false,
         loadingBrand: false,
-        loadingWarehouse: false
+        loadingWarehouse: false,
+        loadingLocation: false,
+        loadingCustomer: false
     },
     actions: {
         async reqList({commit, state}, {index, rows, search, sortby, sort}) {
@@ -35,6 +37,21 @@ export const asset = {
                 commit('removeListItem')
                 commit('setError', res.err)
             }
+            commit('setLoading', false)
+        },
+        async insertWorkOrder({commit}, data) {
+            commit('removeError')
+            commit('setLoading', true)
+            commit('setInsert', true)
+
+            let res = await assets.createWorkOrder(data)
+
+            if(!res.err) {
+
+            } else {
+                commit('setError', res.err)
+            }
+
             commit('setLoading', false)
         },
         async insertAsset({commit}, data) {
@@ -90,6 +107,7 @@ export const asset = {
         async searchDevice({commit}, search) {
             if(search.trim().length >= 3) {
                 commit('removeError')
+                commit('setLoadingDevice', true)
 
                 let result = await assets.searchLight('device', search)
 
@@ -98,11 +116,14 @@ export const asset = {
                 } else {
                     commit('setError', result.err)
                 }
+
+                commit('setLoadingDevice', false)
             }
         },
         async searchBrand({commit}, search) {
             if(search.trim().length >= 3) {
                 commit('removeError')
+                commit('setLoadingBrand', true)
 
                 let result = await assets.searchLight('brand', search)
 
@@ -111,11 +132,13 @@ export const asset = {
                 } else {
                     commit('setError', result.err)
                 }
+                commit('setLoadingBrand', false)
             }
         },
         async searchWarehouse({commit}, search) {
             if(search.trim().length >= 3) {
                 commit('removeError')
+                commit('setLoadingWarehouse', true)
 
                 let result = await assets.searchLight('warehouse', search)
 
@@ -124,6 +147,7 @@ export const asset = {
                 } else {
                     commit('serError', result.err)
                 }
+                commit('setLoadingWarehouse', false)
             }
         },
         async searchCondition({commit}) {
@@ -140,6 +164,7 @@ export const asset = {
         async searchLocation({commit}, search) {
             if(search.trim().length >= 3) {
                 commit('removeError')
+                commit('setLoadingLocation', true)
 
                 let result = await assets.searchLight('location', search)
 
@@ -148,11 +173,13 @@ export const asset = {
                 } else {
                     commit('setError', result.err)
                 }
+                commit('setLoadingLocation', false)
             }
         },
         async searchCustomer({commit}, search) {
             if(search.trim().length >= 3) {
                 commit('removeError')
+                commit('setLoadingCustomer', true)
 
                 let result = await assets.searchLight('customer', search)
 
@@ -161,6 +188,7 @@ export const asset = {
                 } else {
                     commit('serError', result.err)
                 }
+                commit('setLoadingCustomer', false)
             }
         },
         removeError({commit}) {
@@ -213,6 +241,12 @@ export const asset = {
         getLoadingWarehouse(state) {
             return state.loadingWarehouse
         },
+        getLoadingCustomer(state) {
+            return state.loadingCustomer
+        },
+        getLoadingLocation(state) {
+            return state.loadingLocation
+        },
         getConditions(state) {
             return state.lightSearchCondition
         }
@@ -239,6 +273,21 @@ export const asset = {
         },
         setListLightCustomer(state, list) {
             state.lightSearchCustomer = list
+        },
+        setLoadingBrand(state, stat) {
+            state.loadingBrand = stat
+        },
+        setLoadingDevice(state, stat) {
+            state.loadingDevice = stat
+        },
+        setLoadingWarehouse(state, stat) {
+            state.loadingWarehouse = stat
+        },
+        setLoadingLocation(state, stat) {
+            state.loadingLocation = stat
+        },
+        setLoadingCustomer(state, stat) {
+            state.loadingCustomer = stat
         },
         setLoading(state, stat) {
             state.loading = stat

@@ -12,6 +12,9 @@ import {admin} from './admin.store'
 import {leader} from './leader.store'
 import {backupleader} from './backupleader.store'
 import {engginer} from './engginer.store'
+import {home} from './home.store'
+import {workorder} from './workorder.store'
+import {wo} from './wo.store'
 
 Vue.use(Vuex)
 
@@ -28,6 +31,9 @@ export default new Vuex.Store({
     admin,
     leader,
     backupleader,
-    engginer
+    engginer,
+    home,
+    workorder,
+    wo
   }
 })

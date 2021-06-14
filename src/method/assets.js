@@ -176,10 +176,101 @@ async function searchLight(path, search) {
     return result
 }
 
+async function createWorkOrder(data) {
+    let result = {
+        json: null,
+        err: null
+    }
+
+    let reqconf = config.postdataconfig(data);
+
+    try{
+        const response = await fetch(`${config.endpoint}/addworkorder`, reqconf);
+        const fetchres = await response.json();
+
+        if(response.status === 200) {
+            if(fetchres.status) {
+                result.json = fetchres;
+            } else {
+                result.err = fetchres.msg;
+            }
+        } else {
+            result.err = response.statusText;
+        }
+    } catch(err) {
+        result.err  = err;
+    }
+
+    return result;
+}
+
+async function updateWorkOrder(data) {
+    let result = {
+        json: null,
+        err: null
+    }
+
+    let reqconf = config.postdataconfig(data);
+
+    try{
+        const response = await fetch(`${config.endpoint}/updateworkorder`, reqconf);
+        const fetchres = await response.json();
+
+        if(response.status === 200) {
+            if(fetchres.status) {
+                result.json = fetchres;
+            } else {
+                result.err = fetchres.msg;
+            }
+        } else {
+            result.err = response.statusText;
+        }
+    } catch(err) {
+        result.err  = err;
+    }
+
+    return result;
+}
+
+async function listWorkOrder({index, rows, search, sortby, sort}) {
+    let result = {
+        json: null,
+        err: null
+    }
+
+    let reqconf = config.getconfig();
+
+    try {
+        const response  = await fetch(
+            config.getUrlParams(
+                `${config.endpoint}/list/workorder`, 
+                {page: index, search: search, sortby: sortby, sort: sort, rows: rows}), 
+                reqconf)
+        const fetchres  = await response.json()
+        
+        if(response.status === 200) {
+            if(fetchres.status) {
+                result.json = fetchres
+            } else {
+                result.err = fetchres.msg
+            }
+        } else {
+            result.err = response.statusText
+        }
+    } catch(err) {
+        result.err = err
+    }
+
+    return result
+}
+
 export const assets = {
     list,
     deletes,
     update,
     create,
-    searchLight
+    searchLight,
+    createWorkOrder,
+    updateWorkOrder,
+    listWorkOrder
 }

@@ -11,7 +11,7 @@
                         <AssetInput ref="submitpanel" :forminput="forminput"/>
                     </v-card-text>
                     <v-card-text v-else>
-                        <WorkOrderInput ref="workorderinput" />
+                        <WorkOrderInput :edit="false" ref="workorderinput" :forminputWO="forminputWO"/>
                     </v-card-text>
                     
                     <v-card-actions>
@@ -122,7 +122,11 @@ export default {
             forminputWO: {
                 asset_id: -1,
                 customer: {id: -1, name: ''},
-                location: {id: -1, name: ''}
+                location: {id: -1, name: ''},
+                device_name: '',
+                brand_name: '',
+                model: '',
+                serial_number: ''
             },
             edit: false,
             options: {},
@@ -169,10 +173,10 @@ export default {
             this.lastY = this.currentY
         },
         searchAction() {
-            
         },
         editAction(item) {
             this.edit = true
+            this.wo = false
 
             this.formTitle = "Edit Asset"
 
@@ -193,22 +197,40 @@ export default {
 
             dispatch('asset/openDialog')
         },
+        woAction(item) {
+            this.wo = true
+
+            this.formTitle = "Add Work Order"
+
+            this.forminputWO.asset_id       = item.id
+            this.forminputWO.device_name    = item.devicename
+            this.forminputWO.brand_name     = item.brandname
+            this.forminputWO.model          = item.model
+            this.forminputWO.serial_number  = item.serial_number
+
+            const {dispatch} = this.$store
+
+            dispatch('asset/openDialog')
+        },
         deleteAction(item) {
             const index = this.items.indexOf(item)
             this.alert = true
-        },
-        woAction(item) {
-
         },
         closeDialog() {
             const {dispatch} = this.$store
             dispatch('asset/closeDialog')
             
-            this.$refs.submitpanel.resetForm()
+            if(this.$refs.submitpanel) {
+                this.$refs.submitpanel.resetForm()
+            }
+
+            if(this.$refs.workorderinput) {
+                this.$refs.workorderinput.resetForm()
+            }
         },
         save() {
             if(this.wo) {
-
+                this.submitWorkOrderAPI()
             } else {
                 if(this.edit) {
                     this.updateAPI()
@@ -231,6 +253,7 @@ export default {
             this.alert = false
         },
         addAction() {
+            this.wo = false
             this.edit = false
             this.formTitle = "Add Asset"
             
@@ -253,6 +276,25 @@ export default {
 
             dispatch('asset/reqList', {index: page, rows: itemsPerPage, search: this.search, sortby: this.sortbylast, sort: this.sorting})
         },
+        submitWorkOrderAPI() {
+            if(this.isLoading) return
+
+            let data = {
+                asset: this.forminputWO.asset_id,
+                customer: this.forminputWO.customer.id,
+                location: this.forminputWO.location.id
+            }
+
+            const {dispatch} = this.$store
+
+            dispatch('asset/insertWorkOrder', data)
+
+            dispatch('asset/closeDialog')
+            
+            if(this.$refs.workorderinput) {
+                this.$refs.workorderinput.resetForm()
+            }
+        },
         submitAPI() {
             if(this.isLoading) return
 
@@ -273,7 +315,9 @@ export default {
 
             dispatch('asset/closeDialog')
             
-            this.$refs.submitpanel.resetForm()
+            if(this.$refs.submitpanel) {
+                this.$refs.submitpanel.resetForm()
+            }
         },
         updateAPI() {
             if(this.isLoading) return

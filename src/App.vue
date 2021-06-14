@@ -22,7 +22,6 @@
       <v-list shaped>
           <v-list-item>
             <v-list-item-avatar size="80">
-                <v-img src="https://cdn.vuetifyjs.com/images/john.png" @click="$router.push('/profile')"></v-img>
             </v-list-item-avatar>
           </v-list-item>
           <v-list
@@ -73,6 +72,7 @@ export default {
       [
         { text: "Dashboard", icon: 'mdi-home', link: '/'},
         { text: "Asset", icon: 'mdi-folder', link: '/asset'},
+        { text: "Work Order", icon: 'mdi-folder', link: '/workorder'},
         { text: "Location", icon: 'mdi-map  ', link: '/location'},
         { text: "Brand", icon: 'mdi-office', link: '/brand'},
         { text: "Device", icon: 'mdi-office', link: '/device'},
@@ -86,7 +86,7 @@ export default {
       ],
       [
         { text: "Dashboard", icon: 'mdi-home', link: '/'},
-        { text: "WO", icon: 'mdi-map  ', link: '/location'},
+        { text: "WO", icon: 'mdi-map  ', link: '/leader/workorder'},
         { text: "WO confirm", icon: 'mdi-history  ', link: '/history'}
       ],
       [

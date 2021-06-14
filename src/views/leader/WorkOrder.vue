@@ -32,13 +32,14 @@
                 <v-btn
                     text
                     color="primary"
-                    @click="$refs.menu">
+                    @click="dateChange(date)">
                     Ok
                 </v-btn>
             </v-date-picker>
         </v-menu>
         <v-list-item
-            v-for="item in items"
+            v-model="lists"
+            v-for="item in lists"
             :key="item.id"
             @click="$router.push({path: '/leader/workorder/detail', query: {id: item.id}})">
             <v-list-item-avatar>
@@ -47,43 +48,61 @@
                 </v-icon>
             </v-list-item-avatar>
             <v-list-item-content>
-                <v-list-item-title v-text="item.device"></v-list-item-title>
-                <v-list-item-subtitle v-text="item.customer"></v-list-item-subtitle>
+                <v-list-item-title v-text="item.devicename"></v-list-item-title>
+                <v-list-item-subtitle v-text="item.customername"></v-list-item-subtitle>
             </v-list-item-content>
         </v-list-item>
+        <v-spacer></v-spacer>
+        <v-btn
+            block
+            @click="nextList">
+            Next
+        </v-btn>
     </v-main>
 </template>
 
 <script>
 export default {
+    mounted() {
+        this.page = 1
+        this.date = new Date().toISOString().substr(0, 10)
+
+        this.requestListAPI()
+    },
     data() {
         return {
-            headers: [
-                {text: '', value: ''},
-                {text: '', value: ''}
-            ],
-            items: [
-                {id:0, device:'Print', customer: 'OVO'},
-                {id:1, device:'Print', customer: 'OVO'},
-                {id:2, device:'Print', customer: 'OVO'},
-                {id:3, device:'Print', customer: 'OVO'},
-                {id:4, device:'Print', customer: 'OVO'},
-                {id:5, device:'Print', customer: 'OVO'},
-                {id:6, device:'Print', customer: 'OVO'},
-                {id:7, device:'Print', customer: 'OVO'},
-                {id:8, device:'Print', customer: 'OVO'},
-                {id:9, device:'Print', customer: 'OVO'},
-                {id:0, device:'Print', customer: 'OVO'},
-                {id:1, device:'Print', customer: 'OVO'},
-                {id:2, device:'Print', customer: 'OVO'},
-                {id:3, device:'Print', customer: 'OVO'},
-                {id:4, device:'Print', customer: 'OVO'},
-                {id:5, device:'Print', customer: 'OVO'},
-                {id:6, device:'Print', customer: 'OVO'},
-                {id:7, device:'Print', customer: 'OVO'},
-                {id:8, device:'Print', customer: 'OVO'},
-                {id:9, device:'Print', customer: 'OVO'}
-                ]
+            page: 1,
+            menu: false,
+            date: '',
+        }
+    },
+    methods: {
+        dateChange(date) {
+            this.$refs.menu.save(date)
+            this.menu = false
+            this.requestListAPI()
+        },
+        nextList() {
+            this.page += 1
+            this.requestListAPI()
+        },
+        requestListAPI() {
+            if(this.isLoading) return
+
+            const {dispatch} = this.$store
+
+            dispatch('wo/reqList', {date: this.date, page: this.page})
+        }
+    },
+    computed: {
+        isLoading() {
+            return this.$store.getters['wo/getLoading']
+        },
+        lists() {
+            return this.$store.getters['wo/getList']
+        },
+        errorMsg() {
+            return this.$store.getters['wo/getError']
         }
     }
 }

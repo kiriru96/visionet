@@ -1,78 +1,256 @@
 <template>
     <v-main>
-        <v-container fluid fill-width>
+        <v-container fill-width>
+            <v-dialog v-model="dialogStat" persistent max-width="500px">
+                <v-card>
+                    <v-card-title>
+                        <span class="headline">{{formTitle}}</span>
+                    </v-card-title>
+
+                    <v-card-text>
+                        <WorkOrderInput :edit="true" ref="workorderinput" :forminputWO="forminputWO"/>
+                    </v-card-text>
+                    
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" text @click="closeDialog">Cancel</v-btn>
+                        <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+            <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Search"
+                single-line
+                hide-details
+                @keyup="searchAction">
+            </v-text-field>
+            <Dialog :dialog="alert" :title="`Delete`" :text="`Are you sure delete this?`" v-on:ok="OkButton" v-on:no="NoButton"/>
             <v-data-table
                 :headers="headers"
-                :items="items"
+                :items="table"
+                :options.sync="options"
+                :server-items-length="lentable"
+                :loading="isLoading"
                 class="elevation-1">
                 <template v-slot:[`item.actions`]="{ item }">
                     <v-icon
                         small
-                        class="mr-2"
+                        class="mr-3"
                         @click="editAction(item)">
                         mdi-pencil
                     </v-icon>
                     <v-icon
                         small
-                        class="mr-2"
+                        class="mr-3"
                         @click="deleteAction(item)">
                         mdi-delete
                     </v-icon>
                 </template>
             </v-data-table>
+            <v-snackbar
+                :value="errorMsg"
+                :color="color"
+                :multi-line="mode === 'multi-line'"
+                :timeout="timeout"
+                :vertical="mode === 'vertical'"
+                >
+                {{ errorMsg }}
+                <v-divider
+                class="mx-4"
+                inset
+                vertical
+                ></v-divider>
+                <v-btn
+                    dark
+                    text
+                    @click="removeError()">
+                    Close
+                </v-btn>
+            </v-snackbar>
         </v-container>
     </v-main>
 </template>
 
 <script>
 export default {
+    components: {
+        Dialog: () => import('../../components/Dialog.vue'),
+        WorkOrderInput: () => import('../../components/WorkOrderInput.vue')
+    },
     data() {
         return {
+            wo: false,
+            formTitle: '',
+            forminputWO: {
+                wo_id: -1,
+                asset_id: -1,
+                customer: {id: -1, name: ''},
+                location: {id: -1, name: ''},
+                device_name: '',
+                brand_name: '',
+                model: '',
+                serial_number: ''
+            },
+            edit: false,
+            options: {},
+            selected: [],
+            alert: false,
+            search: '',
             headers: [
                 {text: 'ID', value: 'id', sortable: false},
-                {text: 'Device', value: 'device', sortable: false},
-                {text: 'Brand', value: 'brand', sortable: false},
-                {text: 'Customer', value: 'customer', sortable: false},
-                {text: 'Location', value: 'location', sortable: false},
-                {text: 'Status', value: 'status', sortable: false},
+                {text: 'Device', value: 'devicename', sortable: false},
+                {text: 'Brand', value: 'brandname', sortable: false},
+                {text: 'Model', value: 'model', sortable: false},
+                {text: 'Serial Number', value: 'serial_number', sortable: false},
+                {text: 'Customer', value: 'customername', sortable: false},
+                {text: 'Location', value: 'worklocation', sortable: false},
                 {text: 'Actions', value: 'actions', sortable: false}
             ],
-            items: []
+            idselected: -1,
+            items: [],
+            currentY: 0,
+            lastY:0,
+            timeout: 6000,
+            color: '',
+            mode: '',
         }
     },
-    created () {
-        this.initialize()
-    },
     methods: {
+        handleScroll () {
+            this.currentY = window.top.scrollY
+            if(this.currentY > this.lastY){
+                this.hidden = true
+            }else{
+                this.hidden = false
+            }
+            this.lastY = this.currentY
+        },
+        searchAction() {
+        },
         editAction(item) {
-            console.log('edit')
-            console.log(item)
+            this.formTitle = "Edit Work Order"
+
+            this.forminputWO.wo_id          = item.id
+            this.forminputWO.asset_id       = item.asset_id
+            this.forminputWO.device_name    = item.devicename
+            this.forminputWO.brand_name     = item.brandname
+            this.forminputWO.model          = item.model
+            this.forminputWO.serial_number  = item.serial_number
+            this.forminputWO.customer       = {id: item.customer, name: item.customername}
+            this.forminputWO.location       = {id: item.location, name: item.worklocation}
+
+            const {dispatch} = this.$store
+
+            dispatch('workorder/openDialog')
         },
         deleteAction(item) {
-            console.log('delete')
-            console.log(item)
+            const index = this.items.indexOf(item)
+            this.alert = true
         },
-        initialize() {
-            this.items = [
-                {id: 0, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 1, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 2, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 3, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 4, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 5, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 6, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 7, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 8, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 9, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 10, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 11, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 12, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 13, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 14, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 15, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 16, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'},
-                {id: 17, device: 'DCP', brand: 'Samsung', serial_number: '09202920',condition: 'good', description: 'Alat membuat senang', warehouse: 'Tangerang', datein: '0000-00-00', dateout: '0000-00-00'}
-            ]
+        closeDialog() {
+            const {dispatch} = this.$store
+            dispatch('workorder/closeDialog')
+            
+            if(this.$refs.submitpanel) {
+                this.$refs.submitpanel.resetForm()
+            }
+
+            if(this.$refs.workorderinput) {
+                this.$refs.workorderinput.resetForm()
+            }
+        },
+        save() {
+            this.updateAPI()
+        },
+        removeError() {
+            const {dispatch} = this.$store
+            dispatch('workorder/removeError')
+        },
+        OkButton(){
+            const {dispatch} = this.$store
+
+            this.alert = false
+            this.idselected = -1
+        },
+        NoButton() {
+            this.alert = false
+        },
+        getDataFromAPI() {
+            if(this.isLoading) return
+
+            const {dispatch} = this.$store
+            let {sortBy, sortDesc, page, itemsPerPage} = this.options
+            
+            if(sortBy.length > 0) {
+                this.sortbylast = sortBy
+            }
+
+            if(sortDesc.length === 1) {
+                this.sorting = !sortDesc[0] ? "ASC" : "DESC"
+            }
+
+            dispatch('workorder/reqList', {index: page, rows: itemsPerPage, search: this.search, sortby: this.sortbylast, sort: this.sorting})
+        },
+        updateAPI() {
+            if(this.isLoading) return
+
+            let data = {
+                id: this.forminputWO.wo_id,
+                customer: this.forminputWO.customer.id,
+                location: this.forminputWO.location.id
+            }
+
+            const {dispatch} = this.$store
+
+            dispatch('workorder/updateWorkOrder', data)
+
+            dispatch('workorder/closeDialog')
+            
+            if(this.$refs.workorderinput) {
+                this.$refs.workorderinput.resetForm()
+            }
+        },
+        deleteAPI() {
+            if(this.isLoading) return
+        }
+    },
+    computed: {
+        table() {
+            return this.$store.getters['workorder/getList']
+        },
+        lentable() {
+            return this.$store.getters['workorder/getTotalItems']
+        },
+        dialogStat() {
+            return this.$store.getters['workorder/getDialog']
+        },
+        isLoading() {
+            return this.$store.getters['workorder/getLoading']
+        },
+        errorMsg() {
+            return this.$store.getters['workorder/getError']
+        },
+        params() {
+            return {
+                ...this.options,
+                query: this.search
+            }
+        }
+    },
+    watch: {
+        options: {
+            handler(val) {
+                this.getDataFromAPI()
+            },
+            deep: true
+        },
+        params: {
+            handler(val) {
+                this.getDataFromAPI()
+            },
+            deep: true
         }
     }
 }

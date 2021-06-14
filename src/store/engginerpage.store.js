@@ -22,7 +22,7 @@ export const wo = {
             commit('removeError')
             commit('setLoading', true)
 
-            let res = await manual.listWorkOrder(date, page)
+            let res = await manual.listWorkOrderEngginer(date, page)
 
             if(!res.err) {
                 commit('setList', res.json.data.list)
