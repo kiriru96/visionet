@@ -87,17 +87,17 @@ export default {
       [
         { text: "Dashboard", icon: 'mdi-home', link: '/'},
         { text: "WO", icon: 'mdi-map  ', link: '/leader/workorder'},
-        { text: "WO confirm", icon: 'mdi-history  ', link: '/history'}
+        { text: "WO confirm", icon: 'mdi-history  ', link: '/leader/workorderhistory'}
       ],
       [
         { text: "Dashboard", icon: 'mdi-home', link: '/'},
         { text: "WO", icon: 'mdi-map  ', link: '/leader/workorder'},
-        { text: "WO confirm", icon: 'mdi-history  ', link: '/history'}
+        { text: "WO confirm", icon: 'mdi-history  ', link: '/leader/workorderhistory'}
       ],
       [
         { text: "Dashboard", icon: 'mdi-home', link: '/'},
-        { text: "WO", icon: 'mdi-map  ', link: '/location'},
-        { text: "History", icon: 'mdi-history  ', link: '/history'}
+        { text: "WO", icon: 'mdi-map  ', link: '/engginer/workorder'},
+        { text: "Work Order History", icon: 'mdi-history  ', link: '/engginer/workorderhistory'}
       ]
     ]
   }),

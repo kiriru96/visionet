@@ -18,14 +18,6 @@
                     </v-card-actions>
                 </v-card>
             </v-dialog>
-            <v-text-field
-                v-model="search"
-                append-icon="mdi-magnify"
-                label="Search"
-                single-line
-                hide-details
-                @keyup="searchAction">
-            </v-text-field>
             <Dialog :dialog="alert" :title="`Delete`" :text="`Are you sure delete this?`" v-on:ok="OkButton" v-on:no="NoButton"/>
             <v-data-table
                 :headers="headers"
@@ -34,6 +26,18 @@
                 :server-items-length="lentable"
                 :loading="isLoading"
                 class="elevation-1">
+                <template v-slot:top>
+                    <v-toolbar flat>
+                        <v-text-field
+                            v-model="search"
+                            append-icon="mdi-magnify"
+                            label="Search"
+                            single-line
+                            hide-details
+                            @keyup="searchAction">
+                        </v-text-field>
+                    </v-toolbar>
+                </template>
                 <template v-slot:[`item.actions`]="{ item }">
                     <v-icon
                         small

@@ -53,8 +53,6 @@
                     <v-list-item-subtitle v-text="item.customername"></v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
-            <v-spacer></v-spacer>
-            <v-spacer></v-spacer>
             <v-btn
                 style="margin-top: 30px"
                 block

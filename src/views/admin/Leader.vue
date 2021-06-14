@@ -159,6 +159,7 @@ export default {
             this.lastY = this.currentY
         },
         addAction() {
+            this.pass = false
             this.edit = false
             const {dispatch} = this.$store
 
@@ -170,6 +171,7 @@ export default {
             dispatch('leader/openDialog')
         },
         editAction(item) {
+            this.pass = false
             this.edit = true
 
             const {id, first_name, last_name, username, location, locationname} = item

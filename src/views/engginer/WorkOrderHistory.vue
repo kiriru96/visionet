@@ -38,28 +38,43 @@
                     </v-btn>
                 </v-date-picker>
             </v-menu>
-            <v-list-item
-                v-model="lists"
-                v-for="item in lists"
-                :key="item.id"
-                @click="$router.push({path: '/leader/workorder/detail', query: {id: item.id}})">
-                <v-list-item-avatar>
-                    <v-icon class="grey lighten-1" dark>
-                        mdi-folder
-                    </v-icon>
-                </v-list-item-avatar>
-                <v-list-item-content>
-                    <v-list-item-title v-text="item.devicename"></v-list-item-title>
-                    <v-list-item-subtitle v-text="item.customername"></v-list-item-subtitle>
-                </v-list-item-content>
-            </v-list-item>
-            <v-spacer></v-spacer>
-            <v-btn
-                style="margin-top: 30px"
-                block
-                @click="nextList">
-                Next
-            </v-btn>
+            <v-tabs
+                background-color="primary"
+                v-model="tab"
+                class="elevation-2"
+                dark
+                :centered="centered"
+                :grow="grow"
+                :vertical="vertical"
+                :right="right">
+                <v-tabs-slider></v-tabs-slider>
+                <v-tab
+                    @click="onProgress">
+                    Progress
+                </v-tab>
+                <v-tab
+                    @click="onDone">
+                    Done
+                </v-tab>
+            </v-tabs>
+            <v-tabs-items v-model="tab">
+                <v-tab-item>
+                    <v-card
+                    flat
+                    tile
+                    >
+                    <v-card-text>Progress</v-card-text>
+                    </v-card>
+                </v-tab-item>
+                <v-tab-item>
+                    <v-card
+                    flat
+                    tile
+                    >
+                    <v-card-text>Done</v-card-text>
+                    </v-card>
+                </v-tab-item>
+            </v-tabs-items>
         </v-container>
     </v-main>
 </template>
@@ -69,43 +84,30 @@ export default {
     mounted() {
         this.page = 1
         this.date = new Date().toISOString().substr(0, 10)
-
-        this.requestListAPI()
     },
     data() {
         return {
+            tabselected: 'progress',
+            centered: true,
+            grow: true,
+            vertical: false,
+            right: false,
+            tab: null,
             page: 1,
             menu: false,
             date: '',
         }
     },
     methods: {
-        dateChange(date) {
-            this.$refs.menu.save(date)
-            this.menu = false
-            this.requestListAPI()
+        onProgress() {
+            if(this.tabselected === 'progress') return
+            this.tabselected = 'progress'
+            console.log('Progress Bar')
         },
-        nextList() {
-            this.page += 1
-            this.requestListAPI()
-        },
-        requestListAPI() {
-            if(this.isLoading) return
-
-            const {dispatch} = this.$store
-
-            dispatch('wo/reqList', {date: this.date, page: this.page})
-        }
-    },
-    computed: {
-        isLoading() {
-            return this.$store.getters['wo/getLoading']
-        },
-        lists() {
-            return this.$store.getters['wo/getList']
-        },
-        errorMsg() {
-            return this.$store.getters['wo/getError']
+        onDone() {
+            if(this.tabselected === 'done') return
+            this.tabselected = 'done'
+            console.log('Done Bar')
         }
     }
 }

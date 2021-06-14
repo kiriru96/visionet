@@ -7,13 +7,19 @@
             :loading="isLoading"
             :items="listEngginer"
             :search-input.sync="search_engginer"
-            item-text="name"
+            item-text="username"
             item-value="id"
             cache-items
             class="mx-3"
             hide-no-data
             return-object
             label="Engginer">
+            <template v-slot:item="data">
+                <v-list-item-content>
+                    <v-list-item-title>{{data.item.username}}</v-list-item-title>
+                    <v-list-item-subtitle>{{data.item.first_name}} {{data.item.last_name}}</v-list-item-subtitle>
+                </v-list-item-content>
+            </template>
         </v-autocomplete>
     </v-form>
 </template>

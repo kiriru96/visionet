@@ -15,7 +15,6 @@
             label="Customer"
             disabled>
         </v-text-field>
-        
     </v-main>
 </template>
 

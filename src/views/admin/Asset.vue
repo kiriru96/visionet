@@ -21,14 +21,6 @@
                     </v-card-actions>
                 </v-card>
             </v-dialog>
-            <v-text-field
-                v-model="search"
-                append-icon="mdi-magnify"
-                label="Search"
-                single-line
-                hide-details
-                @keyup="searchAction">
-            </v-text-field>
             <v-spacer></v-spacer>
             <v-fab-transition>
                 <v-btn
@@ -53,6 +45,25 @@
                 :server-items-length="lentable"
                 :loading="isLoading"
                 class="elevation-1">
+                <template v-slot:top>
+                    <v-toolbar flat>
+                        <v-text-field
+                            v-model="search"
+                            append-icon="mdi-magnify"
+                            label="Search"
+                            single-line
+                            hide-details
+                            class="mx-12"
+                            @keyup="searchAction">
+                        </v-text-field>
+                        <v-btn
+                            color="primary"
+                            class="mb-2"
+                            dark>
+                            <v-icon>mdi-printer</v-icon>
+                        </v-btn>
+                    </v-toolbar>
+                </template>
                 <template v-slot:[`item.actions`]="{ item }">
                     <v-icon
                         small
@@ -67,10 +78,11 @@
                         mdi-delete
                     </v-icon>
                     <v-icon
+                        v-if="item.workorder_id === null"
                         small
                         class="mr-3"
                         @click="woAction(item)">
-                        mdi-file
+                        mdi-upload
                     </v-icon>
                 </template>
             </v-data-table>
@@ -298,6 +310,10 @@ export default {
         submitAPI() {
             if(this.isLoading) return
 
+            if(this.$refs.submitpanel) {
+                if(!this.$refs.submitpanel.isValid()) return
+            }
+
             let data = {
                 device_id:      this.forminput.device_name.id, 
                 brand_id:       this.forminput.device_brand.id,
@@ -318,6 +334,10 @@ export default {
             if(this.$refs.submitpanel) {
                 this.$refs.submitpanel.resetForm()
             }
+
+            setTimeout(()=> {
+                this.getDataFromAPI()
+            }, 1000)
         },
         updateAPI() {
             if(this.isLoading) return
@@ -340,7 +360,13 @@ export default {
             
             dispatch('asset/closeDialog')
             
-            this.$refs.submitpanel.resetForm()
+            if(this.$refs.submitpanel) {
+                this.$refs.submitpanel.resetForm()
+            }
+
+            setTimeout(()=> {
+                this.getDataFromAPI()
+            }, 1000)
         },
         deleteAPI() {
             if(this.isLoading) return

@@ -8,6 +8,7 @@
             :loading="loadingdevice"
             :items="listDeviceName"
             :search-input.sync="search_device"
+            :rules="autocompleteRules"
             item-text="name"
             item-value="id"
             cache-items
@@ -16,13 +17,15 @@
             hide-details
             return-object
             label="Device Name"
-            hint="Type more than 3 character">
+            hint="Type more than 3 character"
+            required>
         </v-autocomplete>
         <v-autocomplete
             v-model="forminput.device_brand"
             :loading="loadingbrand"
             :items="listDeviceBrand"
             :search-input.sync="search_brand"
+            :rules="autocompleteRules"
             item-text="name"
             item-value="id"
             cache-items
@@ -31,7 +34,8 @@
             return-object
             hide-details=""
             label="Device Brand"
-            hint="Type more than 3 character">
+            hint="Type more than 3 character"
+            required>
         </v-autocomplete>
         <v-text-field
             v-model="forminput.model"
@@ -52,12 +56,14 @@
         <v-select
             v-model="forminput.status"
             :items="statusList"
+            :rules="selectRules"
             item-text="name"
             item-value="id"
             label="Status"
             class="mx-3"
             return-object
-            single-line>
+            single-line
+            required>
         </v-select>
         <v-textarea
             v-model="forminput.description"
@@ -72,6 +78,7 @@
             :loading="loadingwarehouse"
             :items="listWarehouse"
             :search-input.sync="search_warehouse"
+            :rules="autocompleteRules"
             item-text="name"
             item-value="id"
             cache-items
@@ -79,7 +86,8 @@
             hide-no-data
             hide-details=""
             return-object
-            label="Warehouse">
+            label="Warehouse"
+            required>
         </v-autocomplete>
     </v-form>
 </template>
@@ -91,6 +99,12 @@ export default {
     },
     data() {
         return {
+            selectRules: [
+                v => !!v || 'You must select an item'
+            ],
+            autocompleteRules: [
+                v => !!v || 'You must select an item'
+            ],
             valid: false,
             inputRules: [
                 v => !!v || 'Tidak boleh kosong',
@@ -106,13 +120,24 @@ export default {
 
         dispatch('asset/searchCondition')
         
-        this.search_device = this.forminput.device_name.name
-        this.search_brand  = this.forminput.device_brand.name
-        this.search_warehouse = this.forminput.warehouse.name
+        if(this.forminput.device_name) {
+            this.search_device = this.forminput.device_name.name
+        }
+
+        if(this.forminput.device_brand) {
+            this.search_brand  = this.forminput.device_brand.name
+        }
+
+        if(this.forminput.warehouse) {
+            this.search_warehouse = this.forminput.warehouse.name
+        }
     },
     methods: {
         resetForm() {
             this.$refs.form.reset()
+        },
+        isValid() {
+            return this.$refs.form.validate()
         }
     },
     computed: {

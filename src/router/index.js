@@ -128,13 +128,22 @@ const routes = [
     component: () => import(/* webpackChunkName: "leader" */'../views/admin/Leader.vue')
   },
   {
-    path: '/engginer',
-    name: 'Engginer',
+    path: '/engginer/workorder',
+    name: 'Work Order',
     meta: {
-      title: 'Engginer',
+      title: 'Work Order',
       back: true
     },
-    component: () => import(/* webpackChunkName: "engginer" */'../views/admin/Engginer.vue')
+    component: () => import(/* webpackChunkName: "engginerwo" */'../views/engginer/WorkOrder.vue')
+  },
+  {
+    path: '/engginer/workorderhistory',
+    name: 'Work Order Submit History',
+    meta: {
+      title: 'Work Order Submit History',
+      back: true
+    },
+    component: () => import(/* webpackChunkName: "engginerwohistory" */'../views/engginer/WorkOrderHistory.vue')
   },
   {
     path: '/asset',
@@ -153,6 +162,15 @@ const routes = [
       back: true
     },
     component: () => import(/* webpackChunkName: 'leaderwo' */'../views/leader/WorkOrder.vue')
+  },
+  {
+    path: '/leader/workorderhistory',
+    name: 'WorkOrderHistory',
+    meta: {
+      title: 'Work Order History',
+      back: true
+    },
+    component: () => import(/* webpackChunkName: 'detailwo' */'../views/leader/WorkOrderHistory.vue')
   },
   {
     path: '/leader/workorder/detail',
@@ -175,6 +193,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  base: process.env.NODE_ENV === 'production' ? '/visionet-api/' : '',
   mode: 'history',
   routes
 })

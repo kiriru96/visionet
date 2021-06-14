@@ -5,8 +5,8 @@
       <v-card        
         class="pa-2"
         style="margin:10px"
-        max-width="400"
-        min-width="360"
+        max-width="380"
+        min-width="350"
         color="#26c6da"
         dark
         outlined>
@@ -25,8 +25,8 @@
       <v-card        
         class="pa-2"
         style="margin:10px"
-        max-width="400"
-        min-width="360"
+        max-width="380"
+        min-width="350"
         color="#26da94"
         dark
         outlined>
@@ -45,8 +45,8 @@
       <v-card        
         class="pa-2"
         style="margin:10px"
-        max-width="400"
-        min-width="360"
+        max-width="380"
+        min-width="350"
         color="#2677da"
         dark
         outlined>
@@ -65,8 +65,8 @@
       <v-card        
         class="pa-2"
         style="margin:10px"
-        max-width="400"
-        min-width="360"
+        max-width="380"
+        min-width="350"
         color="#da2641"
         dark
         outlined>
@@ -85,8 +85,8 @@
       <v-card        
         class="pa-2"
         style="margin:10px"
-        max-width="400"
-        min-width="360"
+        max-width="380"
+        min-width="350"
         color="#dada26"
         dark
         outlined>
@@ -105,8 +105,8 @@
       <v-card        
         class="pa-2"
         style="margin:10px"
-        max-width="400"
-        min-width="360"
+        max-width="380"
+        min-width="350"
         color="#9e9e9e"
         dark
         outlined>

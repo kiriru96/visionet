@@ -62,6 +62,9 @@ export default {
     methods: {
         resetForm() {
             this.$refs.form.reset()
+        },
+        isValid() {
+            return this.$refs.form.validate()
         }
     },
     computed: {
@@ -74,6 +77,13 @@ export default {
 
             let list = this.$store.getters['leader/getLightLocationList']
             return list.length === 0 ? fakelist : list
+        }
+    },
+    watch: {
+        search_location(val) {
+            if(val.length >= 3) {
+                const {dispatch} = this.$store
+            }
         }
     }
 }
