@@ -34,6 +34,7 @@
                     type="password" 
                     v-model="password" 
                     :rules="passRules" 
+                    autocomplete
                     required>
                   </v-text-field>
                   <v-select

@@ -33,7 +33,7 @@
               <v-list-item
                 v-for="(item, i) in items[userType]"
                 :key="i"
-                @click="$router.push(item.link)">
+                @click="toLocation(item.link)">
                 <v-list-item-icon>
                   <v-icon v-text="item.icon"></v-icon>
                 </v-list-item-icon>
@@ -105,7 +105,13 @@ export default {
     logout() {
       this.$store.dispatch('auth/logout')
     },
+    toLocation(link) {
+      if(this.$route.path !== link) {
+        this.$router.push(link)
+      }
+    },
     appNavAction() {
+      this.selectedItem = 0
       if(this.backBar) {
         this.$router.go(-1)
       } else {

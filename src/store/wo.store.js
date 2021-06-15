@@ -18,7 +18,22 @@ export const wo = {
         lightSearchEngginer: []
     },
     actions: {
+        async nextList({commit}, {date, page}) {
+            commit('removeError')
+            commit('setLoading', true)
+
+            let res = await manual.listWorkOrder(date, page)
+            
+            if(!res.err) {
+                commit('updateList', res.json.data.list)
+            } else {
+                commit('removeList')
+                commit('setError', res.err)
+            }
+            commit('setLoading', false)
+        },
         async reqList({commit}, {date, page}) {
+            commit('removeList')
             commit('removeError')
             commit('setLoading', true)
 
@@ -26,6 +41,25 @@ export const wo = {
 
             if(!res.err) {
                 commit('setList', res.json.data.list)
+            } else {
+                commit('removeList')
+                commit('setError', res.err)
+            }
+            commit('setLoading', false)
+        },
+        async reqListHistory({commit}, {date, page, next}) {
+            commit('removeList')
+            commit('removeError')
+            commit('setLoading', true)
+
+            let res = await manual.listWorkOrderEngginer(date, page)
+
+            if(!res.err) {
+                if(next) {
+                    commit('updateList', res.json.data.list)
+                } else {
+                    commit('setList', res.json.data.list)
+                }
             } else {
                 commit('removeList')
                 commit('setError', res.err)
@@ -117,6 +151,9 @@ export const wo = {
                 customer: data.customername,
                 location: data.locationname
             }
+        },
+        updateList(state, list) {
+            state.list = state.list.concat(list)
         },
         setList(state, list) {
             state.list = list

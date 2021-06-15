@@ -83,18 +83,18 @@ export default {
             this.$refs.menu.save(date)
             this.page = 1
             this.menu = false
-            this.requestListAPI()
+            this.requestListAPI(false)
         },
         nextList() {
             this.page += 1
-            this.requestListAPI()
+            this.requestListAPI(true)
         },
-        requestListAPI() {
+        requestListAPI(next) {
             if(this.isLoading) return
 
             const {dispatch} = this.$store
 
-            dispatch('wo/reqList', {date: this.date, page: this.page})
+            dispatch('wo/reqListHistory', {date: this.date, page: this.page, next})
         }
     },
     computed: {
@@ -102,7 +102,6 @@ export default {
             return this.$store.getters['wo/getLoading']
         },
         lists() {
-            console.log(this.$store.getters['wo/getList'])
             return this.$store.getters['wo/getList']
         },
         errorMsg() {

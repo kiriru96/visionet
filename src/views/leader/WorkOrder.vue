@@ -89,7 +89,7 @@ export default {
         },
         nextList() {
             this.page += 1
-            this.requestListAPI()
+            this.nextListAPI()
         },
         requestListAPI() {
             if(this.isLoading) return
@@ -97,6 +97,13 @@ export default {
             const {dispatch} = this.$store
 
             dispatch('wo/reqList', {date: this.date, page: this.page})
+        },
+        nextListAPI() {
+            if(this.isLoading) return
+
+            const {dispatch} = this.$store
+
+            dispatch('wo/nextList', {date: this.date, page: this.page})
         }
     },
     computed: {
@@ -104,7 +111,6 @@ export default {
             return this.$store.getters['wo/getLoading']
         },
         lists() {
-            console.log(this.$store.getters['wo/getList'])
             return this.$store.getters['wo/getList']
         },
         errorMsg() {

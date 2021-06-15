@@ -13,14 +13,6 @@ const routes = [
     component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
   },
   {
-    path: '/about',
-    name: 'About',
-    meta: {
-      title: 'About'
-    },
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  },
-  {
     path: '/login',
     name: 'Login',
     meta: {
@@ -36,24 +28,6 @@ const routes = [
       back: true
     },
     component: () => import(/* webpackChunkName: "profile" */ '../views/Profile.vue')
-  },
-  {
-    path: '/notification',
-    name: 'Notification',
-    meta: {
-      title: 'Notification',
-      back: true
-    },
-    component: () => import(/* webpackChunkName: "notification" */ '../views/Notification.vue')
-  },
-  {
-    path: '/history',
-    name: 'History',
-    meta: {
-      title: 'History',
-      back: true
-    },
-    component: () => import(/* webpackChunkName: "history" */ '../views/History.vue')
   },
   {
     path: '/location',
@@ -128,6 +102,15 @@ const routes = [
     component: () => import(/* webpackChunkName: "leader" */'../views/admin/Leader.vue')
   },
   {
+    path: '/engginer',
+    name: 'Engginer',
+    meta: {
+      title: 'Engginer',
+      back:true
+    },
+    component: () => import(/* webpackChunkName: "engginer" */'../views/admin/Engginer.vue')
+  },
+  {
     path: '/engginer/workorder',
     name: 'Work Order',
     meta: {
@@ -170,7 +153,7 @@ const routes = [
       title: 'Work Order History',
       back: true
     },
-    component: () => import(/* webpackChunkName: 'detailwo' */'../views/leader/WorkOrderHistory.vue')
+    component: () => import(/* webpackChunkName: 'historywo' */'../views/leader/WorkOrderHistory.vue')
   },
   {
     path: '/leader/workorder/detail',
@@ -193,7 +176,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  base: process.env.NODE_ENV === 'production' ? '/visionet-api/' : '',
+  // base: process.env.NODE_ENV === 'production' ? '/visionet-api/' : '/',
   mode: 'history',
   routes
 })
