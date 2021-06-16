@@ -24,22 +24,6 @@
                     </v-card-actions>
                 </v-card>
             </v-dialog>
-            <v-spacer></v-spacer>
-            <v-fab-transition>
-                <v-btn
-                    v-show="!hidden"
-                    color="primary"
-                    class="mb-2"
-                    fab
-                    dark
-                    small
-                    fixed
-                    bottom
-                    right
-                    @click="addAction">
-                    <v-icon>mdi-plus</v-icon>
-                </v-btn>
-            </v-fab-transition>
             <Dialog :dialog="alert" :title="`Delete`" :text="`Are you sure delete this?`" v-on:ok="OkButton" v-on:no="NoButton"/>
             <v-data-table
                 v-model="selected"
@@ -50,7 +34,7 @@
                 :loading="isLoading"
                 class="elevation-1">
                 <template v-slot:top>
-                    <v-toolbar>                        
+                    <v-toolbar flat>                        
                         <v-text-field
                             v-model="search"
                             append-icon="mdi-magnify"
@@ -59,6 +43,19 @@
                             hide-details
                             @keyup="searchAction">
                         </v-text-field>
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                                <v-btn
+                                    color="primary"
+                                    class="mx-2"
+                                    v-on="on"
+                                    dark
+                                    @click="addAction">
+                                    <v-icon>mdi-plus</v-icon>
+                                </v-btn>
+                            </template>
+                            <span>Create New Device</span>
+                        </v-tooltip>
                     </v-toolbar>
                 </template>
                 <template v-slot:[`item.actions`]="{ item }">

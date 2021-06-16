@@ -6,30 +6,43 @@
       color="primary"
       dark
       >
-      <v-app-bar-nav-icon @click="appNavAction"><v-icon v-if="backBar">mdi-arrow-left</v-icon></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{titleBar}}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon @click="logout">
-        <v-icon>mdi-logout</v-icon>
-      </v-btn>
     </v-app-bar>
+    <Dialog :dialog="alert" :title="`Logout`" :text="`Confirm Logout?`" v-on:ok="confirmLogout" v-on:no="cancelLogout"/>
     <v-navigation-drawer
       v-if="logged"
       v-model="drawer"
       fixed
-      temporary>
-      <v-system-bar></v-system-bar>
-      <v-list shaped>
-          <v-list-item>
+      app
+      >
+      <v-list>
+          <v-list-item @click="toLocation('/profile')">
             <v-list-item-avatar size="80">
+              <v-icon x-large>mdi-account</v-icon>
             </v-list-item-avatar>
+            <v-list-item-title>Admin</v-list-item-title>
           </v-list-item>
           <v-list
             nav
             dense>
-            <v-list-item-group
-              v-model="selectedItem"
-              color="primary">
+            <v-list-item
+              @click="toLocation('/')">
+              <v-list-item-icon>
+                <v-icon>mdi-home</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>Home</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-group
+              :value="true"
+              prepend-icon="mdi-file"
+              no-action>
+              <template v-slot:activator>
+                <v-list-item-title>Master Data</v-list-item-title>
+              </template>
               <v-list-item
                 v-for="(item, i) in items[userType]"
                 :key="i"
@@ -41,7 +54,16 @@
                   <v-list-item-title v-text="item.text"></v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-            </v-list-item-group>
+            </v-list-group>
+            <v-list-item
+              @click="logout">
+              <v-list-item-icon>
+                <v-icon>mdi-logout</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>Logout</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
           </v-list>
       </v-list>
     </v-navigation-drawer>
@@ -52,7 +74,12 @@
 <script>
 export default {
   name: 'App',
+  components: {
+    Dialog: () => import('./components/Dialog.vue')
+  },
   data: () => ({
+    alert: false,
+    mini: true,
     drawer: null,
     drawers: {
       // sets the open status of the drawer
@@ -70,27 +97,23 @@ export default {
     selectedItem: 0,
     items: [
       [
-        { text: "Dashboard", icon: 'mdi-home', link: '/'},
         { text: "Asset", icon: 'mdi-folder', link: '/asset'},
-        { text: "Work Order", icon: 'mdi-folder', link: '/workorder'},
+        { text: "Work Order", icon: 'mdi-briefcase', link: '/workorder'},
         { text: "Location", icon: 'mdi-map  ', link: '/location'},
         { text: "Brand", icon: 'mdi-office', link: '/brand'},
-        { text: "Device", icon: 'mdi-office', link: '/device'},
-        { text: "Customer", icon: 'mdi-office', link: '/customer'},
-        { text: "Warehouse", icon: 'mdi-office', link: '/warehouse'},
+        { text: "Device", icon: 'mdi-hammer-wrench', link: '/device'},
+        { text: "Customer", icon: 'mdi-account-multiple', link: '/customer'},
+        { text: "Warehouse", icon: 'mdi-home', link: '/warehouse'},
         { text: "Admin", icon: 'mdi-account', link: '/administrator'},
         { text: "Leader", icon: 'mdi-account', link: '/leader'},
         { text: "Backup Leader", icon: 'mdi-account', link: '/backupleader'},
-        { text: "Engginer", icon: 'mdi-account', link: '/engginer'},
-        { text: "System Log", icon: 'mdi-history  ', link: '/history'}
+        { text: "Engginer", icon: 'mdi-account', link: '/engginer'}
       ],
       [
-        { text: "Dashboard", icon: 'mdi-home', link: '/'},
         { text: "WO", icon: 'mdi-map  ', link: '/leader/workorder'},
         { text: "WO confirm", icon: 'mdi-history  ', link: '/leader/workorderhistory'}
       ],
       [
-        { text: "Dashboard", icon: 'mdi-home', link: '/'},
         { text: "WO", icon: 'mdi-map  ', link: '/leader/workorder'},
         { text: "WO confirm", icon: 'mdi-history  ', link: '/leader/workorderhistory'}
       ],
@@ -103,7 +126,7 @@ export default {
   }),
   methods: {
     logout() {
-      this.$store.dispatch('auth/logout')
+      this.alert = true
     },
     toLocation(link) {
       if(this.$route.path !== link) {
@@ -117,6 +140,13 @@ export default {
       } else {
         this.drawer = !this.drawer
       }
+    },
+    confirmLogout() {
+      this.alert = false
+      this.$store.dispatch('auth/logout')
+    },
+    cancelLogout() {
+      this.alert = false
     }
   },
   computed: {

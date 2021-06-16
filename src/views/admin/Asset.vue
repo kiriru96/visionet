@@ -22,21 +22,6 @@
                 </v-card>
             </v-dialog>
             <v-spacer></v-spacer>
-            <v-fab-transition>
-                <v-btn
-                    v-show="!hidden"
-                    color="primary"
-                    class="mb-2"
-                    fab
-                    dark
-                    small
-                    fixed
-                    bottom
-                    right
-                    @click="addAction">
-                    <v-icon>mdi-plus</v-icon>
-                </v-btn>
-            </v-fab-transition>
             <Dialog :dialog="alert" :title="`Delete`" :text="`Are you sure delete this?`" v-on:ok="OkButton" v-on:no="NoButton"/>
             <v-data-table
                 :headers="headers"
@@ -56,34 +41,71 @@
                             class="mx-12"
                             @keyup="searchAction">
                         </v-text-field>
-                        <v-btn
-                            color="primary"
-                            class="mb-2"
-                            dark>
-                            <v-icon>mdi-printer</v-icon>
-                        </v-btn>
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                                <v-btn
+                                    color="primary"
+                                    class="mx-2"
+                                    v-on="on"
+                                    dark>
+                                    <v-icon>mdi-printer</v-icon>
+                                </v-btn>
+                            </template>
+                            <span>Print Asset</span>
+                        </v-tooltip>
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                                <v-btn
+                                    color="primary"
+                                    class="mx-2"
+                                    v-on="on"
+                                    dark
+                                    @click="addAction">
+                                    <v-icon>mdi-plus</v-icon>
+                                </v-btn>
+                            </template>
+                            <span>Create New Asset</span>
+                        </v-tooltip>
                     </v-toolbar>
                 </template>
                 <template v-slot:[`item.actions`]="{ item }">
-                    <v-icon
-                        small
-                        class="mr-3"
-                        @click="editAction(item)">
-                        mdi-pencil
-                    </v-icon>
-                    <v-icon
-                        small
-                        class="mr-3"
-                        @click="deleteAction(item)">
-                        mdi-delete
-                    </v-icon>
-                    <v-icon
-                        v-if="item.workorder_id === null"
-                        small
-                        class="mr-3"
-                        @click="woAction(item)">
-                        mdi-upload
-                    </v-icon>
+                    <v-tooltip bottom>
+                        <template v-slot:activator="{ on }">
+                            <v-icon
+                                small
+                                class="mr-3"
+                                v-on="on"
+                                @click="editAction(item)">
+                                mdi-pencil
+                            </v-icon>
+                        </template>
+                        <span>Edit Asset</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                        <template v-slot:activator="{ on }">
+                            <v-icon
+                                small
+                                class="mr-3"
+                                v-on="on"
+                                @click="deleteAction(item)">
+                                mdi-delete
+                            </v-icon>
+                        </template>
+                        <span>Delete Asset</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                        <template v-slot:activator="{ on }">
+                            <v-icon
+                                v-if="item.workorder_id === null"
+                                small
+                                class="mr-3"
+                                v-on="on"
+                                @click="woAction(item)">
+                                mdi-briefcase-upload
+                            </v-icon>
+                        </template>
+                        <span>Create Work Order</span>
+                    </v-tooltip>
                 </template>
             </v-data-table>
             <v-snackbar
@@ -119,6 +141,7 @@ export default {
     },
     data() {
         return {
+            asset_id_server: -1,
             wo: false,
             formTitle: '',
             forminput: {
@@ -166,6 +189,7 @@ export default {
             timeout: 6000,
             color: '',
             mode: '',
+            loading: false
         }
     },
     created () {
@@ -227,18 +251,13 @@ export default {
         deleteAction(item) {
             const index = this.items.indexOf(item)
             this.alert = true
+
+            this.asset_id_server = item.id
         },
         closeDialog() {
             const {dispatch} = this.$store
-            dispatch('asset/closeDialog')
             
-            if(this.$refs.submitpanel) {
-                this.$refs.submitpanel.resetForm()
-            }
-
-            if(this.$refs.workorderinput) {
-                this.$refs.workorderinput.resetForm()
-            }
+            dispatch('asset/closeDialog', false)
         },
         save() {
             if(this.wo) {
@@ -253,15 +272,21 @@ export default {
         },
         removeError() {
             const {dispatch} = this.$store
-            dispatch('asset/')
+            dispatch('asset/removeError')
         },
         OkButton(){
+
             const {dispatch} = this.$store
 
+            dispatch('asset/deleteAsset', this.asset_id_server)
+
             this.alert = false
+            this.asset_id_server = -1
             this.idselected = -1
         },
         NoButton() {
+            this.idselected = -1
+            this.asset_id_server = -1
             this.alert = false
         },
         addAction() {
@@ -273,7 +298,6 @@ export default {
             dispatch('asset/openDialog')
         },
         getDataFromAPI() {
-            if(this.isLoading) return
 
             const {dispatch} = this.$store
             let {sortBy, sortDesc, page, itemsPerPage} = this.options
@@ -289,7 +313,6 @@ export default {
             dispatch('asset/reqList', {index: page, rows: itemsPerPage, search: this.search, sortby: this.sortbylast, sort: this.sorting})
         },
         submitWorkOrderAPI() {
-            if(this.isLoading) return
 
             let data = {
                 asset: this.forminputWO.asset_id,
@@ -300,15 +323,12 @@ export default {
             const {dispatch} = this.$store
 
             dispatch('asset/insertWorkOrder', data)
-
-            dispatch('asset/closeDialog')
             
             if(this.$refs.workorderinput) {
                 this.$refs.workorderinput.resetForm()
             }
         },
         submitAPI() {
-            if(this.isLoading) return
 
             if(this.$refs.submitpanel) {
                 if(!this.$refs.submitpanel.isValid()) return
@@ -329,18 +349,12 @@ export default {
 
             dispatch('asset/insertAsset', data)
 
-            dispatch('asset/closeDialog')
             
             if(this.$refs.submitpanel) {
                 this.$refs.submitpanel.resetForm()
             }
-
-            setTimeout(()=> {
-                this.getDataFromAPI()
-            }, 1000)
         },
         updateAPI() {
-            if(this.isLoading) return
 
             let data = {
                 id:             this.forminput.id,
@@ -358,21 +372,18 @@ export default {
 
             dispatch('asset/updateAsset', data)
             
-            dispatch('asset/closeDialog')
             
             if(this.$refs.submitpanel) {
                 this.$refs.submitpanel.resetForm()
             }
-
-            setTimeout(()=> {
-                this.getDataFromAPI()
-            }, 1000)
         },
         deleteAPI() {
-            if(this.isLoading) return
         }
     },
     computed: {
+        updateStat() {
+            return this.$store.getters['asset/getUpdate']
+        },
         table() {
             return this.$store.getters['asset/getList']
         },
@@ -405,6 +416,28 @@ export default {
         params: {
             handler(val) {
                 this.getDataFromAPI()
+            },
+            deep: true
+        },
+        updateStat: {
+            handler(val) {
+                if(val) {
+                    this.getDataFromAPI()
+                }
+            },
+            deep: true
+        },
+        dialogStat: {
+            handler(val) {
+                if(!val) {
+                    if(this.$refs.submitpanel) {
+                        this.$refs.submitpanel.resetForm()
+                    }
+
+                    if(this.$refs.workorderinput) {
+                        this.$refs.workorderinput.resetForm()
+                    }
+                }
             },
             deep: true
         }

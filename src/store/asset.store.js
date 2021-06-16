@@ -9,6 +9,7 @@ export const asset = {
         insert: false,
         dialog: false,
         errMsg: null,
+        update: false,
         msg: null,
         lightSearchBrand: [],
         lightSearchDevice: [],
@@ -33,13 +34,16 @@ export const asset = {
 
             if(!res.err) {
                 commit('setList', {items: res.json.data.list, len: res.json.data.len})
+                commit('setUpdate', false)
             } else {
                 commit('removeListItem')
                 commit('setError', res.err)
             }
             commit('setLoading', false)
         },
-        async insertWorkOrder({commit}, data) {
+        async insertWorkOrder({commit, state}, data) {
+            if(state.loading) return
+
             commit('removeError')
             commit('setLoading', true)
             commit('setInsert', true)
@@ -47,14 +51,17 @@ export const asset = {
             let res = await assets.createWorkOrder(data)
 
             if(!res.err) {
-
+                commit('setDialog', false)
+                commit('setUpdate', true)
             } else {
                 commit('setError', res.err)
             }
 
             commit('setLoading', false)
         },
-        async insertAsset({commit}, data) {
+        async insertAsset({commit, state}, data) {
+            if(state.loading) return
+
             commit('removeError')
             commit('setLoading', true)
             commit('setInsert', true)
@@ -62,14 +69,17 @@ export const asset = {
             let res = await assets.create(data)
 
             if(!res.err) {
-
+                commit('setDialog', false)
+                commit('setUpdate', true)
             } else {
                 commit('setError', res.err)
             }
 
             commit('setLoading', false)
         },
-        async updateAsset({commit}, data) {
+        async updateAsset({commit, state}, data) {
+            if(state.loading) return
+
             commit('removeError')
             commit('setLoading', true)
             commit('setInsert', true)
@@ -77,21 +87,24 @@ export const asset = {
             let res = await assets.update(data)
 
             if(!res.err) {
-
+                commit('setDialog', false)
+                commit('setUpdate', true)
             } else {
                 commit('setError', res.err)
             }
 
             commit('setLoading', false)
         },
-        async deleteAsset({commit}, id) {
+        async deleteAsset({commit, state}, id) {
+            if(state.loading) return
+
             commit('removeError')
             commit('setLoading', true)
 
             let res = await assets.deletes({id: id})
 
             if(!res.err) {
-
+                commit('setUpdate', true)
             } else {
                 commit('setError', res.err)
             }
@@ -104,8 +117,8 @@ export const asset = {
         closeDialog({commit}) {
             commit('setDialog', false)
         },
-        async searchDevice({commit}, search) {
-            if(search.trim().length >= 3) {
+        async searchDevice({commit, state}, search) {
+            if(search.trim().length >= 3 && !state.loading) {
                 commit('removeError')
                 commit('setLoadingDevice', true)
 
@@ -113,6 +126,7 @@ export const asset = {
 
                 if(!result.err) {
                     commit('setListLightDevice', result.json.data.list)
+                    commit('setUpdate', false)
                 } else {
                     commit('setError', result.err)
                 }
@@ -120,8 +134,8 @@ export const asset = {
                 commit('setLoadingDevice', false)
             }
         },
-        async searchBrand({commit}, search) {
-            if(search.trim().length >= 3) {
+        async searchBrand({commit, state}, search) {
+            if(search.trim().length >= 3 && !state.loading) {
                 commit('removeError')
                 commit('setLoadingBrand', true)
 
@@ -135,8 +149,8 @@ export const asset = {
                 commit('setLoadingBrand', false)
             }
         },
-        async searchWarehouse({commit}, search) {
-            if(search.trim().length >= 3) {
+        async searchWarehouse({commit, state}, search) {
+            if(search.trim().length >= 3 && !state.loading) {
                 commit('removeError')
                 commit('setLoadingWarehouse', true)
 
@@ -161,8 +175,8 @@ export const asset = {
                 commit('setError', result.err)
             }
         },
-        async searchLocation({commit}, search) {
-            if(search.trim().length >= 3) {
+        async searchLocation({commit, state}, search) {
+            if(search.trim().length >= 3 && !state.loading) {
                 commit('removeError')
                 commit('setLoadingLocation', true)
 
@@ -176,8 +190,8 @@ export const asset = {
                 commit('setLoadingLocation', false)
             }
         },
-        async searchCustomer({commit}, search) {
-            if(search.trim().length >= 3) {
+        async searchCustomer({commit, state}, search) {
+            if(search.trim().length >= 3 && !state.loading) {
                 commit('removeError')
                 commit('setLoadingCustomer', true)
 
@@ -196,6 +210,9 @@ export const asset = {
         }
     },
     getters: {
+        getUpdate(state) {
+            return state.update
+        },
         getList(state) {
             return state.listItems
         },
@@ -252,6 +269,9 @@ export const asset = {
         }
     },
     mutations: {
+        setUpdate(state, stat) {
+            state.update = stat
+        },
         setList(state, {items, len}) {
             state.listItems = items
             state.totalitems = len

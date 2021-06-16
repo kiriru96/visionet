@@ -69,7 +69,7 @@ async function deletes(data) {
     let reqconf = config.postdataconfig(data);
 
     try{
-        const response = await fetch(`${config.endpoint}/asset/delete`, reqconf);
+        const response = await fetch(`${config.endpoint}/delete/asset`, reqconf);
         const fetchres = await response.json();
 
         if(response.status === 200) {
