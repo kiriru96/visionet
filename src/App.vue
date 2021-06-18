@@ -37,7 +37,7 @@
               </v-list-item-content>
             </v-list-item>
             <v-list-group
-              :value="true"
+              :value="false"
               prepend-icon="mdi-file"
               no-action>
               <template v-slot:activator>
@@ -52,6 +52,62 @@
                 </v-list-item-icon>
                 <v-list-item-content>
                   <v-list-item-title v-text="item.text"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-group>
+            <v-list-group
+              :value="false"
+              prepend-icon="mdi-account"
+              no-action>
+              <template v-slot:activator>
+                <v-list-item-title>Account</v-list-item-title>
+              </template>
+              <v-list-item>
+                <v-list-item-icon>
+                  <v-icon>mdi-download</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>Stock In</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-icon>
+                  <v-icon>mdi-download</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>Stock In</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-icon>
+                  <v-icon>mdi-download</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>Stock In</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-group>
+            <v-list-group
+              :value="false"
+              prepend-icon="mdi-printer"
+              no-action>
+              <template v-slot:activator>
+                <v-list-item-title>Report</v-list-item-title>
+              </template>
+              <v-list-item>
+                <v-list-item-icon>
+                  <v-icon>mdi-download</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>Stock In</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-icon>
+                  <v-icon>mdi-upload</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>Stock Out</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </v-list-group>

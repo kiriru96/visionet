@@ -149,7 +149,6 @@ export default {
                 device_brand: null,
                 model: '',
                 serial_number: '',
-                status: {id: 0, name: ''},
                 description: '',
                 warehouse: null,
                 id: 0
@@ -174,11 +173,8 @@ export default {
                 {text: 'Brand', value: 'brandname', sortable: false},
                 {text: 'Model', value: 'model', sortable: false},
                 {text: 'Serial Number', value: 'serial_number', sortable: false},
-                {text: 'Condition', value: 'conditionstatus', sortable: false},
                 {text: 'Description', value: 'description', sortable: false},
                 {text: 'Warehouse', value: 'warehousename', sortable: false},
-                {text: 'Date In', value: 'date_in', sortable: false},
-                {text: 'Date Out', value: 'date_out', sortable: false},
                 {text: 'Actions', value: 'actions', sortable: false}
             ],
             idselected: -1,
@@ -222,7 +218,6 @@ export default {
                 device_brand: {id: item.brand_id, name: item.brandname},
                 model: item.model,
                 serial_number: item.serial_number,
-                status: {id: item.condition_id, name: item.conditionstatus},
                 description: item.description,
                 warehouse: {id: item.warehouse_id, name: item.warehousename}
             }

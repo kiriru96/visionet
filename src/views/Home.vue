@@ -2,6 +2,50 @@
   <v-main>
     <v-container fill-width
        class="d-flex justify-space-between flex-wrap">
+       <v-row
+      no-gutters
+      style="flex-wrap: wrap;"
+    >
+      <v-col
+        cols="1"
+        style="min-width: 100px; max-width: 100%;"
+        class="flex-grow-1 flex-shrink-0"
+      >
+        <v-card
+          class="pa-2"
+          outlined
+          tile
+        >
+          I'm 1 column wide and I grow to take all the space
+        </v-card>
+      </v-col>
+      <v-col
+        cols="1"
+        style="min-width: 100px; max-width: 100%;"
+        class="flex-grow-1 flex-shrink-0"
+      >
+        <v-card
+          class="pa-2"
+          outlined
+          tile
+        >
+          I'm 1 column wide and I grow to take all the space
+        </v-card>
+      </v-col>
+      <v-col
+        cols="1"
+        style="min-width: 100px; max-width: 100%;"
+        class="flex-grow-1 flex-shrink-0"
+      >
+        <v-card
+          class="pa-2"
+          outlined
+          tile
+        >
+          I'm 1 column wide and I grow to take all the space
+        </v-card>
+      </v-col>
+    </v-row>
       <v-card        
         class="pa-2"
         style="margin:10px"

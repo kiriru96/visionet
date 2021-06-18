@@ -15,6 +15,7 @@
             required>
         </v-text-field>
         <v-text-field
+            v-if="edit"
             v-model="forminput.password"
             label="Password"
             :rules="rulesPassword"
@@ -26,7 +27,8 @@
 <script>
 export default {
     props: {
-        forminput: Object
+        forminput: Object,
+        edit: Boolean
     },
     data() {
         return {
