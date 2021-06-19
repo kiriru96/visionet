@@ -1,75 +1,20 @@
-import {config} from './config'
+import { config } from "./config";
 
-async function updatePassword(type, data) {
-    let result = {
-        json: null,
-        err: null
-    }
-    
-    let reqconf = config.postdataconfig(data);
-
-    try{
-        const response = await fetch(`${config.endpoint}/changepassword/${type}`, reqconf)
-        const fetchres = await response.json()
-
-        if(response.status === 200) {
-            if(fetchres.status) {
-                result.json = fetchres
-            } else {
-                result.err = fetchres.msg
-            }
-        } else {
-            result.err = response.statusText
-        }
-    } catch(err) {
-        result.err = err
-    }
-
-    return result
-}
-
-async function getProfile(type, id) {
-    let result = {
+async function stockInHistory(path,{index, rows, search, sortby, sort}) {
+    const result = {
         json: null,
         err: null
     }
 
     let reqconf = config.getconfig();
-
+    
     try {
-        const response  = await fetch(
+        const response = await fetch(
             config.getUrlParams(
-                `${config.endpoint}/getprofile/${type}/${id}`, 
-                {}), 
+                `${config.endpoint}`, 
+                {page: index, search: search, sortby: sortby, sort: sort, rows: rows}),
                 reqconf)
-        const fetchres  = await response.json()
-        
-        if(response.status === 200) {
-            if(fetchres.status) {
-                result.json = fetchres
-            } else {
-                result.err = fetchres.msg
-            }
-        } else {
-            result.err = response.statusText
-        }
-    } catch(err) {
-        result.err = err
-    }
 
-    return result
-}
-
-async function submit(type,data) {
-    let result = {
-        json: null,
-        err: null
-    }
-    
-    let reqconf = config.postdataconfig(data);
-
-    try{
-        const response = await fetch(`${config.endpoint}/insert/${type}`, reqconf)
         const fetchres = await response.json()
 
         if(response.status === 200) {
@@ -88,78 +33,23 @@ async function submit(type,data) {
     return result
 }
 
-async function update(type, data) {
-    let result = {
-        json: null,
-        err: null
-    }
-    
-    let reqconf = config.postdataconfig(data);
-
-    try{
-        const response = await fetch(`${config.endpoint}/edit/${type}`, reqconf)
-        const fetchres = await response.json()
-
-        if(response.status === 200) {
-            if(fetchres.status) {
-                result.json = fetchres
-            } else {
-                result.err = fetchres.msg
-            }
-        } else {
-            result.err = response.statusText
-        }
-    } catch(err) {
-        result.err = err
-    }
-
-    return result
-}
-
-async function del(type, id) {
-    let result = {
-        json: null,
-        err: null
-    }
-    
-    let reqconf = config.postdataconfig({id: id});
-
-    try{
-        const response = await fetch(`${config.endpoint}/delete/${type}`, reqconf)
-        const fetchres = await response.json()
-
-        if(response.status === 200) {
-            if(fetchres.status) {
-                result.json = fetchres
-            } else {
-                result.err = fetchres.msg
-            }
-        } else {
-            result.err = response.statusText
-        }
-    } catch(err) {
-        result.err = err
-    }
-
-    return result
-}
-
-async function list(path,{index, rows, search, sortby, sort}) {
-    let result = {
+async function stockOutHistory(path,{index, rows, search, sortby, sort}) {
+    const result = {
         json: null,
         err: null
     }
 
     let reqconf = config.getconfig();
-
+    
     try {
-        const response  = await fetch(
+        const response = await fetch(
             config.getUrlParams(
-                `${config.endpoint}/list/${path}`, 
-                {page: index, search: search, sortby: sortby, sort: sort, rows: rows}), 
+                `${config.endpoint}`, 
+                {page: index, search: search, sortby: sortby, sort: sort, rows: rows}),
                 reqconf)
-        const fetchres  = await response.json()
-        
+
+        const fetchres = await response.json()
+
         if(response.status === 200) {
             if(fetchres.status) {
                 result.json = fetchres
@@ -176,22 +66,18 @@ async function list(path,{index, rows, search, sortby, sort}) {
     return result
 }
 
-async function searchLight(path, search) {
-    let result = {
+async function addStockInHistory(data) {
+    const result = {
         json: null,
         err: null
     }
 
-    let reqconf = config.getconfig();
+    let reqconf = config.postdataconfig(data)
 
     try {
-        const response  = await fetch(
-            config.getUrlParams(
-                `${config.endpoint}/light/${path}`, 
-                {search: search}), 
-                reqconf)
-        const fetchres  = await response.json()
-        
+        const response = await fetch(`${config.endpoint}`, reqconf)
+        const fetchres = await response.json()
+
         if(response.status === 200) {
             if(fetchres.status) {
                 result.json = fetchres
@@ -208,12 +94,153 @@ async function searchLight(path, search) {
     return result
 }
 
-export const account = {
-    updatePassword,
-    getProfile,
-    list,
-    submit,
-    update,
-    del,
-    searchLight
+async function addStockOutHistory(asset, count) {
+    const result = {
+        json: null,
+        err: null
+    }
+
+    let reqconf = config.postdataconfig(data)
+
+    try {
+        const response = await fetch(`${config.endpoint}`, reqconf)
+        const fetchres = await response.json()
+
+        if(response.status === 200) {
+            if(fetchres.status) {
+                result.json = fetchres
+            } else {
+                result.err = fetchres.msg
+            }
+        } else {
+            result.err = response.statusText
+        }
+    } catch(err) {
+        result.err = err
+    }
+
+    return result
+}
+
+async function removeStockIn(asset) {
+    const result = {
+        json: null,
+        err: null
+    }
+
+    let reqconf = config.postdataconfig(data)
+
+    try {
+        const response = await fetch(`${config.endpoint}`, reqconf)
+        const fetchres = await response.json()
+
+        if(response.status === 200) {
+            if(fetchres.status) {
+                result.json = fetchres
+            } else {
+                result.err = fetchres.msg
+            }
+        } else {
+            result.err = response.statusText
+        }
+    } catch(err) {
+        result.err = err
+    }
+
+    return result
+}
+
+async function removeStockOut(asset) {
+    const result = {
+        json: null,
+        err: null
+    }
+
+    let reqconf = config.postdataconfig(data)
+
+    try {
+        const response = await fetch(`${config.endpoint}`, reqconf)
+        const fetchres = await response.json()
+
+        if(response.status === 200) {
+            if(fetchres.status) {
+                result.json = fetchres
+            } else {
+                result.err = fetchres.msg
+            }
+        } else {
+            result.err = response.statusText
+        }
+    } catch(err) {
+        result.err = err
+    }
+
+    return result
+}
+
+async function submitListStockIn() {
+    const result = {
+        json: null,
+        err: null
+    }
+
+    let reqconf = config.postdataconfig(data)
+
+    try {
+        const response = await fetch(`${config.endpoint}`, reqconf)
+        const fetchres = await response.json()
+
+        if(response.status === 200) {
+            if(fetchres.status) {
+                result.json = fetchres
+            } else {
+                result.err = fetchres.msg
+            }
+        } else {
+            result.err = response.statusText
+        }
+    } catch(err) {
+        result.err = err
+    }
+
+    return result
+}
+
+async function submitListStockOut() {
+    const result = {
+        json: null,
+        err: null
+    }
+
+    let reqconf = config.postdataconfig(data)
+
+    try {
+        const response = await fetch(`${config.endpoint}`, reqconf)
+        const fetchres = await response.json()
+
+        if(response.status === 200) {
+            if(fetchres.status) {
+                result.json = fetchres
+            } else {
+                result.err = fetchres.msg
+            }
+        } else {
+            result.err = response.statusText
+        }
+    } catch(err) {
+        result.err = err
+    }
+
+    return result
+}
+
+export const stock = {
+    stockInHistory,
+    stockOutHistory,
+    addStockInHistory,
+    addStockOutHistory,
+    removeStockIn,
+    removeStockOut,
+    submitListStockIn,
+    submitListStockOuts
 }

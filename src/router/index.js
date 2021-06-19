@@ -172,6 +172,22 @@ const routes = [
       back: true
     },
     component: () => import(/* webpackChunkName: 'adminstrator' */'../views/admin/Administrator.vue')
+  },
+  {
+    path: '/stockin',
+    name: 'StockIn',
+    meta: {
+      title: 'Stock In'
+    },
+    component: () => import(/* webpackChunkName: 'stockinreport' */'../views/admin/StockIn.vue')
+  },
+  {
+    path: '/engginer/submitwo',
+    name: 'SubmitWO',
+    meta: {
+      title: 'Submit WO'
+    },
+    component: () => import(/* webpackChunkName: 'submitwo' */'../views/engginer/SubmitWorkOrder.vue')
   }
 ]
 

@@ -10,10 +10,13 @@ export const backupleader = {
         submit: false,
         dialog: false,
         msg: null,
+        update: false,
         lightSearch: []
     },
     actions: {
-        async reqList({commit}, {index, rows, search, sortby, sort}) {
+        async reqList({commit, state}, {index, rows, search, sortby, sort}) {
+            if(state.loading) return
+
             commit('removeError')
             commit('setLoading', true)
 
@@ -21,51 +24,76 @@ export const backupleader = {
 
             if(!res.err) {
                 commit('addAll', {items: res.json.data.list, len: res.json.data.len})
+                commit('setUpdate', false)
             } else {
                 commit('clear')
                 commit('setError', res.err)
             }
             commit('setLoading', false)
         },
-        async insertList({commit}, data) {
+        async insertList({commit, state}, data) {
+            if(state.loading) return
+
             commit('removeError')
             commit('setLoading', true)
             commit('setSubmit', true)
 
-            let res = await account.submit('device', data)
+            let res = await account.submit('backupleader', data)
 
             if(!res.err) {
-                
+                commit('setDialog', false)
+                commit('setUpdate', true)
             } else {
                 commit('setError', res.err)
             }
             commit('setLoading', false)
         },
-        async updateList({commit}, data) {
+        async updateList({commit, state}, data) {
+            if(state.loading) return
+
             commit('removeError')
             commit('setLoading', true)
             commit('setSubmit', true)
 
-            let res = await account.update('device', data)
+            let res = await account.update('backupleader', data)
 
             if(!res.err) {
-                
+                commit('setDialog', false)
+                commit('setUpdate', true)
             } else {
                 commit('setError', res.err)
             }
             commit('setLoading', false)
         },
-        async deleteList({commit}, id) {
+        async deleteList({commit, state}, id) {
+            if(state.loading) return
+
             commit('removeError')
             commit('setLoading', true)
             
-            let res = await account.del('device', id)
+            let res = await account.del('backupleader', id)
+
+            if(!res.err) {
+                commit('setUpdate', true)
+            } else {
+                commit('setError', res.err)
+            }
+            commit('setLoading', false)
+        },
+        async updatePassword({commit, state}, data) {
+            if(state.loading) return
+            
+            commit('removeError')
+            commit('setLoading', true)
+            
+            let res = await account.updatePassword('backupleader', data)
 
             if(!res.err) {
 
             } else {
                 commit('setError', res.err)
             }
+            commit('setLoading', false)
         },
         openDialog({commit}) {
             commit('setDialog', true)
@@ -84,6 +112,9 @@ export const backupleader = {
         }
     },
     getters: {
+        getUpdate(state) {
+            return state.update
+        },
         getAllItems(state) {
             return state.listItems
         },
@@ -110,6 +141,9 @@ export const backupleader = {
         }
     },
     mutations: {
+        setUpdate(state, stat) {
+            state.update = stat
+        },
         setLoading(state, status) {
             state.loading = status
         },

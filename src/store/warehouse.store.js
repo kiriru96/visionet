@@ -9,6 +9,7 @@ export const warehouse = {
         loading: false,
         submit: false,
         dialog: false,
+        update: false,
         msg: null,
         lightSeach: []
     },
@@ -21,6 +22,7 @@ export const warehouse = {
 
             if(!res.err) {
                 commit('addAll', {items: res.json.data.list, len: res.json.data.len})
+                commit('setUpdate', false)
             } else {
                 commit('clear')
                 commit('setError', res.err)
@@ -35,7 +37,8 @@ export const warehouse = {
             let res = await basic.submit('warehouse', data)
 
             if(!res.err) {
-                
+                commit('setDialog', false)
+                commit('setUpdate', true)
             } else {
                 commit('setError', res.err)
             }
@@ -49,7 +52,8 @@ export const warehouse = {
             let res = await basic.update('warehouse', data)
 
             if(!res.err) {
-                
+                commit('setDialog', false)
+                commit('setUpdate', true)
             } else {
                 commit('setError', res.err)
             }
@@ -62,7 +66,7 @@ export const warehouse = {
             let res = await basic.del('warehouse', id)
 
             if(!res.err) {
-
+                commit('setUpdate', true)
             } else {
                 commit('setError', res.err)
             }

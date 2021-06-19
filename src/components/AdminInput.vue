@@ -3,22 +3,24 @@
         ref="form"
         lazy-validation>
         <v-text-field
-            v-model="forminput.name"
+            v-model="forminput.fullname"
             label="Name"
-            :rules="rulesInput"
             required>
         </v-text-field>
         <v-text-field
+            v-show="!edit"
             v-model="forminput.username"
             label="Username"
-            :rules="rulesInput"
             required>
         </v-text-field>
         <v-text-field
-            v-if="edit"
+            v-show="!edit"
             v-model="forminput.password"
             label="Password"
-            :rules="rulesPassword"
+            :append-icon="showpass ? 'mdi-eye' : 'mdi-eye-off'"
+            :type="showpass ? 'text' : 'password'"
+            @click:append="showpass = !showpass"
+            autocomplete="new-password"
             required>
         </v-text-field>
     </v-form>
@@ -32,14 +34,23 @@ export default {
     },
     data() {
         return {
+            showpass: false,
             rulesInput: [
                 (v) => !!v || "Tidak boleh kosong",
-                (v) => v && v.length <= 6 || "Harus lebih 6 karakter"
+                (v) => v && v.length >= 6 || "Harus lebih 6 karakter"
             ],
             rulesPassword: [
                 (v) => !!v || "Tidak boleh kosong",
-                (v) => v && v.length <= 8 || "Harus lebih dari 8 karakter"
+                (v) => v && v.length >= 8 || "Harus lebih dari 8 karakter"
             ]
+        }
+    },
+    methods: {
+        resetForm() {
+            this.$refs.form.reset()
+        },
+        isValid() {
+            return this.$refs.form.validate()
         }
     }
 }

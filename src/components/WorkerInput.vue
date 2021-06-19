@@ -15,6 +15,7 @@
             v-model="forminput.lastname">
         </v-text-field>
         <v-text-field
+            v-show="!edit"
             ref="username"
             class="mx-3"
             label="Username"
@@ -41,6 +42,7 @@
             cache-items
             class="mx-3"
             hide-no-data
+            return-object
             label="Location">
         </v-autocomplete>
     </v-form>
@@ -50,7 +52,8 @@
 export default {
     props: {
         forminput: Object,
-        edit: Boolean
+        edit: Boolean,
+        type: String
     },
     data() {
         return {
@@ -75,14 +78,15 @@ export default {
                 fakelist.push(this.forminput.location)
             }
 
-            let list = this.$store.getters['leader/getLightLocationList']
+            let list = this.$store.getters['accounts/getListLightLocation']
             return list.length === 0 ? fakelist : list
         }
     },
     watch: {
         search_location(val) {
-            if(val.length >= 3) {
+            if(val?.trim().length >= 3) {
                 const {dispatch} = this.$store
+                dispatch('accounts/searchLocation', val)
             }
         }
     }

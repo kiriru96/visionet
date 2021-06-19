@@ -36,17 +36,14 @@
                 <v-list-item-title>Home</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-group
-              :value="false"
-              prepend-icon="mdi-file"
-              no-action>
-              <template v-slot:activator>
-                <v-list-item-title>Master Data</v-list-item-title>
-              </template>
+            <v-list-item-group
+              v-if="userType != 0"
+              v-model="selectedItem"
+              color="primary">
               <v-list-item
                 v-for="(item, i) in items[userType]"
                 :key="i"
-                @click="toLocation(item.link)">
+                @click="$router.push(item.link)">
                 <v-list-item-icon>
                   <v-icon v-text="item.icon"></v-icon>
                 </v-list-item-icon>
@@ -54,60 +51,28 @@
                   <v-list-item-title v-text="item.text"></v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-            </v-list-group>
+            </v-list-item-group>
             <v-list-group
+              v-else
+              v-for="(item, i) in items[userType]"
+              :key="i"
               :value="false"
-              prepend-icon="mdi-account"
               no-action>
               <template v-slot:activator>
-                <v-list-item-title>Account</v-list-item-title>
+                <v-list-item-title v-text="item.text"></v-list-item-title>
               </template>
-              <v-list-item>
-                <v-list-item-icon>
-                  <v-icon>mdi-download</v-icon>
-                </v-list-item-icon>
-                <v-list-item-content>
-                  <v-list-item-title>Stock In</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-item>
-                <v-list-item-icon>
-                  <v-icon>mdi-download</v-icon>
-                </v-list-item-icon>
-                <v-list-item-content>
-                  <v-list-item-title>Stock In</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-item>
-                <v-list-item-icon>
-                  <v-icon>mdi-download</v-icon>
-                </v-list-item-icon>
-                <v-list-item-content>
-                  <v-list-item-title>Stock In</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-group>
-            <v-list-group
-              :value="false"
-              prepend-icon="mdi-printer"
-              no-action>
-              <template v-slot:activator>
-                <v-list-item-title>Report</v-list-item-title>
+              <template v-slot:prependIcon>
+                <v-icon>{{item.icon}}</v-icon>
               </template>
-              <v-list-item>
+              <v-list-item
+                v-for="(child, j) in item.child"
+                :key="j"
+                @click="toLocation(child.link)">
                 <v-list-item-icon>
-                  <v-icon>mdi-download</v-icon>
+                  <v-icon v-text="child.icon"></v-icon>
                 </v-list-item-icon>
                 <v-list-item-content>
-                  <v-list-item-title>Stock In</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-item>
-                <v-list-item-icon>
-                  <v-icon>mdi-upload</v-icon>
-                </v-list-item-icon>
-                <v-list-item-content>
-                  <v-list-item-title>Stock Out</v-list-item-title>
+                  <v-list-item-title v-text="child.text"></v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </v-list-group>
@@ -153,17 +118,31 @@ export default {
     selectedItem: 0,
     items: [
       [
-        { text: "Asset", icon: 'mdi-folder', link: '/asset'},
-        { text: "Work Order", icon: 'mdi-briefcase', link: '/workorder'},
-        { text: "Location", icon: 'mdi-map  ', link: '/location'},
-        { text: "Brand", icon: 'mdi-office', link: '/brand'},
-        { text: "Device", icon: 'mdi-hammer-wrench', link: '/device'},
-        { text: "Customer", icon: 'mdi-account-multiple', link: '/customer'},
-        { text: "Warehouse", icon: 'mdi-home', link: '/warehouse'},
-        { text: "Admin", icon: 'mdi-account', link: '/administrator'},
-        { text: "Leader", icon: 'mdi-account', link: '/leader'},
-        { text: "Backup Leader", icon: 'mdi-account', link: '/backupleader'},
-        { text: "Engginer", icon: 'mdi-account', link: '/engginer'}
+        {
+          text: "Master Data", icon: 'mdi-folder', child: [
+            { text: "Asset", icon: 'mdi-folder', link: '/asset'},
+            { text: "Brand", icon: 'mdi-office', link: '/brand'},
+            { text: "Customer", icon: 'mdi-account-multiple', link: '/customer'},
+            { text: "Device", icon: 'mdi-hammer-wrench', link: '/device'},
+            { text: "Location", icon: 'mdi-map  ', link: '/location'},
+            { text: "Stock In", icon: 'mdi-arrow-down', link: '/stockin'},
+            { text: "Work Order", icon: 'mdi-briefcase', link: '/workorder'}
+          ]
+        },
+        {
+          text: "Account", icon: 'mdi-account', child: [
+            { text: "Admin", icon: 'mdi-account', link: '/administrator'},
+            { text: "Leader", icon: 'mdi-account', link: '/leader'},
+            { text: "Backup Leader", icon: 'mdi-account', link: '/backupleader'},
+            { text: "Engginer", icon: 'mdi-account', link: '/engginer'}
+          ]
+        },
+        {
+          text: "Report", icon: 'mdi-printer', child: [
+            { text: "Stock In", icon: 'mdi-download', link: '/stockin' },
+            { text: "Stock Out", icon: 'mdi-upload', link: '/stockout' } 
+          ]
+        }
       ],
       [
         { text: "WO", icon: 'mdi-map  ', link: '/leader/workorder'},

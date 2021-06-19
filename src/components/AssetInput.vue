@@ -53,18 +53,6 @@
             class="mx-3"
             required>
         </v-text-field>
-        <v-select
-            v-model="forminput.status"
-            :items="statusList"
-            :rules="selectRules"
-            item-text="name"
-            item-value="id"
-            label="Status"
-            class="mx-3"
-            return-object
-            single-line
-            required>
-        </v-select>
         <v-textarea
             v-model="forminput.description"
             :counter="300"
@@ -73,22 +61,6 @@
             class="mx-3"
             required>
         </v-textarea>
-        <v-autocomplete
-            v-model="forminput.warehouse"
-            :loading="loadingwarehouse"
-            :items="listWarehouse"
-            :search-input.sync="search_warehouse"
-            :rules="autocompleteRules"
-            item-text="name"
-            item-value="id"
-            cache-items
-            class="mx-3"
-            hide-no-data
-            hide-details=""
-            return-object
-            label="Warehouse"
-            required>
-        </v-autocomplete>
     </v-form>
 </template>
 
@@ -111,8 +83,7 @@ export default {
                 v => v && v.length >= 1 || "Input harus diisi"
             ],
             search_device: "",
-            search_brand: "",
-            search_warehouse: "",
+            search_brand: ""
         }
     },
     mounted() {
@@ -126,10 +97,6 @@ export default {
 
         if(this.forminput.device_brand) {
             this.search_brand  = this.forminput.device_brand.name
-        }
-
-        if(this.forminput.warehouse) {
-            this.search_warehouse = this.forminput.warehouse.name
         }
     },
     methods: {
@@ -161,16 +128,6 @@ export default {
             let list = this.$store.getters['asset/getListLightBrand']
             return list.length === 0 ? fakelist : list
         },
-        listWarehouse() {
-            let fakelist = []
-
-            if(this.forminput.warehouse) {
-                fakelist.push(this.forminput.warehouse)
-            }
-
-            let list = this.$store.getters['asset/getListLightWarehouse']
-            return list.length === 0 ? fakelist : list
-        },
         loadingbrand() {
             return this.$store.getters['asset/getLoadingBrand']
         },
@@ -179,9 +136,6 @@ export default {
         },
         loadingwarehouse() {
             return this.$store.getters['asset/getLoadingWarehouse']
-        },
-        statusList() {
-            return this.$store.getters['asset/getConditions']
         }
     },
     watch: {
@@ -195,12 +149,6 @@ export default {
             if(val?.trim().length >= 3) {
                 const {dispatch} = this.$store
                 dispatch('asset/searchBrand', val)
-            }
-        },
-        search_warehouse(val) {
-            if(val?.trim().length >= 3) {
-                const {dispatch} = this.$store
-                dispatch('asset/searchWarehouse', val)
             }
         }
     }

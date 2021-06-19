@@ -14,7 +14,7 @@
                     </v-card-title>
 
                     <v-card-text v-if="!pass">
-                        <WorkerInput ref="submitpanel" :edit="edit" :forminput="forminput"/>
+                        <WorkerInput ref="submitpanel" :edit="edit" :forminput="forminput" :type="`leader`"/>
                     </v-card-text>
                     <v-card-text v-else>
                         <ChangePassInput ref="changepass" :forminput="forminput"/>
@@ -27,30 +27,6 @@
                     </v-card-actions>
                 </v-card>
             </v-dialog>
-            <v-text-field
-                v-model="search"
-                append-icon="mdi-magnify"
-                label="Search"
-                single-line
-                hide-details
-                @keyup="searchAction">
-            </v-text-field>
-            <v-spacer></v-spacer>
-            <v-fab-transition>
-                <v-btn
-                    v-show="!hidden"
-                    color="primary"
-                    class="mb-2"
-                    fab
-                    dark
-                    small
-                    fixed
-                    bottom
-                    right
-                    @click="addAction">
-                    <v-icon>mdi-plus</v-icon>
-                </v-btn>
-            </v-fab-transition>
             <Dialog :dialog="alert" :title="`Delete`" :text="`Are you sure delete this?`" v-on:ok="OkButton" v-on:no="NoButton"/>
             <v-data-table
                 v-model="selected"
@@ -60,6 +36,32 @@
                 :server-items-length="lentable"
                 :loading="isLoading"
                 class="elevation-1">
+                <template v-slot:top>
+                    <v-toolbar flat>
+                        <v-text-field
+                            v-model="search"
+                            append-icon="mdi-magnify"
+                            label="Search"
+                            single-line
+                            hide-details
+                            class="mx-12"
+                            @keyup="searchAction">
+                        </v-text-field>
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                                <v-btn
+                                    color="primary"
+                                    class="mx-2"
+                                    v-on="on"
+                                    dark
+                                    @click="addAction">
+                                    <v-icon>mdi-plus</v-icon>
+                                </v-btn>
+                            </template>
+                            <span>Create New Asset</span>
+                        </v-tooltip>
+                    </v-toolbar>
+                </template>
                 <template v-slot:[`item.actions`]="{ item }">
                     <v-icon
                         small
@@ -81,6 +83,26 @@
                     </v-icon>
                 </template>
             </v-data-table>
+            <v-snackbar
+                :value="errorMsg"
+                :color="color"
+                :multi-line="mode === 'multi-line'"
+                :timeout="timeout"
+                :vertical="mode === 'vertical'"
+                >
+                {{ errorMsg }}
+                <v-divider
+                class="mx-4"
+                inset
+                vertical
+                ></v-divider>
+                <v-btn
+                    dark
+                    text
+                    @click="removeError()">
+                    Close
+                </v-btn>
+            </v-snackbar>
         </v-container>
     </v-main>
 </template>
@@ -129,6 +151,7 @@ export default {
             timeout: 6000,
             color: '',
             mode: '',
+            id_server_account: -1
         }
     },
     created () {
@@ -166,7 +189,7 @@ export default {
 
             this.idselected = -1
 
-            this.formTitle = 'Add Leader'
+            this.formTitle = 'Add Engginer'
 
             dispatch('engginer/removeError')
             dispatch('engginer/openDialog')
@@ -190,7 +213,7 @@ export default {
                 location: {id: location, name: locationname}
             }
 
-            this.formTitle = 'Edit Leader'
+            this.formTitle = 'Edit Engginer'
 
             const {dispatch} = this.$store
 
@@ -219,6 +242,7 @@ export default {
         deleteAction(item) {
             const index = this.table.indexOf(item)
             this.alert = true
+            this.id_server_account = item.id
             this.idselected = index
         },
         closeDialog() {
@@ -230,15 +254,21 @@ export default {
             }
         },
         save() {
-            if(this.idselected === -1) {
-                this.submitAPI()
+            if(this.pass) {
+                this.changePassAPI()
             } else {
-                this.editAPI()
+                if(this.idselected === -1) {
+                    this.submitAPI()
+                } else {
+                    this.editAPI()
+                }
             }
         },
         OkButton(){
+            if(this.isLoading) return
+
             const {dispatch} = this.$store
-            dispatch('engginer/deleteList', this.table[this.idselected].id)
+            dispatch('engginer/deleteList', this.id_server_account)
 
             this.alert = false
             this.idselected = -1
@@ -264,7 +294,7 @@ export default {
             }
 
             dispatch('engginer/reqList', {index: page, rows: itemsPerPage, search: this.search, sortby: this.sortbylast, sort: this.sorting})
-        },
+        },        
         submitAPI() {
             if(this.isLoading) return
 
@@ -275,31 +305,25 @@ export default {
                     firstname:      this.forminput.firstname,
                     lastname:       this.forminput.lastname,
                     username:       this.forminput.username,
-                    location_id:    this.forminput.location.id,
-                    location_name:  this.forminput.location.name
+                    password:       this.forminput.password,
+                    location:       this.forminput.location.id
                 }
                 dispatch('engginer/insertList', data)
             }
 
             dispatch('engginer/closeDialog')
-
-            setTimeout(()=> {
-                this.getDataFromAPI()
-            }, 1000)
         },
         editAPI() {
             if(this.isLoading) return
 
+            const {dispatch} = this.$store
             if(this.$refs.submitpanel.isValid()) {
-                const {dispatch} = this.$store
 
                 let data = {
-                    id: this.forminput.id,
+                    id:             this.forminput.id,
                     firstname:      this.forminput.firstname,
                     lastname:       this.forminput.lastname,
-                    username:       this.forminput.username,
-                    location_id:    this.forminput.location.id,
-                    location_name:  this.forminput.location.name
+                    location:       this.forminput.location.id
                 }
                 dispatch('engginer/updateList', data)
             }
@@ -307,16 +331,27 @@ export default {
             dispatch('engginer/closeDialog')
 
             this.idselected = -1
+        },
+        changePassAPI() {
+            if(this.isLoading) return
 
-            setTimeout(()=> {
-                this.getDataFromAPI()
-            }, 1000)
+            const {dispatch} = this.$store
+
+            if(this.$refs.changepass.isValid()) {
+                let data = {id: this.forminput.id, password: this.forminput.password}
+                dispatch('engginer/updatePassword', data)
+            }
+
+            dispatch('engginer/closeDialog')
         },
         deleteAPI() {
             if(this.isLoading) return
         }
     },
     computed: {
+        updateStat() {
+            return this.$store.getters['engginer/getUpdate']
+        },
         table() {
             return this.$store.getters['engginer/getAllItems']
         },
@@ -343,14 +378,6 @@ export default {
         }
     },
     watch: {
-        dialogStatus: {
-            handler(val) {
-                if(!val) {
-                    this.close()
-                }
-            },
-            deep: true
-        },
         options: {
             handler(val) {
                 this.getDataFromAPI()
@@ -360,6 +387,28 @@ export default {
         params: {
             handler(val) {
                 this.getDataFromAPI()
+            },
+            deep: true
+        },
+        updateStat: {
+            handler(val) {
+                if(val) {
+                    this.getDataFromAPI()
+                }
+            },
+            deep: true
+        },
+        dialogStatus: {
+            handler(val) {
+                if(!val) {
+                    if(this.$refs.submitpanel) {
+                        this.$refs.submitpanel.resetForm()
+                    }
+
+                    if(this.$refs.workorderinput) {
+                        this.$refs.workorderinput.resetForm()
+                    }
+                }
             },
             deep: true
         }

@@ -47,18 +47,6 @@
                                     color="primary"
                                     class="mx-2"
                                     v-on="on"
-                                    dark>
-                                    <v-icon>mdi-printer</v-icon>
-                                </v-btn>
-                            </template>
-                            <span>Print Asset</span>
-                        </v-tooltip>
-                        <v-tooltip bottom>
-                            <template v-slot:activator="{ on }">
-                                <v-btn
-                                    color="primary"
-                                    class="mx-2"
-                                    v-on="on"
                                     dark
                                     @click="addAction">
                                     <v-icon>mdi-plus</v-icon>
@@ -96,7 +84,6 @@
                     <v-tooltip bottom>
                         <template v-slot:activator="{ on }">
                             <v-icon
-                                v-if="item.workorder_id === null"
                                 small
                                 class="mr-3"
                                 v-on="on"
@@ -174,7 +161,6 @@ export default {
                 {text: 'Model', value: 'model', sortable: false},
                 {text: 'Serial Number', value: 'serial_number', sortable: false},
                 {text: 'Description', value: 'description', sortable: false},
-                {text: 'Warehouse', value: 'warehousename', sortable: false},
                 {text: 'Actions', value: 'actions', sortable: false}
             ],
             idselected: -1,
@@ -334,10 +320,7 @@ export default {
                 brand_id:       this.forminput.device_brand.id,
                 model:          this.forminput.model,
                 serial_number:  this.forminput.serial_number,
-                condition_id:   this.forminput.status.id,
-                condition_name: this.forminput.status.name,
-                description:    this.forminput.description,
-                warehouse_id:   this.forminput.warehouse.id,
+                description:    this.forminput.description
             }
 
             const {dispatch} = this.$store
@@ -357,10 +340,7 @@ export default {
                 brand_id:       this.forminput.device_brand.id,
                 model:          this.forminput.model,
                 serial_number:  this.forminput.serial_number,
-                condition_id:   this.forminput.status.id,
-                condition_name: this.forminput.status.name,
-                description:    this.forminput.description,
-                warehouse_id:   this.forminput.warehouse.id,
+                description:    this.forminput.description
             }
 
             const {dispatch} = this.$store

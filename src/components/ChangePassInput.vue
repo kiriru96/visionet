@@ -31,6 +31,11 @@ export default {
         return {
             showpass: false
         }
+    },
+    methods: {
+        isValid() {
+            return this.$refs.form.validate()
+        }
     }
 }
 </script>

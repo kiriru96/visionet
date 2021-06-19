@@ -14,7 +14,7 @@
                     </v-card-title>
 
                     <v-card-text v-if="!pass">
-                        <WorkerInput ref="submitpanel" :edit="edit" :forminput="forminput"/>
+                        <WorkerInput ref="submitpanel" :edit="edit" :forminput="forminput" :type="`leader`"/>
                     </v-card-text>
                     <v-card-text v-else>
                         <ChangePassInput ref="changepass" :forminput="forminput"/>
@@ -27,30 +27,6 @@
                     </v-card-actions>
                 </v-card>
             </v-dialog>
-            <v-text-field
-                v-model="search"
-                append-icon="mdi-magnify"
-                label="Search"
-                single-line
-                hide-details
-                @keyup="searchAction">
-            </v-text-field>
-            <v-spacer></v-spacer>
-            <v-fab-transition>
-                <v-btn
-                    v-show="!hidden"
-                    color="primary"
-                    class="mb-2"
-                    fab
-                    dark
-                    small
-                    fixed
-                    bottom
-                    right
-                    @click="addAction">
-                    <v-icon>mdi-plus</v-icon>
-                </v-btn>
-            </v-fab-transition>
             <Dialog :dialog="alert" :title="`Delete`" :text="`Are you sure delete this?`" v-on:ok="OkButton" v-on:no="NoButton"/>
             <v-data-table
                 v-model="selected"
@@ -60,6 +36,32 @@
                 :server-items-length="lentable"
                 :loading="isLoading"
                 class="elevation-1">
+                <template v-slot:top>
+                    <v-toolbar flat>
+                        <v-text-field
+                            v-model="search"
+                            append-icon="mdi-magnify"
+                            label="Search"
+                            single-line
+                            hide-details
+                            class="mx-12"
+                            @keyup="searchAction">
+                        </v-text-field>
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                                <v-btn
+                                    color="primary"
+                                    class="mx-2"
+                                    v-on="on"
+                                    dark
+                                    @click="addAction">
+                                    <v-icon>mdi-plus</v-icon>
+                                </v-btn>
+                            </template>
+                            <span>Create New Asset</span>
+                        </v-tooltip>
+                    </v-toolbar>
+                </template>
                 <template v-slot:[`item.actions`]="{ item }">
                     <v-icon
                         small
@@ -81,6 +83,26 @@
                     </v-icon>
                 </template>
             </v-data-table>
+            <v-snackbar
+                :value="errorMsg"
+                :color="color"
+                :multi-line="mode === 'multi-line'"
+                :timeout="timeout"
+                :vertical="mode === 'vertical'"
+                >
+                {{ errorMsg }}
+                <v-divider
+                class="mx-4"
+                inset
+                vertical
+                ></v-divider>
+                <v-btn
+                    dark
+                    text
+                    @click="removeError()">
+                    Close
+                </v-btn>
+            </v-snackbar>
         </v-container>
     </v-main>
 </template>
@@ -159,6 +181,7 @@ export default {
             this.lastY = this.currentY
         },
         addAction() {
+            this.pass = false
             this.edit = false
             const {dispatch} = this.$store
 
@@ -170,6 +193,7 @@ export default {
             dispatch('backupleader/openDialog')
         },
         editAction(item) {
+            this.pass = false
             this.edit = true
 
             const {id, first_name, last_name, username, location, locationname} = item
@@ -227,10 +251,14 @@ export default {
             }
         },
         save() {
-            if(this.idselected === -1) {
-                this.submitAPI()
+            if(this.pass) {
+                this.changePassAPI()
             } else {
-                this.editAPI()
+                if(this.idselected === -1) {
+                    this.submitAPI()
+                } else {
+                    this.editAPI()
+                }
             }
         },
         OkButton(){
@@ -268,7 +296,12 @@ export default {
             const {dispatch} = this.$store
 
             if(this.$refs.submitpanel.isValid()) {
-                let data = {name: this.forminput.name}
+                let data = {
+                    firstname: this.forminput.firstname,
+                    lastname: this.forminput.lastname,
+                    username: this.forminput.username,
+                    password: this.forminput.password,
+                    location: this.forminput.location.id}
                 dispatch('backupleader/insertList', data)
             }
 
@@ -284,7 +317,12 @@ export default {
             const {dispatch} = this.$store
 
             if(this.$refs.submitpanel.isValid()) {
-                let data = {id: this.forminput.id, name: this.forminput.name}
+                let data = {
+                    id: this.forminput.id, 
+                    firstname: this.forminput.firstname, 
+                    lastname: this.forminput.lastname, 
+                    location: this.forminput.location.id}
+
                 dispatch('backupleader/updateList', data)
             }
 
@@ -295,9 +333,24 @@ export default {
             setTimeout(()=> {
                 this.getDataFromAPI()
             }, 1000)
+        },
+        changePassAPI() {
+            if(this.isLoading) return
+
+            const {dispatch} = this.$store
+
+            if(this.$refs.submitpanel.isValid()) {
+                let data = {id: this.forminput.id, password: this.forminput.password}
+                dispatch('backupleader/updatePassword', data)
+            }
+
+            dispatch('backupleader/closeDialog')
         }
     },
     computed: {
+        updateStat() {
+            return this.$store.getters['backupleader/getUpdate']
+        },
         table() {
             return this.$store.getters['backupleader/getAllItems']
         },
@@ -341,6 +394,28 @@ export default {
         params: {
             handler(val) {
                 this.getDataFromAPI()
+            },
+            deep: true
+        },
+        updateStat: {
+            handler(val) {
+                if(val) {
+                    this.getDataFromAPI()
+                }
+            },
+            deep: true
+        },
+        dialogStat: {
+            handler(val) {
+                if(!val) {
+                    if(this.$refs.submitpanel) {
+                        this.$refs.submitpanel.resetForm()
+                    }
+
+                    if(this.$refs.workorderinput) {
+                        this.$refs.workorderinput.resetForm()
+                    }
+                }
             },
             deep: true
         }
