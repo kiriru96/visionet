@@ -15,6 +15,7 @@ import {engginer} from './engginer.store'
 import {home} from './home.store'
 import {workorder} from './workorder.store'
 import {wo} from './wo.store'
+import {engginerpage} from './engginerpage.store'
 import {accounts} from './account.store'
 
 Vue.use(Vuex)
@@ -36,6 +37,7 @@ export default new Vuex.Store({
     home,
     workorder,
     wo,
-    accounts
+    accounts,
+    engginerpage
   }
 })

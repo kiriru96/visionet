@@ -64,6 +64,34 @@ async function detailWO(id){
     return result
 }
 
+async function insertWO(data) {
+    let result = {
+        json: null,
+        err: null
+    }
+    
+    let reqconf = config.postdatafile(data);
+
+    try{
+        const response = await fetch(`${config.endpoint}/submitwoec`, reqconf)
+        const fetchres = await response.json()
+
+        if(response.status === 200) {
+            if(fetchres.status) {
+                result.json = fetchres
+            } else {
+                result.err = fetchres.msg
+            }
+        } else {
+            result.err = response.statusText
+        }
+    } catch(err) {
+        result.err = err
+    }
+
+    return result
+}
+
 async function insertEngginerWO(data) {
     let result = {
         json: null,
@@ -125,7 +153,71 @@ async function lightSearchEngginer(search) {
     return result
 }
 
-async function listWorkOrderEngginer(date, page) {
+async function listCloseWorkOrder(date, page) {
+    let result = {
+        json: null,
+        err: null
+    }
+
+    let reqconf = config.getconfig();
+
+    try {
+        const response  = await fetch(
+            config.getUrlParams(
+                `${config.endpoint}/listwoec/close`, 
+                {date: date, page: page}), 
+                reqconf)
+        const fetchres  = await response.json()
+        
+        if(response.status === 200) {
+            if(fetchres.status) {
+                result.json = fetchres
+            } else {
+                result.err = fetchres.msg
+            }
+        } else {
+            result.err = response.statusText
+        }
+    } catch(err) {
+        result.err = err
+    }
+
+    return result
+}
+
+async function listProgressWorkOrder(date, page) {
+    let result = {
+        json: null,
+        err: null
+    }
+
+    let reqconf = config.getconfig();
+
+    try {
+        const response  = await fetch(
+            config.getUrlParams(
+                `${config.endpoint}/listwoec/progress`, 
+                {date: date, page: page}), 
+                reqconf)
+        const fetchres  = await response.json()
+        
+        if(response.status === 200) {
+            if(fetchres.status) {
+                result.json = fetchres
+            } else {
+                result.err = fetchres.msg
+            }
+        } else {
+            result.err = response.statusText
+        }
+    } catch(err) {
+        result.err = err
+    }
+
+    return result
+}
+
+async function listSubmitEngginer(date, page) {
     let result = {
         json: null,
         err: null
@@ -157,10 +249,46 @@ async function listWorkOrderEngginer(date, page) {
     return result
 }
 
+async function listWorkOrderEngginer(date, page) {
+    let result = {
+        json: null,
+        err: null
+    }
+
+    let reqconf = config.getconfig();
+
+    try {
+        const response  = await fetch(
+            config.getUrlParams(
+                `${config.endpoint}/listengginerworkorder`, 
+                {date: date, page: page}), 
+                reqconf)
+        const fetchres  = await response.json()
+        
+        if(response.status === 200) {
+            if(fetchres.status) {
+                result.json = fetchres
+            } else {
+                result.err = fetchres.msg
+            }
+        } else {
+            result.err = response.statusText
+        }
+    } catch(err) {
+        result.err = err
+    }
+
+    return result
+}
+
 export const manual = {
     listWorkOrder,
     detailWO,
     insertEngginerWO,
     lightSearchEngginer,
-    listWorkOrderEngginer
+    listWorkOrderEngginer,
+    insertWO,
+    listCloseWorkOrder,
+    listProgressWorkOrder,
+    listSubmitEngginer
 }

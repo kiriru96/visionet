@@ -12,7 +12,7 @@ function getHeaders(token){
   }
   function getHeadersv2(token){
     let headers = !token || token.trim() === '' ? {
-      'Access-Control-Allow-Origin':'*',
+      'Access-Control-Allow-Origin':'*'
     } : {
       'Access-Control-Allow-Origin':'*',
       "Authorization": `Barear ${token}`

@@ -18,7 +18,9 @@ export const wo = {
         lightSearchEngginer: []
     },
     actions: {
-        async nextList({commit}, {date, page}) {
+        async nextList({commit, state}, {date, page}) {
+            if(state.loading) return
+
             commit('removeError')
             commit('setLoading', true)
 
@@ -27,12 +29,12 @@ export const wo = {
             if(!res.err) {
                 commit('updateList', res.json.data.list)
             } else {
-                commit('removeList')
                 commit('setError', res.err)
             }
             commit('setLoading', false)
         },
-        async reqList({commit}, {date, page}) {
+        async reqList({commit, state}, {date, page}) {
+            if(state.loading) return
             commit('removeList')
             commit('removeError')
             commit('setLoading', true)
@@ -47,12 +49,29 @@ export const wo = {
             }
             commit('setLoading', false)
         },
-        async reqListHistory({commit}, {date, page, next}) {
+        async nextListHistory({commit, state}, {date, page}) {
+            if(state.loading) return
+            
+            commit('removeError')
+            commit('setLoading', true)
+
+            let res = await manual.listSubmitEngginer(date, page)
+            
+            if(!res.err) {
+                commit('updateList', res.json.data.list)
+            } else {
+                commit('setError', res.err)
+            }
+            commit('setLoading', false)
+        },
+        async reqListHistory({commit, state}, {date, page, next}) {
+            if(state.loading) return
+
             commit('removeList')
             commit('removeError')
             commit('setLoading', true)
 
-            let res = await manual.listWorkOrderEngginer(date, page)
+            let res = await manual.listSubmitEngginer(date, page)
 
             if(!res.err) {
                 if(next) {

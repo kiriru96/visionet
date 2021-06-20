@@ -30,37 +30,22 @@
                             :src="item"
                             style="margin: 2px">
                         </v-img>
-                        <v-textarea
+                        <v-list-item-title
                             v-model="description_list[i]"
                             :counter="100"
                             rows="3"
                             label="Description">
-                        </v-textarea>
-                        <v-icon
-                            color="primary"
-                            @click="removeImage(i)">
-                            mdi-delete
-                        </v-icon>
+                        </v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
             <v-btn
-                :disabled="(image_list.length >= 3)"
                 block
                 color="primary"
                 dark
-                @click="selectImage"
+                @click="confitmWO"
                 style="margin-bottom: 5px;margin-top: 5px">
-                <v-icon>mdi-camera</v-icon>
-            </v-btn>
-            <v-btn
-                :disabled="(image_list.length < 1)"
-                block
-                color="primary"
-                dark
-                @click="submitWO"
-                style="margin-bottom: 5px;margin-top: 5px">
-                <v-icon>mdi-send</v-icon>
+                Confirm
             </v-btn>
             <input
                 ref="fileinput"
@@ -82,6 +67,9 @@
 
 <script>
 export default {
+    components: {
+        Dialog: () => import('../../components/Dialog.vue')
+    },  
     props: {
         workobject: Object
     },

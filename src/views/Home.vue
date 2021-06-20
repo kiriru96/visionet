@@ -1,51 +1,8 @@
 <template>
   <v-main>
     <v-container fill-width
-       class="d-flex justify-space-between flex-wrap">
-       <v-row
-      no-gutters
-      style="flex-wrap: wrap;"
-    >
-      <v-col
-        cols="1"
-        style="min-width: 100px; max-width: 100%;"
-        class="flex-grow-1 flex-shrink-0"
-      >
-        <v-card
-          class="pa-2"
-          outlined
-          tile
-        >
-          I'm 1 column wide and I grow to take all the space
-        </v-card>
-      </v-col>
-      <v-col
-        cols="1"
-        style="min-width: 100px; max-width: 100%;"
-        class="flex-grow-1 flex-shrink-0"
-      >
-        <v-card
-          class="pa-2"
-          outlined
-          tile
-        >
-          I'm 1 column wide and I grow to take all the space
-        </v-card>
-      </v-col>
-      <v-col
-        cols="1"
-        style="min-width: 100px; max-width: 100%;"
-        class="flex-grow-1 flex-shrink-0"
-      >
-        <v-card
-          class="pa-2"
-          outlined
-          tile
-        >
-          I'm 1 column wide and I grow to take all the space
-        </v-card>
-      </v-col>
-    </v-row>
+      v-if="userType === 0"
+      class="d-flex justify-space-between flex-wrap">
       <v-card        
         class="pa-2"
         style="margin:10px"
@@ -167,6 +124,15 @@
         </v-card-actions>
       </v-card>
     </v-container>
+    <v-container
+      v-else>
+      <v-img
+        contain
+        :height="120"
+        lazy-src="../assets/visionet.jpg"
+        src="../assets/visionet.jpg">
+      </v-img>
+    </v-container>
     <v-snackbar
         :value="errorMsg"
         :color="color"
@@ -209,9 +175,11 @@ export default {
     getHomeAPI() {
       if(this.isLoading) return
       
-      const {dispatch} = this.$store
+      if(this.userType === 0) {
+        const {dispatch} = this.$store
 
-      dispatch('home/getHomeData')
+        dispatch('home/getHomeData')
+      }
     }
   },
   computed: {
@@ -220,6 +188,9 @@ export default {
     },
     isLoading() {
       return this.$store.getters['home/getLoading']
+    },
+    userType() {
+      return this.$store.getters['auth/getUserType']
     },
     errorMsg() {
       return this.$store.getters['home/getError']

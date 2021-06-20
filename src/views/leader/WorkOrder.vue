@@ -53,14 +53,33 @@
                     <v-list-item-subtitle v-text="item.customername"></v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
-            <v-spacer></v-spacer>
-            <v-spacer></v-spacer>
             <v-btn
                 style="margin-top: 30px"
                 block
                 @click="nextList">
                 Next
             </v-btn>
+            <v-snackbar
+            :value="responseMsg"
+            :color="color"
+            :multi-line="mode === 'multi-line'"
+            :timeout="timeout"
+            :vertical="mode === 'vertical'"
+            >
+                {{ responseMsg }}
+                <v-divider
+                class="mx-4"
+                inset
+                vertical
+                ></v-divider>
+                <v-btn
+                    dark
+                    text
+                    @click="removeError()"
+                >
+                    Close
+                </v-btn>
+            </v-snackbar>
         </v-container>
     </v-main>
 </template>

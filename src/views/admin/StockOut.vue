@@ -1,22 +1,7 @@
 <template>
     <v-main>
         <v-container fill-width>
-            <v-date-picker
-                full-width
-                v-model="dates"
-                range>
-            </v-date-picker>
-                <div class="text-center">
-                <v-chip
-                    class="ma-2">
-                    From : {{dates[0]}}
-                </v-chip>
-                <v-chip
-                    class="ma-2">
-                    To : {{dates[1] ? dates[1] : "????-??-??"}}
-                </v-chip>
-            </div>
-            <v-card>
+            <v-list>
                 <v-simple-table>
                     <template v-slot:default>
                         <thead>
@@ -31,10 +16,7 @@
                                     Quantity
                                 </th>
                                 <th class="text-left">
-                                    Date
-                                </th>
-                                <th class="text-left">
-                                    CC
+                                    Opsi
                                 </th>
                             </tr>
                         </thead>
@@ -50,17 +32,32 @@
                         </tbody>
                     </template>
                 </v-simple-table>
-            </v-card>
+            </v-list>
         </v-container>
     </v-main>
 </template>
 
 <script>
 export default {
+    components: {
+
+    },
     data() {
         return {
-            dates: [new Date().toISOString().substr(0, 10), new Date().toISOString().substr(0, 10)]
+            items:[]
         }
+    },
+    methods: {
+        
+    },
+    created: {
+
+    },
+    computed: {
+
+    },
+    watch: {
+
     }
 }
 </script>

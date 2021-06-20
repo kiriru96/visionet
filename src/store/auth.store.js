@@ -3,8 +3,9 @@ import router from '../router';
 
 const token = localStorage.getItem("token");
 const user_type = localStorage.getItem("user_type");
+const name = localStorage.getItem("name")
 
-const initState = token ? {isLogged: true, token: token, loading: false, err_msg: null, user_type: user_type} : {isLogged: false, token: 'null', loading: false, err_msg: null, user_type: null};
+const initState = token ? {isLogged: true, token: token, loading: false, err_msg: null, user_type: user_type, name: name} : {isLogged: false, token: 'null', loading: false, err_msg: null, user_type: null, name: ''};
 const typeList = ['Admin', 'Leader', 'Backup Leader', 'Enginner'];
 
 export const auth = {
@@ -20,7 +21,7 @@ export const auth = {
             let res = await login.authentication(data.username, data.password, typeIndex);
 
             if(!res.err) {
-                commit('saveUser', {token: res.json.token, user_type: typeIndex})
+                commit('saveUser', {token: res.json.token, user_type: typeIndex, name: res.json.data.name})
                 commit('setLogged', true)
                 router.push('/')
             } else {
@@ -54,12 +55,16 @@ export const auth = {
         },
         getUserType(state) {
             return state.user_type;
+        },
+        getName(state) {
+            return state.name
         }
     },
     mutations: {
-        saveUser(state, {token, user_type}) {
+        saveUser(state, {token, user_type, name}) {
             localStorage.setItem("token", token);
             localStorage.setItem("user_type", user_type);
+            localStorage.setItem("name", name)
             state.token     = token;
             state.user_type = user_type;
         },

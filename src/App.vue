@@ -20,9 +20,14 @@
       <v-list>
           <v-list-item @click="toLocation('/profile')">
             <v-list-item-avatar size="80">
-              <v-icon x-large>mdi-account</v-icon>
+              <v-img
+                contain
+                :height="120"
+                lazy-src="./assets/avatar.png"
+                src="./assets/avatar.png">
+              </v-img>
             </v-list-item-avatar>
-            <v-list-item-title>Admin</v-list-item-title>
+            <v-list-item-title>{{nameAccount}}</v-list-item-title>
           </v-list-item>
           <v-list
             nav
@@ -43,7 +48,7 @@
               <v-list-item
                 v-for="(item, i) in items[userType]"
                 :key="i"
-                @click="$router.push(item.link)">
+                @click="toLocation(item.link)">
                 <v-list-item-icon>
                   <v-icon v-text="item.icon"></v-icon>
                 </v-list-item-icon>
@@ -153,7 +158,6 @@ export default {
         { text: "WO confirm", icon: 'mdi-history  ', link: '/leader/workorderhistory'}
       ],
       [
-        { text: "Dashboard", icon: 'mdi-home', link: '/'},
         { text: "WO", icon: 'mdi-map  ', link: '/engginer/workorder'},
         { text: "Work Order History", icon: 'mdi-history  ', link: '/engginer/workorderhistory'}
       ]
@@ -190,6 +194,9 @@ export default {
     },
     userType() {
       return this.$store.getters['auth/getUserType']
+    },
+    nameAccount() {
+      return this.$store.getters['auth/getName']
     },
     titleBar() {
       return this.$route.meta.title

@@ -87,7 +87,10 @@ export default {
         },
         nextList() {
             this.page += 1
-            this.requestListAPI(true)
+            
+            const {dispatch} = this.$store
+
+            dispatch('wo/nextListHistory', {date: this.date, page: this.page})
         },
         requestListAPI(next) {
             if(this.isLoading) return
