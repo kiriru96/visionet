@@ -130,6 +130,7 @@ export default {
             { text: "Customer", icon: 'mdi-account-multiple', link: '/customer'},
             { text: "Device", icon: 'mdi-hammer-wrench', link: '/device'},
             { text: "Location", icon: 'mdi-map  ', link: '/location'},
+            { text: "Stock", icon: 'mdi-folder', link: '/stock'},
             { text: "Stock In", icon: 'mdi-arrow-down', link: '/stockin'},
             { text: "Stock Out", icon: 'mdi-arrow-up', link: '/stockout'},
             { text: "Work Order", icon: 'mdi-briefcase', link: '/workorder'}

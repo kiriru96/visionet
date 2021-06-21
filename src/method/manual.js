@@ -64,6 +64,34 @@ async function detailWO(id){
     return result
 }
 
+async function confirmWO(data) {
+    let result = {
+        json: null,
+        err: null
+    }
+    
+    let reqconf = config.postdataconfig(data);
+
+    try{
+        const response = await fetch(`${config.endpoint}/confirmwork`, reqconf)
+        const fetchres = await response.json()
+
+        if(response.status === 200) {
+            if(fetchres.status) {
+                result.json = fetchres
+            } else {
+                result.err = fetchres.msg
+            }
+        } else {
+            result.err = response.statusText
+        }
+    } catch(err) {
+        result.err = err
+    }
+
+    return result
+}
+
 async function insertWO(data) {
     let result = {
         json: null,
@@ -290,5 +318,6 @@ export const manual = {
     insertWO,
     listCloseWorkOrder,
     listProgressWorkOrder,
-    listSubmitEngginer
+    listSubmitEngginer,
+    confirmWO
 }

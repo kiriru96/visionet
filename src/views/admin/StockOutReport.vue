@@ -70,10 +70,13 @@
                         </tbody>
                     </template>
                 </v-simple-table>
-                <v-btn>
-                    <v-icon>mdi-printer</v-icon>
-                </v-btn>
             </v-card>
+            <v-btn
+                color="primary"
+                @click="printTable"
+                style="margin:10px">
+                <v-icon>mdi-printer</v-icon>
+            </v-btn>
         </v-container>
     </v-main>
 </template>
@@ -95,6 +98,14 @@ export default {
             const {dispatch} = this.$store
 
             dispatch('stockin/tableReportStockOut', {startdate:this.dates[0], enddate:this.dates[1]})
+        },
+        printTable() {
+            if(this.reportTable.length > 0 && this.dates.length >= 2) {
+                const win = window.open(`http://localhost/visionet-api/report/stockin?startdate=${this.dates[0]}&enddate=${this.dates[1]}`, '_black')
+                win.onloadstart(()=> {
+                    win.print()
+                })
+            }
         }
     },
     computed: {

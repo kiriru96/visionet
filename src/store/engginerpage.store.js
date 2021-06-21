@@ -16,12 +16,15 @@ export const engginerpage = {
             customer: '',
             location: ''
         },
+        engginer_submit_id: 0,
         dialog: false,
         list_progress: [],
         list_close: [],
         lightSearchEngginer: [],
         date_wo: new Date().toISOString().substr(0, 10),
-        date_history: new Date().toISOString().substr(0, 10)
+        date_history: new Date().toISOString().substr(0, 10),
+        pic_list: [],
+        desc_list: []
     },
     actions: {
         async nextList({commit, state}, {date, page}) {
@@ -163,6 +166,21 @@ export const engginerpage = {
             }
             commit('setLoading', false)
         },
+        async confirmWO({commit, state}, data) {
+            if(state.loading) return
+
+            commit('removeError')
+            commit('setLoading', true)
+
+            let res = await manual.confirmWO(data)
+
+            if(!res.err) {
+                commit('setError', 'Berhasil mengirim.')
+            } else {
+                commit('setError', res.err)
+            }
+            commit('setLoading', false)
+        },
         openDialog({commit}) {
             commit('setDialog', true)
         },
@@ -227,6 +245,15 @@ export const engginerpage = {
         },
         getLoadingListClose(state) {
             return state.loading_list_close
+        },
+        getPicList(state) {
+            return state.pic_list
+        },
+        getDescList(state) {
+            return state.desc_list
+        },
+        getEngginerSubmitId(state) {
+            return state.engginer_submit_id
         }
     },
     mutations: {
@@ -243,6 +270,11 @@ export const engginerpage = {
             state.lightSearchEngginer = list
         },
         setDetail(state, data) {
+            state.pic_list  = JSON.parse(data.pic_list)
+            state.desc_list = JSON.parse(data.desc_list)
+
+            state.engginer_submit_id = data.engginer_submit_id
+
             state.detail = {
                 woid: data.id,
                 assetid: data.asset_id,

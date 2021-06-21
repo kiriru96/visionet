@@ -264,6 +264,36 @@ async function listWorkOrder({index, rows, search, sortby, sort}) {
     return result
 }
 
+async function detailStock() {
+    let result = {
+        json: null,
+        err: null
+    }
+
+    let reqconf = config.getconfig();
+
+    try {
+        const response  = await fetch(
+                `${config.endpoint}/stock`, 
+                reqconf)
+        const fetchres  = await response.json()
+        
+        if(response.status === 200) {
+            if(fetchres.status) {
+                result.json = fetchres
+            } else {
+                result.err = fetchres.msg
+            }
+        } else {
+            result.err = response.statusText
+        }
+    } catch(err) {
+        result.err = err
+    }
+
+    return result
+}
+
 export const assets = {
     list,
     deletes,
@@ -272,5 +302,6 @@ export const assets = {
     searchLight,
     createWorkOrder,
     updateWorkOrder,
-    listWorkOrder
+    listWorkOrder,
+    detailStock
 }

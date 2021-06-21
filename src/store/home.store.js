@@ -3,12 +3,10 @@ import {homereq} from '../method'
 export const home = {
     namespaced: true,
     state: {
-        alldata: 0,
-        newdata: 0,
-        useddata: 0,
-        damageddata: 0,
-        repaireddata: 0,
-        dumpdata: 0,
+        customer: 0,
+        assets: 0,
+        wo: 0,
+        stock: 0,
         loading: false,
         err: null
     },
@@ -22,7 +20,7 @@ export const home = {
             if(!res.err) {
                 let data = res.json.data
 
-                commit('setData', {_all: data.all, _new: data.new, _used: data.used, _damaged: data.damaged, _repaired: data.repaired, _dump: data.dump})
+                commit('setData', {customer: data.customer, assets: data.assets, wo: data.wo, stock: data.stock})
             } else {
                 commit('setError', res.err)
             }
@@ -36,12 +34,10 @@ export const home = {
     getters: {
         getData(state) {
             return {
-                all: state.alldata,
-                new: state.newdata,
-                used: state.useddata,
-                damaged: state.damageddata,
-                repaired: state.repaireddata,
-                dump: state.dumpdata
+                customer: state.customer,
+                assets: state.assets,
+                wo: state.wo,
+                stock: state.stock
             }
         },
         getLoading(state) {
@@ -52,13 +48,11 @@ export const home = {
         }
     },
     mutations: {
-        setData(state, {_all, _new, _used, _damaged, _repaired, _dump}) {
-            state.alldata       = _all
-            state.newdata       = _new
-            state.useddata      = _used
-            state.damageddata   = _damaged
-            state.repaireddata  = _repaired
-            state.dumpdata      = _dump
+        setData(state, {customer, assets, wo, stock}) {
+            state.customer       = customer
+            state.assets       = assets
+            state.wo      = wo
+            state.stock   = stock
         },
         setLoading(state, stat) {
             state.loading = stat

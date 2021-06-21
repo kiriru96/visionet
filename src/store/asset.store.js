@@ -21,7 +21,8 @@ export const asset = {
         loadingBrand: false,
         loadingWarehouse: false,
         loadingLocation: false,
-        loadingCustomer: false
+        loadingCustomer: false,
+        detailStock: null
     },
     actions: {
         async reqList({commit, state}, {index, rows, search, sortby, sort}) {
@@ -110,6 +111,15 @@ export const asset = {
             }
             
             commit('setLoading', false)
+        },
+        async getDetailStock({commit}) {
+            let res = await assets.detailStock()
+
+            if(!res.err) {
+                commit('setDetailStock', res.json.data)
+            } else {
+                commit('setError', res.err)
+            }
         },
         openDialog({commit}) {
             commit('setDialog', true)
@@ -266,9 +276,15 @@ export const asset = {
         },
         getConditions(state) {
             return state.lightSearchCondition
+        },
+        getDetailStock(state) {
+            return state.detailStock
         }
     },
     mutations: {
+        setDetailStock(state, data) {
+            state.detailStock = data
+        },
         setUpdate(state, stat) {
             state.update = stat
         },

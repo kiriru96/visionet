@@ -1,128 +1,95 @@
 <template>
   <v-main>
     <v-container fill-width
-      v-if="userType === 0"
+      v-if="userType == 0"
       class="d-flex justify-space-between flex-wrap">
-      <v-card        
-        class="pa-2"
-        style="margin:10px"
-        max-width="380"
-        min-width="350"
-        color="#26c6da"
-        dark
-        outlined>
-        <v-card-title class="text-h5">
-          All Asset
-        </v-card-title>
-        <v-card-subtitle>
-          {{homeData.all}}
-        </v-card-subtitle>
-        <v-card-actions>
-          <v-btn text>
-            View Detail
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-      <v-card        
-        class="pa-2"
-        style="margin:10px"
-        max-width="380"
-        min-width="350"
-        color="#26da94"
-        dark
-        outlined>
-        <v-card-title class="text-h5">
-          New Asset
-        </v-card-title>
-        <v-card-subtitle>
-          {{homeData.new}}
-        </v-card-subtitle>
-        <v-card-actions>
-          <v-btn text>
-            View Detail
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-      <v-card        
-        class="pa-2"
-        style="margin:10px"
-        max-width="380"
-        min-width="350"
-        color="#2677da"
-        dark
-        outlined>
-        <v-card-title class="text-h5">
-          Used Asset
-        </v-card-title>
-        <v-card-subtitle>
-          {{homeData.used}}
-        </v-card-subtitle>
-        <v-card-actions>
-          <v-btn text>
-            View Detail
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-      <v-card        
-        class="pa-2"
-        style="margin:10px"
-        max-width="380"
-        min-width="350"
-        color="#da2641"
-        dark
-        outlined>
-        <v-card-title class="text-h5">
-          Damaged Asset
-        </v-card-title>
-        <v-card-subtitle>
-          {{homeData.damaged}}
-        </v-card-subtitle>
-        <v-card-actions>
-          <v-btn text>
-            View Detail
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-      <v-card        
-        class="pa-2"
-        style="margin:10px"
-        max-width="380"
-        min-width="350"
-        color="#dada26"
-        dark
-        outlined>
-        <v-card-title class="text-h5">
-          Reparied Asset
-        </v-card-title>
-        <v-card-subtitle>
-          {{homeData.repaired}}
-        </v-card-subtitle>
-        <v-card-actions>
-          <v-btn text>
-            View Detail
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-      <v-card        
-        class="pa-2"
-        style="margin:10px"
-        max-width="380"
-        min-width="350"
-        color="#9e9e9e"
-        dark
-        outlined>
-        <v-card-title class="text-h5">
-          Dump Asset
-        </v-card-title>
-        <v-card-subtitle>
-          {{homeData.dump}}
-        </v-card-subtitle>
-        <v-card-actions>
-          <v-btn text>
-            View Detail
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+      <v-row
+        no-gutters
+        style="height: 150px">
+        <v-col>
+          <v-card      
+            style="margin: 5px"  
+            class="pa-2"
+            color="#26c6da"
+            dark
+            outlined>
+            <v-card-title class="text-h5">
+              Customer
+            </v-card-title>
+            <v-card-subtitle v-text="homeData.customer">
+            </v-card-subtitle>
+            <v-card-actions>
+              <v-btn text
+                @click="toLocation('/customer')">
+                View Detail
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+        <v-col>
+          <v-card      
+            style="margin: 5px"  
+            class="pa-2"
+            color="#26c6da"
+            dark
+            outlined>
+            <v-card-title class="text-h5">
+              All Asset
+            </v-card-title>
+            <v-card-subtitle>
+              {{homeData.assets}}
+            </v-card-subtitle>
+            <v-card-actions>
+              <v-btn text
+                @click="toLocation('/asset')">
+                View Detail
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+        <v-col>
+          <v-card      
+            style="margin: 5px"  
+            class="pa-2"
+            color="#26c6da"
+            dark
+            outlined>
+            <v-card-title class="text-h5">
+              All Work Order
+            </v-card-title>
+            <v-card-subtitle>
+              {{homeData.wo}}
+            </v-card-subtitle>
+            <v-card-actions>
+              <v-btn text
+                @click="toLocation('workorder')">
+                View Detail
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+        <v-col>
+          <v-card      
+            style="margin: 5px"  
+            class="pa-2"
+            color="#26c6da"
+            dark
+            outlined>
+            <v-card-title class="text-h5">
+              All Stock
+            </v-card-title>
+            <v-card-subtitle>
+              {{homeData.stock}}
+            </v-card-subtitle>
+            <v-card-actions>
+              <v-btn text
+                @click="toLocation('/stock')">
+                View Detail
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
     </v-container>
     <v-container
       v-else>
@@ -138,8 +105,7 @@
         :color="color"
         :multi-line="mode === 'multi-line'"
         :timeout="timeout"
-        :vertical="mode === 'vertical'"
-        >
+        :vertical="mode === 'vertical'">
         {{ errorMsg }}
         <v-divider
         class="mx-4"
@@ -172,10 +138,15 @@ export default {
     this.getHomeAPI()
   },
   methods: {
+    toLocation(link) {
+      if(this.$route.path !== link) {
+        this.$router.push(link)
+      }
+    },
     getHomeAPI() {
       if(this.isLoading) return
       
-      if(this.userType === 0) {
+      if(this.userType == 0) {
         const {dispatch} = this.$store
 
         dispatch('home/getHomeData')
@@ -184,6 +155,7 @@ export default {
   },
   computed: {
     homeData() {
+      console.log(this.$store.getters['home/getData'])
       return this.$store.getters['home/getData']
     },
     isLoading() {

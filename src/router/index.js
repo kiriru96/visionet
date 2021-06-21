@@ -203,11 +203,26 @@ const routes = [
       title: 'Submit WO'
     },
     component: () => import(/* webpackChunkName: 'submitwo' */'../views/engginer/SubmitWorkOrder.vue')
+  },
+  {
+    path: '/stock',
+    name: 'Stock',
+    meta: {
+      title: 'Stock'
+    },
+    component: () => import(/* webpackChunkName: 'stock' */'../views/admin/Stock.vue')
+  }, {
+    path: '/leader/confirmWO',
+    name: 'ConfirmWO',
+    meta: {
+      title: 'Confirm WO'
+    },
+    component: () => import(/* webpackChunkName: 'confirmWO' */'../views/leader/DetailWOSubmit')
   }
 ]
 
 const router = new VueRouter({
-  // base: process.env.NODE_ENV === 'production' ? '/visionet-api/' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/visionet-api/' : '/',
   mode: 'history',
   routes
 })

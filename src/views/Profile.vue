@@ -1,7 +1,7 @@
 <template>
     <v-main>
         <v-container fill-width>
-            <v-card>
+            <v-card justify-center>
                 <v-list-item-content class="justify-center">
                     <div class="mx-auto text-center">
                         <v-avatar size="96" class="mr-4" justify-center>
@@ -17,6 +17,7 @@
                             class="justify-center"
                             v-show="edit_pass">
                             <v-text-field
+                                :full-width="false"
                                 ref="password"
                                 label="Password"
                                 :append-icon="showpass ? 'mdi-eye' : 'mdi-eye-off'"
@@ -27,7 +28,7 @@
                                 class="mx-2">
                             </v-text-field>
                         </v-list-item-content>
-                        <v-list-item-content class="justify-center">
+                        <v-list-item-content v-show="false" class="justify-center">
                             <v-btn
                                 max-width="200"
                                 min-width="150"

@@ -185,8 +185,6 @@ export default {
             this.lastY = this.currentY
         },
         addAction() {
-             
-            
             const {dispatch} = this.$store
 
             this.idselected = -1

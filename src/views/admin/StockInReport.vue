@@ -78,10 +78,6 @@
                 <v-icon>mdi-printer</v-icon>
             </v-btn>
         </v-container>
-        <iframe
-            ref="report"
-            style="position: absolute; top: -10000px"
-            :src="urlprint"/>
     </v-main>
 </template>
 
@@ -106,8 +102,10 @@ export default {
         },
         printTable() {
             if(this.reportTable.length > 0 && this.dates.length >= 2) {
-                this.urlprint = `http://localhost/visionet-api/report/stockin?startdate=${this.dates[0]}&enddate=${this.dates[1]}`
-                this.$refs.report.contentWindow.location.reload()
+                const win = window.open(`http://localhost/visionet-api/report/stockin?startdate=${this.dates[0]}&enddate=${this.dates[1]}`, '_black')
+                win.onloadstart(()=> {
+                    win.print()
+                })
             }
         }
     },

@@ -7,5 +7,5 @@ module.exports = {
       config.devtool = 'source-map'
     }
   },
-  // publicPath: process.env.NODE_ENV === 'production' ? '/visionet-api/' : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/visionet-api/public/' : '/',
 }
