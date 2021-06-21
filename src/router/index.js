@@ -75,15 +75,6 @@ const routes = [
     component: () => import(/* webpackChunkName: "workorder" */'../views/admin/WorkOrder.vue')
   },
   {
-    path: '/warehouse',
-    name: 'Warehouse',
-    meta: {
-      title: 'Warehouse',
-      back: true
-    },
-    component: () => import(/* webpackChunkName: "warehouse" */'../views/admin/Warehouse.vue')
-  },
-  {
     path: '/backupleader',
     name: 'Backupleader',
     meta: {
@@ -179,7 +170,31 @@ const routes = [
     meta: {
       title: 'Stock In'
     },
-    component: () => import(/* webpackChunkName: 'stockinreport' */'../views/admin/StockIn.vue')
+    component: () => import(/* webpackChunkName: 'stockin' */'../views/admin/StockIn.vue')
+  },
+  {
+    path: '/stockout',
+    name: 'StockOut',
+    meta: {
+      title: 'Stock Out'
+    },
+    component: () => import(/* webpackChunkName: 'stockout' */'../views/admin/StockOut.vue')
+  },
+  {
+    path: '/stockoutreport',
+    name: 'StockOutReport',
+    meta: {
+      title: 'Stock Out Report'
+    },
+    component: () => import(/* webpackChunkName: 'stockoutreport' */'../views/admin/StockOutReport.vue')
+  },
+  {
+    path: '/stockinreport',
+    name: 'StockInReport',
+    meta: {
+      title: 'Stock In Report'
+    },
+    component: () => import(/* webpackChunkName: 'stockinreport' */'../views/admin/StockInReport.vue')
   },
   {
     path: '/engginer/submitwo',

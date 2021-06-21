@@ -1,6 +1,38 @@
 import { config } from "./config";
 
-async function stockInHistory(path,{index, rows, search, sortby, sort}) {
+async function searchAsset(search) {
+    const result = {
+        json: null,
+        err: null
+    }
+
+    let reqconf = config.getconfig();
+
+    try {
+        const response = await fetch(
+            config.getUrlParams(
+                `${config.endpoint}/searchasset`,
+                {search: search}),
+                reqconf)
+        const fetchres = await response.json()
+
+        if(response.status === 200) {
+            if(fetchres.status) {
+                result.json = fetchres
+            } else {
+                result.err = fetchres.msg
+            }
+        } else {
+            result.err = response.statusText
+        }
+    } catch(err) {
+        result.err = err
+    }
+
+    return result
+}
+
+async function stockInHistory() {
     const result = {
         json: null,
         err: null
@@ -9,11 +41,7 @@ async function stockInHistory(path,{index, rows, search, sortby, sort}) {
     let reqconf = config.getconfig();
     
     try {
-        const response = await fetch(
-            config.getUrlParams(
-                `${config.endpoint}`, 
-                {page: index, search: search, sortby: sortby, sort: sort, rows: rows}),
-                reqconf)
+        const response = await fetch(`${config.endpoint}/liststockhistory/in`, reqconf)
 
         const fetchres = await response.json()
 
@@ -33,7 +61,7 @@ async function stockInHistory(path,{index, rows, search, sortby, sort}) {
     return result
 }
 
-async function stockOutHistory(path,{index, rows, search, sortby, sort}) {
+async function stockOutHistory() {
     const result = {
         json: null,
         err: null
@@ -42,11 +70,7 @@ async function stockOutHistory(path,{index, rows, search, sortby, sort}) {
     let reqconf = config.getconfig();
     
     try {
-        const response = await fetch(
-            config.getUrlParams(
-                `${config.endpoint}`, 
-                {page: index, search: search, sortby: sortby, sort: sort, rows: rows}),
-                reqconf)
+        const response = await fetch(`${config.endpoint}/liststockhistory/out`, reqconf)
 
         const fetchres = await response.json()
 
@@ -75,7 +99,7 @@ async function addStockInHistory(data) {
     let reqconf = config.postdataconfig(data)
 
     try {
-        const response = await fetch(`${config.endpoint}`, reqconf)
+        const response = await fetch(`${config.endpoint}/submitstockhistory/in`, reqconf)
         const fetchres = await response.json()
 
         if(response.status === 200) {
@@ -94,7 +118,7 @@ async function addStockInHistory(data) {
     return result
 }
 
-async function addStockOutHistory(asset, count) {
+async function addStockOutHistory(data) {
     const result = {
         json: null,
         err: null
@@ -103,7 +127,7 @@ async function addStockOutHistory(asset, count) {
     let reqconf = config.postdataconfig(data)
 
     try {
-        const response = await fetch(`${config.endpoint}`, reqconf)
+        const response = await fetch(`${config.endpoint}/submitstockhistory/out`, reqconf)
         const fetchres = await response.json()
 
         if(response.status === 200) {
@@ -122,7 +146,7 @@ async function addStockOutHistory(asset, count) {
     return result
 }
 
-async function removeStockIn(asset) {
+async function removeStockIn(data) {
     const result = {
         json: null,
         err: null
@@ -131,7 +155,7 @@ async function removeStockIn(asset) {
     let reqconf = config.postdataconfig(data)
 
     try {
-        const response = await fetch(`${config.endpoint}`, reqconf)
+        const response = await fetch(`${config.endpoint}/deletestockhistory/in`, reqconf)
         const fetchres = await response.json()
 
         if(response.status === 200) {
@@ -150,7 +174,7 @@ async function removeStockIn(asset) {
     return result
 }
 
-async function removeStockOut(asset) {
+async function removeStockOut(data) {
     const result = {
         json: null,
         err: null
@@ -159,7 +183,7 @@ async function removeStockOut(asset) {
     let reqconf = config.postdataconfig(data)
 
     try {
-        const response = await fetch(`${config.endpoint}`, reqconf)
+        const response = await fetch(`${config.endpoint}/deletestockhistory/out`, reqconf)
         const fetchres = await response.json()
 
         if(response.status === 200) {
@@ -178,7 +202,7 @@ async function removeStockOut(asset) {
     return result
 }
 
-async function submitListStockIn() {
+async function submitListStockIn(data) {
     const result = {
         json: null,
         err: null
@@ -187,7 +211,7 @@ async function submitListStockIn() {
     let reqconf = config.postdataconfig(data)
 
     try {
-        const response = await fetch(`${config.endpoint}`, reqconf)
+        const response = await fetch(`${config.endpoint}/submitallstockhistory/in`, reqconf)
         const fetchres = await response.json()
 
         if(response.status === 200) {
@@ -206,7 +230,7 @@ async function submitListStockIn() {
     return result
 }
 
-async function submitListStockOut() {
+async function submitListStockOut(data) {
     const result = {
         json: null,
         err: null
@@ -215,7 +239,71 @@ async function submitListStockOut() {
     let reqconf = config.postdataconfig(data)
 
     try {
-        const response = await fetch(`${config.endpoint}`, reqconf)
+        const response = await fetch(`${config.endpoint}/submitallstockhistory/out`, reqconf)
+        const fetchres = await response.json()
+
+        if(response.status === 200) {
+            if(fetchres.status) {
+                result.json = fetchres
+            } else {
+                result.err = fetchres.msg
+            }
+        } else {
+            result.err = response.statusText
+        }
+    } catch(err) {
+        result.err = err
+    }
+
+    return result
+}
+
+async function tableInHistory({startdate, enddate}) {
+    const result = {
+        json: null,
+        err: null
+    }
+
+    let reqconf = config.getconfig();
+    
+    try {
+        const response = await fetch(
+            config.getUrlParams(
+                `${config.endpoint}/reportstockin`, 
+                {startdate:startdate, enddate:enddate}), reqconf)
+
+        const fetchres = await response.json()
+
+        if(response.status === 200) {
+            if(fetchres.status) {
+                result.json = fetchres
+            } else {
+                result.err = fetchres.msg
+            }
+        } else {
+            result.err = response.statusText
+        }
+    } catch(err) {
+        result.err = err
+    }
+
+    return result
+}
+
+async function tableOutHistory({startdate, enddate}) {
+    const result = {
+        json: null,
+        err: null
+    }
+
+    let reqconf = config.getconfig();
+    
+    try {
+        const response = await fetch(
+            config.getUrlParams(
+                `${config.endpoint}/reportstockout`, 
+                {startdate:startdate, enddate:enddate}), reqconf)
+
         const fetchres = await response.json()
 
         if(response.status === 200) {
@@ -242,5 +330,8 @@ export const stock = {
     removeStockIn,
     removeStockOut,
     submitListStockIn,
-    submitListStockOuts
+    submitListStockOut,
+    searchAsset,
+    tableInHistory,
+    tableOutHistory
 }

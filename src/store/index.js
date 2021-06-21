@@ -17,6 +17,8 @@ import {workorder} from './workorder.store'
 import {wo} from './wo.store'
 import {engginerpage} from './engginerpage.store'
 import {accounts} from './account.store'
+import {stockin} from './stockin.store'
+import {stockout} from './stockout.store'
 
 Vue.use(Vuex)
 
@@ -38,6 +40,8 @@ export default new Vuex.Store({
     workorder,
     wo,
     accounts,
-    engginerpage
+    engginerpage,
+    stockin,
+    stockout
   }
 })
