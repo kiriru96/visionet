@@ -119,6 +119,7 @@ export default {
             timeout: 6000,
             color: '',
             mode: '',
+            id_server: 0
         }
     },
     methods: {
@@ -151,6 +152,8 @@ export default {
         },
         deleteAction(item) {
             const index = this.items.indexOf(item)
+            this.id_server = item.id
+
             this.alert = true
         },
         closeDialog() {
@@ -174,6 +177,10 @@ export default {
         },
         OkButton(){
             const {dispatch} = this.$store
+
+            const data = {id: this.id_server}
+
+            dispatch('workorder/deleteWorkOrder', data)
 
             this.alert = false
             this.idselected = -1
@@ -221,6 +228,9 @@ export default {
         }
     },
     computed: {
+        updateStat() {
+            return this.$store.getters['workorder/getUpdate']
+        },
         table() {
             return this.$store.getters['workorder/getList']
         },
@@ -247,6 +257,14 @@ export default {
         options: {
             handler(val) {
                 this.getDataFromAPI()
+            },
+            deep: true
+        },
+        updateStat: {
+            handler(val) {
+                if(val) {
+                    this.getDataFromAPI()
+                }
             },
             deep: true
         },

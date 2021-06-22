@@ -5,15 +5,15 @@
       class="d-flex justify-space-between flex-wrap">
       <v-row
         no-gutters
-        style="height: 150px">
+        style="height: 160px">
         <v-col>
           <v-card      
-            style="margin: 5px"  
+            style="margin: 4px"  
             class="pa-2"
             color="#26c6da"
             dark
             outlined>
-            <v-card-title class="text-h5">
+            <v-card-title>
               Customer
             </v-card-title>
             <v-card-subtitle v-text="homeData.customer">
@@ -28,13 +28,13 @@
         </v-col>
         <v-col>
           <v-card      
-            style="margin: 5px"  
+            style="margin: 4px"  
             class="pa-2"
             color="#26c6da"
             dark
             outlined>
-            <v-card-title class="text-h5">
-              All Asset
+            <v-card-title>
+              Asset
             </v-card-title>
             <v-card-subtitle>
               {{homeData.assets}}
@@ -49,13 +49,13 @@
         </v-col>
         <v-col>
           <v-card      
-            style="margin: 5px"  
+            style="margin: 4px"  
             class="pa-2"
             color="#26c6da"
             dark
             outlined>
-            <v-card-title class="text-h5">
-              All Work Order
+            <v-card-title>
+              Work Order
             </v-card-title>
             <v-card-subtitle>
               {{homeData.wo}}
@@ -70,13 +70,13 @@
         </v-col>
         <v-col>
           <v-card      
-            style="margin: 5px"  
+            style="margin: 4px"  
             class="pa-2"
             color="#26c6da"
             dark
             outlined>
-            <v-card-title class="text-h5">
-              All Stock
+            <v-card-title>
+              Stock
             </v-card-title>
             <v-card-subtitle>
               {{homeData.stock}}

@@ -281,6 +281,9 @@ export default {
         }
     },
     computed: {
+        updateStat() {
+            return this.$store.getters['location/getUpdate']
+        },
         table() {
             return this.$store.getters['location/getAllItems']
         },
@@ -310,6 +313,14 @@ export default {
         options: {
             handler(val) {
                 this.getDataFromAPI()
+            },
+            deep: true
+        },
+        updateStat: {
+            handler(val) {
+                if(val) {
+                    this.getDataFromAPI()
+                }
             },
             deep: true
         },

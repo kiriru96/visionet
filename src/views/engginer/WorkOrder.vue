@@ -79,8 +79,7 @@
                 <v-btn
                     dark
                     text
-                    @click="removeError()"
-                >
+                    @click="removeError()">
                     Close
                 </v-btn>
             </v-snackbar>

@@ -7,6 +7,7 @@ export const workorder = {
         totalitems: 0,
         loading: false,
         insert: false,
+        update: false,
         dialog: false,
         errMsg: null,
         lightSearchLocation: [],
@@ -25,6 +26,7 @@ export const workorder = {
 
             if(!res.err) {
                 commit('setList', {items: res.json.data.list, len: res.json.data.len})
+                commit('setUpdate', false)
             } else {
                 commit('removeListItem')
                 commit('setError', res.err)
@@ -38,16 +40,34 @@ export const workorder = {
             commit('setLoading', true)
             commit('setInsert', true)
 
-            let res = assets.updateWorkOrder(data)
+            let res = await assets.updateWorkOrder(data)
 
             if(!res.err) {
-
+                commit('setDialog', false)
+                commit('setUpdate', true)
             } else {
                 commit('setError', res.err)
             }
 
             commit('setLoading', false)
             commit('setInsert', false)
+        },
+        async deleteWorkOrder({commit, state}, data) {
+            if(state.loading) return
+            
+            commit('removeError')
+            commit('setLoading', true)
+            
+            let res = await assets.deleteWorkOrder(data)
+
+            if(!res.err) {
+                commit('setUpdate', true)
+                commit('setError', res.json.msg)
+            } else {
+                commit('setError', res.err)
+            }
+
+            commit('setLoading', false)
         },
         async searchLocation({commit}, search) {
             if(search.trim().length >= 3) {
@@ -119,9 +139,15 @@ export const workorder = {
         },
         getLoadingLocation(state) {
             return state.loadingLocation
+        },
+        getUpdate(state) {
+            return state.update
         }
     },
     mutations: {
+        setUpdate(state, status) {
+            state.update = status
+        },
         setInsert(state, stat) {
             state.insert = stat
         },

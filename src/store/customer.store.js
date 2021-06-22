@@ -9,6 +9,7 @@ export const customer = {
         loading: false,
         submit: false,
         dialog: false,
+        update: false,
         msg: null,
         lightSeach: []
     },
@@ -21,6 +22,7 @@ export const customer = {
 
             if(!res.err) {
                 commit('addAll', {items: res.json.data.list, len: res.json.data.len})
+                commit('setUpdate', false)
             } else {
                 commit('clear')
                 commit('setError', res.err)
@@ -35,7 +37,8 @@ export const customer = {
             let res = await basic.submit('customer', data)
 
             if(!res.err) {
-                
+                commit('setDialog', false)
+                commit('setUpdate', true)
             } else {
                 commit('setError', res.err)
             }
@@ -49,7 +52,8 @@ export const customer = {
             let res = await basic.update('customer', data)
 
             if(!res.err) {
-                
+                commit('setDialog', false)
+                commit('setUpdate', true)
             } else {
                 commit('setError', res.err)
             }
@@ -62,10 +66,11 @@ export const customer = {
             let res = await basic.del('customer', id)
 
             if(!res.err) {
-
+                commit('setUpdate', true)
             } else {
                 commit('setError', res.err)
             }
+            commit('setLoading', false)
         },
         openDialog({commit}) {
             commit('setDialog', true)
@@ -104,9 +109,15 @@ export const customer = {
         },
         getMessage(state) {
             return state.msg
+        },
+        getUpdate(state) {
+            return state.update
         }
     },
     mutations: {
+        setUpdate(state, status) {
+            state.update = status
+        },
         setLoading(state, status) {
             state.loading = status
         },

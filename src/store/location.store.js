@@ -8,6 +8,7 @@ export const location = {
         error: null,
         loading: false,
         submit: false,
+        update: false,
         dialog: false,
         msg: null,
         lightSeach: []
@@ -21,6 +22,7 @@ export const location = {
 
             if(!res.err) {
                 commit('addAll', {items: res.json.data.list, len: res.json.data.len})
+                commit('setUpdate', false)
             } else {
                 commit('clear')
                 commit('setError', res.err)
@@ -35,7 +37,8 @@ export const location = {
             let res = await basic.submit('location', data)
 
             if(!res.err) {
-                
+                commit('setDialog', false)
+                commit('setUpdate', true)
             } else {
                 commit('setError', res.err)
             }
@@ -49,7 +52,8 @@ export const location = {
             let res = await basic.update('location', data)
 
             if(!res.err) {
-                
+                commit('setDialog', false)
+                commit('setUpdate', true)
             } else {
                 commit('setError', res.err)
             }
@@ -62,10 +66,11 @@ export const location = {
             let res = await basic.del('location', id)
 
             if(!res.err) {
-
+                commit('setUpdate', true)
             } else {
                 commit('setError', res.err)
             }
+            commit('setLoading', false)
         },
         openDialog({commit}) {
             commit('setDialog', true)
@@ -104,9 +109,15 @@ export const location = {
         },
         getMessage(state) {
             return state.msg
+        },
+        getUpdate(state) {
+            return state.update
         }
     },
     mutations: {
+        setUpdate(state, status) {
+            state.update = status
+        },
         setLoading(state, status) {
             state.loading = status
         },

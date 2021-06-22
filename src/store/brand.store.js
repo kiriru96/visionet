@@ -9,11 +9,14 @@ export const brand = {
         loading: false,
         submit: false,
         dialog: false,
+        update: false,
         msg: null,
         lightSeach: []
     },
     actions: {
-        async reqList({commit}, {index, rows, search, sortby, sort}) {
+        async reqList({commit, state}, {index, rows, search, sortby, sort}) {
+            if(state.loading) return 
+
             commit('removeError')
             commit('setLoading', true)
 
@@ -21,13 +24,16 @@ export const brand = {
 
             if(!res.err) {
                 commit('addAll', {items: res.json.data.list, len: res.json.data.len})
+                commit('setUpdate', false)
             } else {
                 commit('clear')
                 commit('setError', res.err)
             }
             commit('setLoading', false)
         },
-        async insertList({commit}, data) {
+        async insertList({commit, state}, data) {
+            if(state.loading) return
+
             commit('removeError')
             commit('setLoading', true)
             commit('setSubmit', true)
@@ -35,14 +41,17 @@ export const brand = {
             let res = await basic.submit('brand', data)
 
             if(!res.err) {
-                
+                commit('setDialog', false)
+                commit('setUpdate', true)
             } else {
                 commit('setError', res.err)
             }
 
             commit('setLoading', false)
         },
-        async updateList({commit}, data) {
+        async updateList({commit, state}, data) {
+            if(state.loading) return
+
             commit('removeError')
             commit('setLoading', true)
             commit('setSubmit', true)
@@ -50,6 +59,8 @@ export const brand = {
             let res = await basic.update('brand', data)
 
             if(!res.err) {
+                commit('setDialog', false)
+                commit('setUpdate', true)
                 commit('setMessage', res.json.msg)
             } else {
                 commit('setError', res.err)
@@ -57,13 +68,16 @@ export const brand = {
             
             commit('setLoading', false)
         },
-        async deleteList({commit}, id) {
+        async deleteList({commit, state}, id) {
+            if(state.loading) return
+            
             commit('removeError')
             commit('setLoading', true)
             
             let res = await basic.del('brand', id)
 
             if(!res.err) {
+                commit('setUpdate', true)
                 commit('setMessage', res.json.msg)
             } else {
                 commit('setError', res.err)
@@ -105,9 +119,15 @@ export const brand = {
         },
         getMessage(state) {
             return state.msg
+        },
+        getUpdate(state) {
+            return state.update
         }
     },
     mutations: {
+        setUpdate(state, status) {
+            state.update = status
+        },
         setLoading(state, status) {
             state.loading = status
         },

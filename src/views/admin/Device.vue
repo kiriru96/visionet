@@ -299,6 +299,9 @@ export default {
         }
     },
     computed: {
+        updateStat() {
+            return this.$store.getters['device/getUpdate']
+        },
         table() {
             return this.$store.getters['device/getAllItems']
         },
@@ -336,6 +339,14 @@ export default {
         options: {
             handler(val) {
                 this.getDataFromAPI()
+            },
+            deep: true
+        },
+        updateStat: {
+            handler(val) {
+                if(val) {
+                    this.getDataFromAPI()
+                }
             },
             deep: true
         },
