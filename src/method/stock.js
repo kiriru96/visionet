@@ -406,6 +406,38 @@ async function insertStockOpname(data) {
     return result
 }
 
+async function listStockOpnameHistory({index, rows, search, sortby, sort}) {
+    let result = {
+        json: null,
+        err: null
+    }
+
+    let reqconf = config.getconfig();
+
+    try {
+        const response  = await fetch(
+            config.getUrlParams(
+                `${config.endpoint}/liststockopnamehistory`, 
+                {page: index, search: search, sortby: sortby, sort: sort, rows: rows}), 
+                reqconf)
+        const fetchres  = await response.json()
+        
+        if(response.status === 200) {
+            if(fetchres.status) {
+                result.json = fetchres
+            } else {
+                result.err = fetchres.msg
+            }
+        } else {
+            result.err = response.statusText
+        }
+    } catch(err) {
+        result.err = err
+    }
+
+    return result
+}
+
 async function listStockOpnameList({index, rows, search, sortby, sort}) {
     let result = {
         json: null,
@@ -496,6 +528,38 @@ async function submitListStock() {
     return result
 }
 
+async function tableStockOpname(data) {    
+    const result = {
+        json: null,
+        err: null
+    }
+
+    let reqconf = config.getconfig();
+    
+    try {
+        const response = await fetch(
+            config.getUrlParams(
+                `${config.endpoint}/reportstockin`, 
+                data), reqconf)
+
+        const fetchres = await response.json()
+
+        if(response.status === 200) {
+            if(fetchres.status) {
+                result.json = fetchres
+            } else {
+                result.err = fetchres.msg
+            }
+        } else {
+            result.err = response.statusText
+        }
+    } catch(err) {
+        result.err = err
+    }
+
+    return result
+}
+
 export const stock = {
     stockInHistory,
     stockOutHistory,
@@ -513,5 +577,6 @@ export const stock = {
     insertStockOpname,
     deleteStockOpname,
     submitListStock,
-    checkStockOpnameHistory
+    checkStockOpnameHistory,
+    listStockOpnameHistory
 }

@@ -14,9 +14,29 @@ export let stockopname = {
         report_table: [],
         stock_opname_id: 0,
         stock_opname_date: '',
-        id_selected: 0
+        id_selected: 0,
+        report_table: [],
+        list_history: [],
+        total_item_history: 0,
+        loading_history: false
     },
     actions: {
+        async reqListHistory({commit, state}, {index, rows, search, sortby, sort}) {
+            if(state.loading) return
+
+            commit('removeListHistory')
+            commit('setLoadingHistory', true)
+            commit('removeError')
+
+            let res = await stock.listStockOpnameHistory({index: index, rows: rows, search: search, sortby: sortby, sort: sort})
+            
+            if(!res.err) {
+                commit('setListHistory', {items: res.json.data.list, len: res.json.data.len})
+            } else {
+                commit('setError', res.err)
+            }
+            commit('setLoadingHistory', false)
+        },
         async reqList({commit, state}, {index, rows, search, sortby, sort}) {
             if(state.loading) return
 
@@ -121,14 +141,14 @@ export let stockopname = {
             }
             commit('setLoading', false)
         },
-        async tableReportStock({commit, state}, {startdate, enddate}) {
+        async tableReportStock({commit, state}, {date}) {
             if(state.loading) return
 
             commit('removeTableReport')
             commit('setLoading', true)
             commit('removeError')
 
-            let res = await stock.tableOutHistory({startdate:startdate, enddate:enddate})
+            let res = await stock.tableOutHistory({date: date})
             
             if(!res.err) {
                 commit('setTableReport', res.json.data.list)
@@ -181,9 +201,24 @@ export let stockopname = {
         },
         getSelectedID(state) {
             return state.id_selected
+        },
+        getReportTable(state) {
+            return state.report_table
+        },
+        getListHistory(state) {
+            return state.list_history
+        },
+        getLenHistory(state) {
+            return state.total_item_history
+        },
+        getLoadingHistory(state) {
+            return state.loading_history
         }
     },
     mutations: {
+        setReportTable(state, items) {
+            state.report_table = items
+        },
         setIdSelected(state, id) {
             state.id_selected = id
         },
@@ -197,6 +232,9 @@ export let stockopname = {
         removeTableReport(state) {
             state.report_table = []
         },
+        removeListHistory(state) {
+            state.list_history = []
+        },
         setUpdate(state, stat) {
             state.update = stat
         },
@@ -204,11 +242,18 @@ export let stockopname = {
             state.list_stock = items
             state.totalitems = len
         },
+        setListHistory(state, {items, len}) {
+            state.list_history = items
+            state.total_item_history = len
+        },
         setAssetList(state, list) {
             state.asset_list = list
         },
         setLoading(state, stat) {
             state.loading = stat
+        },
+        setLoadingHistory(state, stat) {
+            state.loading_history = stat
         },
         setLoadingAsset(state, stat) {
             state.loading_asset = stat  
