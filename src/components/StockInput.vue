@@ -8,16 +8,25 @@
             :loading="isLoading"
             :items="assetList"
             :search-input.sync="search_asset"
-            item-text="serial_number"
+            item-text="devicename"
             item-value="assetid"
             cache-items
             return-object
             class="mx-3"
             label="Inventory Code">
+            <template v-slot:selection="data">
+                <v-chip
+                    v-bind="data.attrs"
+                    :input-value="data.selected">
+                   {{data.item.serial_number}} | {{data.item.devicename}}
+                </v-chip>
+            </template>
             <template v-slot:item="data">
                 <v-list-item-content>
                     <v-list-item-title>{{data.item.devicename}}</v-list-item-title>
-                    <v-list-item-subtitle>{{data.item.serial_number}} {{data.item.brandname}}</v-list-item-subtitle>
+                    <v-list-item-subtitle>Code : {{data.item.serial_number}}</v-list-item-subtitle>
+                    <v-list-item-subtitle>Brand : {{data.item.brandname}}</v-list-item-subtitle>
+                    <v-list-item-subtitle>Model : {{data.item.model}}</v-list-item-subtitle>
                 </v-list-item-content>
             </template>
         </v-autocomplete>
