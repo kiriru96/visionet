@@ -15,7 +15,7 @@ export const accounts = {
 
         },
         async searchLocation({commit, state}, search) {
-            if(search.trim().length >= 3 && !state.loading) {
+            if(search.trim().length >= 2 && !state.loading) {
                 commit('removeError')
                 commit('setLoadingLocation', true)
 

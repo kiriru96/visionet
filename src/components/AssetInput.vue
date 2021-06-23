@@ -140,13 +140,13 @@ export default {
     },
     watch: {
         search_device(val) {
-            if(val?.trim().length >= 3) {
+            if(val?.trim().length >= 2) {
                 const {dispatch} = this.$store
                 dispatch('asset/searchDevice', val)
             }
         },
         search_brand(val) {
-            if(val?.trim().length >= 3) {
+            if(val?.trim().length >= 2) {
                 const {dispatch} = this.$store
                 dispatch('asset/searchBrand', val)
             }

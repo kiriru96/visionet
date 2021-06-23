@@ -103,13 +103,13 @@ export default {
     },
     watch: {
         search_customer(val) {
-            if(val?.trim().length >= 3) {
+            if(val?.trim().length >= 2) {
                 const {dispatch} = this.$store
                 dispatch('workorder/searchCustomer', val)
             }
         },
         search_location(val) {
-            if(val?.trim().length >= 3) {
+            if(val?.trim().length >= 2) {
                 const {dispatch} = this.$store
                 dispatch('workorder/searchLocation', val)
             }

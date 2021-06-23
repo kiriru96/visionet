@@ -133,7 +133,7 @@ export default {
             { text: "Stock", icon: 'mdi-folder', link: '/stock'},
             { text: "Stock In", icon: 'mdi-arrow-down', link: '/stockin'},
             { text: "Stock Out", icon: 'mdi-arrow-up', link: '/stockout'},
-            { text: "Stock Opname", icon: 'mdi-box', link: '/stockopname'},
+            { text: "Stock Opname", icon: 'mdi-clipboard-list', link: '/stockopname'},
             { text: "Work Order", icon: 'mdi-briefcase', link: '/workorder'}
           ]
         },
@@ -149,7 +149,7 @@ export default {
           text: "Report", icon: 'mdi-printer', child: [
             { text: "Stock In", icon: 'mdi-download', link: '/stockinreport' },
             { text: "Stock Out", icon: 'mdi-upload', link: '/stockoutreport' },
-            { text: "Stock Opname", icon: 'mdi-stock', link: '/stockopnamereport'}
+            { text: "Stock Opname", icon: 'mdi-clipboard-list', link: '/stockopnamereport'}
           ]
         }
       ],

@@ -70,7 +70,7 @@ export const workorder = {
             commit('setLoading', false)
         },
         async searchLocation({commit}, search) {
-            if(search.trim().length >= 3) {
+            if(search.trim().length >= 2) {
                 commit('removeError')
                 commit('setLoadingLocation', true)
 
@@ -85,7 +85,7 @@ export const workorder = {
             }
         },
         async searchCustomer({commit}, search) {
-            if(search.trim().length >= 3) {
+            if(search.trim().length >= 2) {
                 commit('removeError')
                 commit('setLoadingCustomer', true)
 

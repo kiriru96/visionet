@@ -128,7 +128,7 @@ export const asset = {
             commit('setDialog', false)
         },
         async searchDevice({commit, state}, search) {
-            if(search.trim().length >= 3 && !state.loading) {
+            if(search.trim().length >= 2 && !state.loading) {
                 commit('removeError')
                 commit('setLoadingDevice', true)
 
@@ -145,7 +145,7 @@ export const asset = {
             }
         },
         async searchBrand({commit, state}, search) {
-            if(search.trim().length >= 3 && !state.loading) {
+            if(search.trim().length >= 2 && !state.loading) {
                 commit('removeError')
                 commit('setLoadingBrand', true)
 
@@ -160,7 +160,7 @@ export const asset = {
             }
         },
         async searchWarehouse({commit, state}, search) {
-            if(search.trim().length >= 3 && !state.loading) {
+            if(search.trim().length >= 2 && !state.loading) {
                 commit('removeError')
                 commit('setLoadingWarehouse', true)
 
@@ -186,7 +186,7 @@ export const asset = {
             }
         },
         async searchLocation({commit, state}, search) {
-            if(search.trim().length >= 3 && !state.loading) {
+            if(search.trim().length >= 2 && !state.loading) {
                 commit('removeError')
                 commit('setLoadingLocation', true)
 
@@ -201,7 +201,7 @@ export const asset = {
             }
         },
         async searchCustomer({commit, state}, search) {
-            if(search.trim().length >= 3 && !state.loading) {
+            if(search.trim().length >= 2 && !state.loading) {
                 commit('removeError')
                 commit('setLoadingCustomer', true)
 

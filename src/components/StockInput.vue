@@ -78,7 +78,7 @@ export default {
     },
     watch: {
         search_asset(val) {
-            if(val?.trim().length >= 3) {
+            if(val?.trim().length >= 2) {
                 const {dispatch} = this.$store
                 dispatch('stockin/searchAsset', val)
             }
