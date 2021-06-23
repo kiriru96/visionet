@@ -329,7 +329,7 @@ export const asset = {
             state.loading = stat
         },
         removeListItem(state) {
-            state.listItems.length = 0
+            state.listItems = []
             state.totalitems = 0
         },
         removeListLightBrand(state) {

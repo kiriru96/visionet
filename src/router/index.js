@@ -197,6 +197,14 @@ const routes = [
     component: () => import(/* webpackChunkName: 'stockinreport' */'../views/admin/StockInReport.vue')
   },
   {
+    path: '/stockopnamereport',
+    name: 'StockOpnameReport',
+    meta: {
+      title: 'Stock Opname Report'
+    },
+    component: () => import(/* webpackChunkName: 'stockopnamereport' */'../views/admin/StockOpnameReport.vue')
+  },
+  {
     path: '/engginer/submitwo',
     name: 'SubmitWO',
     meta: {
@@ -217,7 +225,15 @@ const routes = [
     meta: {
       title: 'Confirm WO'
     },
-    component: () => import(/* webpackChunkName: 'confirmWO' */'../views/leader/DetailWOSubmit')
+    component: () => import(/* webpackChunkName: 'confirmWO' */'../views/leader/DetailWOSubmit.vue')
+  },
+  {
+    path: '/stockopname',
+    name: 'StockOpname',
+    meta: {
+      title: 'Stock Opname'
+    },
+    component: () => import(/* webpackChunkName: 'stockopname' */'../views/admin/StockOpname.vue')
   }
 ]
 
