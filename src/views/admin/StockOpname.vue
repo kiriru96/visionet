@@ -51,6 +51,7 @@
                 </v-data-table>
             </v-card>
             <v-btn
+                :disabled="lentable <= 0"
                 block
                 color="primary"
                 @click="submitList">
@@ -58,6 +59,26 @@
             </v-btn>
             <Dialog :dialog="alert" :title="`Delete`" :text="`Delete this item?`" v-on:ok="OkButton" v-on:no="NoButton"/>
         </v-container>
+            <v-snackbar
+                :value="errorMsg"
+                :color="color"
+                :multi-line="mode === 'multi-line'"
+                :timeout="timeout"
+                :vertical="mode === 'vertical'"
+                >
+                {{ errorMsg }}
+                <v-divider
+                class="mx-4"
+                inset
+                vertical
+                ></v-divider>
+                <v-btn
+                    dark
+                    text
+                    @click="removeError()">
+                    Close
+                </v-btn>
+            </v-snackbar>
     </v-main>
 </template>
 
@@ -106,6 +127,10 @@ export default {
         this.checkStockOpname()
     },
     methods: {
+        removeError() {
+            const {dispatch} = this.$store
+            dispatch('stockopname/removeError')
+        },
         createStockOpname() {
             const {dispatch} = this.$store
             dispatch('stockopname/createStockOpname')
@@ -206,6 +231,9 @@ export default {
         },
         selectedId() {
             return this.$store.getters['stockopname/getSelectedID']
+        },
+        errorMsg() {
+            return this.$store.getters['stockopname/getError']
         }
     },
     watch: {

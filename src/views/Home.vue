@@ -155,7 +155,6 @@ export default {
   },
   computed: {
     homeData() {
-      console.log(this.$store.getters['home/getData'])
       return this.$store.getters['home/getData']
     },
     isLoading() {

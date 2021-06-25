@@ -101,10 +101,7 @@ export default {
         },
         printTable() {
             if(this.reportTable.length > 0 && this.dates.length >= 2) {
-                const win = window.open(`http://localhost/visionet-api/report/stockin?startdate=${this.dates[0]}&enddate=${this.dates[1]}`, '_black')
-                win.onloadstart(()=> {
-                    win.print()
-                })
+                window.open(`http://localhost/visionet-api/report/stockout?startdate=${this.dates[0]}&enddate=${this.dates[1]}`, '_black')
             }
         }
     },

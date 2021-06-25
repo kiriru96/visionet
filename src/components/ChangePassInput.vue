@@ -16,6 +16,7 @@
             :type="showpass ? 'text' : 'password'"
             v-model="forminput.password"
             @click:append="showpass = !showpass"
+            :rules="pass_rules"
             autocomplete="new-password"
             class="mx-3">
         </v-text-field>
@@ -29,7 +30,11 @@ export default {
     },
     data() {
         return {
-            showpass: false
+            showpass: false,
+            pass_rules: [
+                (v) => !!v || "Tidak boleh kosong",
+                (v) => v && v.length >= 6 || "Password must more than 6 character"
+            ]
         }
     },
     methods: {

@@ -24,6 +24,7 @@
         <v-text-field
             ref="password"
             v-show="!edit"
+            :rules="pass_rules"
             label="Password"
             :append-icon="showpass ? 'mdi-eye' : 'mdi-eye-off'"
             :type="showpass ? 'text' : 'password'"
@@ -59,7 +60,11 @@ export default {
         return {
             showpass: false,
             search_location: '',
-            loadinglocation: false
+            loadinglocation: false,
+            pass_rules: [
+                (v) => !!v || "Tidak boleh kosong",
+                (v) => v && v.length >= 6 || "Password must more than 6 character"
+            ]
         }
     },
     methods: {

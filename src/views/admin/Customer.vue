@@ -202,8 +202,6 @@ export default {
 
             this.idselected = this.table.indexOf(item)
 
-            console.log(this.idselected)
-
             this.forminput = {
                 id : id,
                 name: name

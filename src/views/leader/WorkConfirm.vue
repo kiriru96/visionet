@@ -103,7 +103,6 @@ export default {
             return this.$store.getters['wo/getLoading']
         },
         lists() {
-            console.log(this.$store.getters['wo/getList'])
             return this.$store.getters['wo/getList']
         },
         errorMsg() {

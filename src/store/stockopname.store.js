@@ -77,6 +77,7 @@ export let stockopname = {
             
             if(!res.err) {
                 commit('setUpdate', true)
+                commit('setError', res.json.data)
             } else {
                 commit('setError', res.err)
             }
@@ -121,6 +122,7 @@ export let stockopname = {
 
             if(!res.err) {
                 commit('setUpdate', true)
+                commit('setError', res.json.msg)
             } else {
                 commit('setError', res.err)
             }
@@ -136,6 +138,7 @@ export let stockopname = {
 
             if(!res.err) {
                 commit('setUpdate', true)
+                commit('setError', res.json.msg)
             } else {
                 commit('setError', res.err)
             }
@@ -163,6 +166,9 @@ export let stockopname = {
         },
         submitIdSelected({commit}, id) {
             commit('setIdSelected', id)
+        },
+        removeError({commit}) {
+            commit('removeError')
         }
     },
     getters: {
@@ -259,9 +265,11 @@ export let stockopname = {
             state.loading_asset = stat  
         },
         setError(state, err) {
+            state.msg = null
             state.err = err
         },
         setMessage(state, msg) {
+            state.err = null
             state.msg = msg
         },
         removeError(state) {

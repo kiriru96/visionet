@@ -100,7 +100,7 @@ export default {
         confirmWO() {
             const {dispatch} = this.$store
             let data = {id: this.engginerSubmitID}
-            console.log(data)
+            
             dispatch('engginerpage/confirmWO', data)
         }
     },
@@ -121,7 +121,7 @@ export default {
     watch: {
         woDetail: {
             handler(val, oldVal) {
-                console.log(val)
+                
             },
             deep: true
         }

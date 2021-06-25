@@ -200,8 +200,6 @@ export default {
 
             this.idselected = this.table.indexOf(item)
 
-            console.log(this.idselected)
-
             this.forminput = {
                 id : id,
                 name: name
@@ -248,7 +246,6 @@ export default {
         },
         getDataFromAPI() {
             if(this.isLoading) return
-            console.log('get api');
 
             const {dispatch} = this.$store
             let {sortBy, sortDesc, page, itemsPerPage} = this.options

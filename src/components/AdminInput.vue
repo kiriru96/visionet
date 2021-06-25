@@ -16,6 +16,7 @@
         <v-text-field
             v-show="!edit"
             v-model="forminput.password"
+            :rules="rulesPassword"
             label="Password"
             :append-icon="showpass ? 'mdi-eye' : 'mdi-eye-off'"
             :type="showpass ? 'text' : 'password'"
@@ -41,7 +42,7 @@ export default {
             ],
             rulesPassword: [
                 (v) => !!v || "Tidak boleh kosong",
-                (v) => v && v.length >= 8 || "Harus lebih dari 8 karakter"
+                (v) => v && v.length >= 6 || "Harus lebih dari 8 karakter"
             ]
         }
     },

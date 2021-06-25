@@ -300,7 +300,6 @@ export default {
             const {dispatch} = this.$store
 
             if(this.$refs.submitpanel.isValid()) {
-            console.log('edit api')
                 let data = {
                     id:         this.forminput.id, 
                     fullname:   this.forminput.fullname }

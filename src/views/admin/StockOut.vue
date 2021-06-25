@@ -47,6 +47,7 @@
                 </v-simple-table>
             </v-card>
             <v-btn
+                :disabled="listStock.length <= 0"
                 block
                 color="primary"
                 @click="submitList">
