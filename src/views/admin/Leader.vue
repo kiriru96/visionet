@@ -328,7 +328,7 @@ export default {
 
             const {dispatch} = this.$store
 
-            if(this.$refs.submitpanel.isValid()) {
+            if(this.$refs.changepass.isValid()) {
                 let data = {id: this.forminput.id, password: this.forminput.password}
                 dispatch('leader/updatePassword', data)
             }
