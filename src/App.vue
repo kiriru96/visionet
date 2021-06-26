@@ -4,8 +4,7 @@
       v-if="logged"
       app
       color="primary"
-      dark
-      >
+      dark>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{titleBar}}</v-toolbar-title>
       <v-spacer></v-spacer>
@@ -15,8 +14,7 @@
       v-if="logged"
       v-model="drawer"
       fixed
-      app
-      >
+      app>
       <v-list>
           <v-list-item @click="toLocation('/profile')">
             <v-list-item-avatar size="80">
@@ -155,11 +153,11 @@ export default {
       ],
       [
         { text: "WO", icon: 'mdi-map  ', link: '/leader/workorder'},
-        { text: "WO confirm", icon: 'mdi-history  ', link: '/leader/workorderhistory'}
+        { text: "Engginer Submit Work Order", icon: 'mdi-history  ', link: '/leader/workorderhistory'}
       ],
       [
         { text: "WO", icon: 'mdi-map  ', link: '/leader/workorder'},
-        { text: "WO confirm", icon: 'mdi-history  ', link: '/leader/workorderhistory'}
+        { text: "Engginer Submit Work Order", icon: 'mdi-history  ', link: '/leader/workorderhistory'}
       ],
       [
         { text: "WO", icon: 'mdi-map  ', link: '/engginer/workorder'},

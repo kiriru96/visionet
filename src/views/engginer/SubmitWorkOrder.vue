@@ -97,7 +97,6 @@ export default {
             timeout: 6000,
             color: '',
             mode: '',
-            responseMsg: '',
             send: true
         }
     },
@@ -155,6 +154,9 @@ export default {
     computed: {
         woDetail() {
             return this.$store.getters['engginerpage/getDetail']
+        },
+        responseMsg() {
+            return this.$store.getters['engginerpage/getError']
         }
     },
     watch: {

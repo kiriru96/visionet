@@ -67,6 +67,7 @@ export const auth = {
             localStorage.setItem("name", name)
             state.token     = token;
             state.user_type = user_type;
+            state.name = name
         },
         setLogged(state, status) {
             state.isLogged = status;

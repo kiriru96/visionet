@@ -12,7 +12,8 @@ export const wo = {
             device: '',
             serial_number: '',
             customer: '',
-            location: ''
+            location: '',
+            engginername: ''
         },
         dialog: false,
         lightSearchEngginer: []
@@ -85,7 +86,9 @@ export const wo = {
             }
             commit('setLoading', false)
         },
-        async detailWorkOrder({commit}, id) {
+        async detailWorkOrder({commit, state}, id) {
+            if(state.loading) return
+
             commit('removeError')
             commit('setLoading', true)
 
@@ -99,14 +102,17 @@ export const wo = {
             }
             commit('setLoading', false)
         },
-        async inputEngginer({commit}, data) {
+        async inputEngginer({commit, state}, data) {
+            if(state.loading) return
+
             commit('removeError')
             commit('setLoading', true)
 
             let res = await manual.insertEngginerWO(data)
 
             if(!res.err) {
-                
+                commit('setDialog', false)
+                commit('setError', res.json.msg)
             } else {
                 commit('setError', res.err)
             }
@@ -132,6 +138,9 @@ export const wo = {
         },
         closeDialog({commit}) {
             commit('setDialog', false)
+        },
+        removeError({commit}) {
+            commit('removeError')
         }
     },
     getters: {
@@ -168,7 +177,8 @@ export const wo = {
                 device: data.devicename,
                 serial_number: data.devicename,
                 customer: data.customername,
-                location: data.locationname
+                location: data.locationname,
+                engginername: data.engginername 
             }
         },
         updateList(state, list) {

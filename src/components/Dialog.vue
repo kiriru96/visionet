@@ -19,7 +19,7 @@
             text
             @click="$emit('no')"
           >
-            Tidak
+            No
           </v-btn>
 
           <v-btn
@@ -27,7 +27,7 @@
             text
             @click="$emit('ok')"
           >
-            Iya
+            Yes
           </v-btn>
         </v-card-actions>
       </v-card>

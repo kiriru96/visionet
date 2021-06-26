@@ -20,6 +20,7 @@ import {accounts} from './account.store'
 import {stockin} from './stockin.store'
 import {stockout} from './stockout.store'
 import {stockopname} from './stockopname.store'
+import {profile} from './profile.store'
 
 Vue.use(Vuex)
 
@@ -44,6 +45,7 @@ export default new Vuex.Store({
     engginerpage,
     stockin,
     stockout,
-    stockopname
+    stockopname,
+    profile
   }
 })

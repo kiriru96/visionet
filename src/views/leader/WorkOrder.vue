@@ -57,26 +57,24 @@
                 style="margin-top: 30px"
                 block
                 @click="nextList">
-                Next
+                More
             </v-btn>
             <v-snackbar
-            :value="responseMsg"
-            :color="color"
-            :multi-line="mode === 'multi-line'"
-            :timeout="timeout"
-            :vertical="mode === 'vertical'"
-            >
-                {{ responseMsg }}
+                :value="errorMsg"
+                :color="color"
+                :multi-line="mode === 'multi-line'"
+                :timeout="timeout"
+                :vertical="mode === 'vertical'">
+                {{ errorMsg }}
                 <v-divider
                 class="mx-4"
                 inset
-                vertical
-                ></v-divider>
+                vertical>
+                </v-divider>
                 <v-btn
                     dark
                     text
-                    @click="removeError()"
-                >
+                    @click="removeError()">
                     Close
                 </v-btn>
             </v-snackbar>
@@ -97,6 +95,9 @@ export default {
             page: 1,
             menu: false,
             date: '',
+            timeout: 6000,
+            color: '',
+            mode: '',
         }
     },
     methods: {

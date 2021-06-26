@@ -145,7 +145,7 @@ export const engginerpage = {
             let res = await manual.insertWO(data)
 
             if(!res.err) {
-                commit('setError', 'Berhasil mengirim.')
+                commit('setError', 'Submit work order done.')
             } else {
                 commit('setError', res.err)
             }

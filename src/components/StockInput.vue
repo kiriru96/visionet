@@ -43,6 +43,12 @@
             disabled>
         </v-text-field>
         <v-text-field
+            v-model="stockinput.asset.model"
+            label="Model"
+            class="mx-3"
+            disabled>
+        </v-text-field>
+        <v-text-field
             v-model="stockinput.asset.quantity"
             label="Quantity"
             class="mx-3">

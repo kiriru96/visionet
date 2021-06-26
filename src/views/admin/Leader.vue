@@ -245,10 +245,14 @@ export default {
             }
         },
         save() {
-            if(this.idselected === -1) {
-                this.submitAPI()
+            if(this.pass) {
+                this.changePassAPI()
             } else {
-                this.editAPI()
+                if(this.idselected === -1) {
+                    this.submitAPI()
+                } else {
+                    this.editAPI()
+                }
             }
         },
         OkButton(){

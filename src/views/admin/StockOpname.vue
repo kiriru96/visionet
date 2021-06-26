@@ -13,50 +13,53 @@
                     </div>
                 </v-card-actions>
             </v-card>
-            <v-card style="margin:10px" max-width="300">
-                <v-card-title>
-                    <span class="headline">Input Stock Opname</span>
-                </v-card-title>
-                <v-card-text>
-                    <StockOpnameInput ref="stockinput" :forminput="forminput"/>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <!-- <v-btn color="blue darken-1" text @click="close">Cancel</v-btn> -->
-                    <v-btn :disabled="selectedId == 0" color="blue darken-1" text @click="save">Save</v-btn>
-                </v-card-actions>
-            </v-card>
-            <v-card style="margin:10px">
-                <v-data-table
-                :headers="headers"
-                :items="listStock"
-                :options.sync="options"
-                :server-items-length="lentable"
-                :loading="isLoading"
-                class="elevation-1">
-                    <template v-slot:[`item.actions`]="{ item }">
-                        <v-tooltip bottom>
-                            <template v-slot:activator="{ on }">
-                                <v-icon
-                                    small
-                                    class="mr-3"
-                                    v-on="on"
-                                    @click="deleteAction(item)">
-                                    mdi-delete
-                                </v-icon>
-                            </template>
-                            <span>Delete Asset</span>
-                        </v-tooltip>
-                    </template>
-                </v-data-table>
-            </v-card>
-            <v-btn
-                :disabled="lentable <= 0"
-                block
-                color="primary"
-                @click="submitList">
-                Submit All
-            </v-btn>
+            <div
+                v-if="idStockHistory != 0">
+                <v-card style="margin:10px" max-width="300">
+                    <v-card-title>
+                        <span class="headline">Input Stock Opname</span>
+                    </v-card-title>
+                    <v-card-text>
+                        <StockOpnameInput ref="stockinput" :forminput="forminput"/>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <!-- <v-btn color="blue darken-1" text @click="close">Cancel</v-btn> -->
+                        <v-btn :disabled="selectedId == 0" color="blue darken-1" text @click="save">Save</v-btn>
+                    </v-card-actions>
+                </v-card>
+                <v-card style="margin:10px">
+                    <v-data-table
+                    :headers="headers"
+                    :items="listStock"
+                    :options.sync="options"
+                    :server-items-length="lentable"
+                    :loading="isLoading"
+                    class="elevation-1">
+                        <template v-slot:[`item.actions`]="{ item }">
+                            <v-tooltip bottom>
+                                <template v-slot:activator="{ on }">
+                                    <v-icon
+                                        small
+                                        class="mr-3"
+                                        v-on="on"
+                                        @click="deleteAction(item)">
+                                        mdi-delete
+                                    </v-icon>
+                                </template>
+                                <span>Delete Asset</span>
+                            </v-tooltip>
+                        </template>
+                    </v-data-table>
+                </v-card>
+                <v-btn
+                    :disabled="lentable <= 0"
+                    block
+                    color="primary"
+                    @click="submitList">
+                    Submit All
+                </v-btn>
+            </div>
             <Dialog :dialog="alert" :title="`Delete`" :text="`Delete this item?`" v-on:ok="OkButton" v-on:no="NoButton"/>
         </v-container>
             <v-snackbar
@@ -120,7 +123,10 @@ export default {
             edit: false,
             item_selected: null,
             alert: false,
-            options: {}
+            options: {},
+            timeout: 6000,
+            color: '',
+            mode: '',
         }
     },
     created() {
@@ -256,6 +262,10 @@ export default {
                 }
             },
             deep: true
+        },
+        idStockHistory: {
+            handler(valnew, valold) {
+            }
         }
     }
 }

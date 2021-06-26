@@ -43,11 +43,37 @@
                     class="mx-3"
                     disabled>
                 </v-text-field>
+                <v-text-field
+                    v-if="dataWO.engginername != null"
+                    v-model="dataWO.engginername"
+                    label="Work Order sended to"
+                    class="mx-3"
+                    disabled>
+                </v-text-field>
                 <v-btn block @click="inputEngginer">
                     Send To Engginer
                 </v-btn>
             </v-form>
         </v-container>
+            <v-snackbar
+                :value="errorMsg"
+                :color="color"
+                :multi-line="mode === 'multi-line'"
+                :timeout="timeout"
+                :vertical="mode === 'vertical'">
+                {{ errorMsg }}
+                <v-divider
+                class="mx-4"
+                inset
+                vertical
+                ></v-divider>
+                <v-btn
+                    dark
+                    text
+                    @click="removeError()">
+                    Close
+                </v-btn>
+            </v-snackbar>
     </v-main>
 </template>
 
@@ -72,8 +98,10 @@ export default {
                 {text: '', value: ''},
                 {text: '', value: ''}
             ],
-            items: [
-                ]
+            items: [],
+            timeout: 6000,
+            color: '',
+            mode: '',
         }
     },
     methods: {
@@ -110,9 +138,17 @@ export default {
             const {dispatch} = this.$store
 
             dispatch('wo/closeDialog')
+        },
+        removeError() {
+            const {dispatch} = this.$store
+
+            dispatch('wo/removeError')
         }
     },
     computed: {
+        errorMsg() {
+            return this.$store.getters['wo/getError']
+        },
         dataWO() {
             return this.$store.getters['wo/getDetail']
         },
