@@ -40,7 +40,7 @@ export const admin = {
             let res = await account.submit('admin', data)
 
             if(!res.err) {
-                commit('setDIalog', false)
+                commit('setDialog', false)
                 commit('setUpdate', true)
             } else {
                 commit('setError', res.err)
@@ -57,7 +57,7 @@ export const admin = {
             let res = await account.update('admin', data)
 
             if(!res.err) {
-                commit('setDIalog', false)
+                commit('setDialog', false)
                 commit('setUpdate', true)
             } else {
                 commit('setError', res.err)

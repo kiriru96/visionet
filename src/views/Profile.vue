@@ -13,9 +13,10 @@
                             </v-img>
                         </v-avatar>
                         <v-card-text class="text-h6">
-                            {{nameAccount}}(@{{usernameAccount}})&nbsp;<v-btn @click="editFullnameAction" color="primary"><v-icon>mdi-pencil</v-icon></v-btn>
+                            {{nameAccount}}(@{{usernameAccount}})&nbsp;
+                            <!-- <v-btn @click="editFullnameAction" color="primary"><v-icon>mdi-pencil</v-icon></v-btn> -->
                         </v-card-text>
-                        <v-list-item-title
+                        <!-- <v-list-item-title
                             class="mx-auto text-center"
                             v-show="edit_fullname"
                             style="max-width: 300px">                            
@@ -114,7 +115,7 @@
                                 color="primary">
                                 <v-icon>{{edit_password ? 'mdi-close' : 'mdi-pencil'}}</v-icon>&nbsp;{{edit_password ? 'Cancel' : 'Password'}} 
                             </v-btn>
-                        </div>
+                        </div> -->
                     </div>
                 </v-list-item-content>
             </v-card>

@@ -15,7 +15,7 @@
             v-model="forminput.lastname">
         </v-text-field>
         <v-text-field
-            v-show="!edit"
+            v-if="!edit"
             ref="username"
             class="mx-3"
             label="Username"
@@ -23,7 +23,7 @@
         </v-text-field>
         <v-text-field
             ref="password"
-            v-show="!edit"
+            v-if="!edit"
             :rules="pass_rules"
             label="Password"
             :append-icon="showpass ? 'mdi-eye' : 'mdi-eye-off'"

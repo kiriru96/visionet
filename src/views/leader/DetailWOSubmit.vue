@@ -40,12 +40,13 @@
                 </v-list-item>
             </v-list>
             <v-btn
+                :disabled="statusWorkOrderSubmit == 1"
                 block
+                :loading="isLoading"
                 color="primary"
-                dark
                 @click="confirmWO"
                 style="margin-bottom: 5px;margin-top: 5px">
-                Confirm
+                {{statusWorkOrderSubmit == 1 ? 'Confirmed' : 'Confirm'}}
             </v-btn>
         </v-container>
         <v-snackbar
@@ -53,8 +54,7 @@
             :color="color"
             :multi-line="mode === 'multi-line'"
             :timeout="timeout"
-            :vertical="mode === 'vertical'"
-            >
+            :vertical="mode === 'vertical'">
             {{ responseMsg }}
         </v-snackbar>
     </v-main>
@@ -74,10 +74,9 @@ export default {
     },
     data() {
         return {
-            timeout: 6000,
+            timeout: 500,
             color: '',
             mode: '',
-            responseMsg: '',
             send: true
         }
     },
@@ -105,6 +104,9 @@ export default {
         }
     },
     computed: {
+        responseMsg() {
+            return this.$store.getters['engginerpage/getError']
+        },
         woDetail() {
             return this.$store.getters['engginerpage/getDetail']
         },
@@ -116,6 +118,12 @@ export default {
         },
         engginerSubmitID() {
             return this.$store.getters['engginerpage/getEngginerSubmitId']
+        },
+        statusWorkOrderSubmit() {
+            return this.$store.getters['engginerpage/getWorkOrderSubmitStatus']
+        },
+        isLoading() {
+            return this.$store.getters['engginerpage/getLoading']
         }
     },
     watch: {

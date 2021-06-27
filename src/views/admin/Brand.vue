@@ -3,12 +3,6 @@
         <v-container fill-width>
             <v-dialog persistent v-model="dialogStatus" max-width="500px">
                 <v-card>
-                    <v-alert
-                        :value="errorMsg"
-                        dismissible
-                        color="error">
-                        {{errorMsg}}
-                    </v-alert>
                     <v-card-title>
                         <span class="headline">{{formTitle}}</span>
                     </v-card-title>

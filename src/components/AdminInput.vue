@@ -8,13 +8,13 @@
             required>
         </v-text-field>
         <v-text-field
-            v-show="!edit"
+            v-if="!edit"
             v-model="forminput.username"
             label="Username"
             required>
         </v-text-field>
         <v-text-field
-            v-show="!edit"
+            v-if="!edit"
             v-model="forminput.password"
             :rules="rulesPassword"
             label="Password"

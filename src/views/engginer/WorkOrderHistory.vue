@@ -192,14 +192,14 @@ export default {
 
             const {dispatch} = this.$store
 
-            dispatch('engginerpage/nextListProgress', {date: this.date, page: this.page})
+            dispatch('engginerpage/nextListProgress', {date: this.date, page: this.page_progress})
         },
         nextClose() {
             this.page_close += 1
 
             const {dispatch} = this.$store
 
-            dispatch('engginerpage/nextListClose', {date: this.date, page: this.page})
+            dispatch('engginerpage/nextListClose', {date: this.date, page: this.page_close})
         },
         getListAPI(type) {
             if(type === 1) {

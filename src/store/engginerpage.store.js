@@ -16,6 +16,7 @@ export const engginerpage = {
             customer: '',
             location: ''
         },
+        work_order_submit_confirm_status: -1,
         engginer_submit_id: 0,
         dialog: false,
         list_progress: [],
@@ -175,7 +176,8 @@ export const engginerpage = {
             let res = await manual.confirmWO(data)
 
             if(!res.err) {
-                commit('setError', 'Berhasil mengirim.')
+                commit('setError', 'Confirmed.')
+                commit('setWorkOrderSubmitStatus', 1)
             } else {
                 commit('setError', res.err)
             }
@@ -254,9 +256,15 @@ export const engginerpage = {
         },
         getEngginerSubmitId(state) {
             return state.engginer_submit_id
+        },
+        getWorkOrderSubmitStatus(state) {
+            return state.work_order_submit_confirm_status
         }
     },
     mutations: {
+        setWorkOrderSubmitStatus(state, status) {
+            state.work_order_submit_confirm_status = status
+        },
         setDateHistory(state, date) {
             state.date_history = date
         },
@@ -276,13 +284,14 @@ export const engginerpage = {
             state.engginer_submit_id = data.engginer_submit_id
 
             state.detail = {
-                woid: data.id,
+                woid: data.work_order_id,
                 assetid: data.asset_id,
                 device: data.devicename,
                 serial_number: data.devicename,
                 customer: data.customername,
                 location: data.locationname
             }
+            state.work_order_submit_confirm_status = data.work_order_submit_confirm_status
         },
         updateList(state, list) {
             state.list = state.list.concat(list)
