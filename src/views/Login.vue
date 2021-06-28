@@ -72,6 +72,9 @@
 
 <script>
 export default {
+  mounted() {
+    this.$vuetify.theme.dark = localStorage.getItem('theme') === 'dark'
+  },
   data() {
     return {
         valid: false,

@@ -234,6 +234,14 @@ const routes = [
       title: 'Stock Opname'
     },
     component: () => import(/* webpackChunkName: 'stockopname' */'../views/admin/StockOpname.vue')
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    meta: {
+      title: 'Settings'
+    },
+    component: () => import(/* webpackChunkName: 'settings' */'../views/Settings.vue')
   }
 ]
 

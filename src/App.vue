@@ -8,6 +8,9 @@
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{titleBar}}</v-toolbar-title>
       <v-spacer></v-spacer>
+      <v-btn icon @click="toLocation('/settings')">
+        <v-icon>mdi-tune</v-icon>
+      </v-btn>
     </v-app-bar>
     <Dialog :dialog="alert" :title="`Logout`" :text="`Confirm Logout?`" v-on:ok="confirmLogout" v-on:no="cancelLogout"/>
     <v-navigation-drawer
@@ -191,6 +194,9 @@ export default {
     }
   },
   computed: {
+    currentPath() {
+      return this.$route.path
+    },
     logged() {
       return this.$store.getters['auth/logStatus']
     },

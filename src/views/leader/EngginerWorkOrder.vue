@@ -33,7 +33,7 @@
                 </v-text-field>
                 <v-text-field
                     v-model="dataWO.serial_number"
-                    label="Serial Number"
+                    label="Asset Inventory Code"
                     class="mx-3"
                     disabled>
                 </v-text-field>

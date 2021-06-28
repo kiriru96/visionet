@@ -7,6 +7,8 @@ export const profile = {
             type: -1,
             username: '',
             fullname: '',
+            firstname: '',
+            lastname: '',
             picture: ''
         },
         loading: false,
@@ -85,6 +87,12 @@ export const profile = {
         getName(state) {
             return state.account.fullname
         },
+        getFirstName(state) {
+            return state.account.firstname
+        },
+        getLastName(state) {
+            return state.account.lastname
+        },
         getUsername(state) {
             return state.account.username
         },
@@ -101,7 +109,9 @@ export const profile = {
                 state.account = {
                     type: data.type,
                     username: data.username,
-                    fullname: data.name
+                    fullname: data.name,
+                    firstname: data.firstname,
+                    lastname: data.lastname
                 }
             } else {
                 state.account = {

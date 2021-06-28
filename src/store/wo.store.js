@@ -175,7 +175,7 @@ export const wo = {
                 woid: data.id,
                 assetid: data.asset_id,
                 device: data.devicename,
-                serial_number: data.devicename,
+                serial_number: data.serial_number,
                 customer: data.customername,
                 location: data.locationname,
                 engginername: data.engginername 

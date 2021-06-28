@@ -110,6 +110,7 @@ export default {
                 {text: 'Serial Number', value: 'serial_number', sortable: false},
                 {text: 'Customer', value: 'customername', sortable: false},
                 {text: 'Location', value: 'worklocation', sortable: false},
+                {text: 'Status', value: 'statustitle', sortable: false},
                 {text: 'Actions', value: 'actions', sortable: false}
             ],
             idselected: -1,
