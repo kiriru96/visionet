@@ -42,7 +42,7 @@
                 v-model="lists"
                 v-for="item in lists"
                 :key="item.id"
-                @click="$router.push({path: '/leader/confirmWO', query: {id: item.id}})">
+                @click="$router.push({path: '/woconfirm', query: {id: item.id}})">
                 <v-list-item-avatar>
                     <v-icon class="grey lighten-1" dark>
                         mdi-briefcase

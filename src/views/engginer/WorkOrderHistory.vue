@@ -63,7 +63,8 @@
                         style="margin: 5px"
                         v-model="listProgress"
                         v-for="item in listProgress"
-                        :key="item.id">
+                        :key="item.id"
+                        @click="$router.push({path: '/wosubmitdetail', query: {id: item.id}})">
                         <v-list-item-avatar>
                             <v-icon class="grey lighten-1" dark>
                                 mdi-folder
@@ -87,7 +88,8 @@
                         style="margin: 5px"
                         v-model="listClose"
                         v-for="item in listClose"
-                        :key="item.id">
+                        :key="item.id"
+                        @click="$router.push({path: '/wosubmitdetail', query: {id: item.id}})">
                         <v-list-item-avatar>
                             <v-icon class="grey lighten-1" dark>
                                 mdi-folder

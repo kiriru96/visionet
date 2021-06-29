@@ -220,12 +220,20 @@ const routes = [
     },
     component: () => import(/* webpackChunkName: 'stock' */'../views/admin/Stock.vue')
   }, {
-    path: '/leader/confirmWO',
+    path: '/woconfirm',
     name: 'ConfirmWO',
     meta: {
       title: 'Confirm WO'
     },
     component: () => import(/* webpackChunkName: 'confirmWO' */'../views/leader/DetailWOSubmit.vue')
+  },
+  {
+    path: '/wosubmitdetail',
+    name: 'EngginerWOSubmitDetail',
+    meta: {
+      title: 'WO Submit Detail'
+    },
+    component: () => import(/* webpackChunkName: 'wosubmitdetail' */'../views/engginer/DetailWoSubmit.vue')
   },
   {
     path: '/stockopname',

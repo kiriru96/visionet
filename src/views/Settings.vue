@@ -115,6 +115,13 @@ export default {
         const {dispatch} = this.$store
         dispatch('profile/getProfile')
     },
+    destroyed() {
+        this.username = ''
+        this.password = ''
+        this.fullname = ''
+        this.firstname = ''
+        this.lastname = ''
+    },
     data() {
         return {
             username: '',
