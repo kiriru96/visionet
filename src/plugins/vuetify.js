@@ -8,10 +8,10 @@ export default new Vuetify({
         dark: localStorage.getItem('theme') === 'dark',
         themes: {
             light: {
-                primary: '#FE860C'
+                primary: '#FB8C00'
             },
             dark: {
-                primary: '#FE860C'
+                primary: '#E65100'
             }
         }
     }

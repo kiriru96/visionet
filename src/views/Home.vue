@@ -10,7 +10,7 @@
           <v-card      
             style="margin: 4px"  
             class="pa-2"
-            color="#26c6da"
+            color="#00838F"
             dark
             outlined>
             <v-card-title>
@@ -30,7 +30,7 @@
           <v-card      
             style="margin: 4px"  
             class="pa-2"
-            color="#26c6da"
+            color="#FF6D00"
             dark
             outlined>
             <v-card-title>
@@ -51,7 +51,7 @@
           <v-card      
             style="margin: 4px"  
             class="pa-2"
-            color="#26c6da"
+            color="#388E3C"
             dark
             outlined>
             <v-card-title>
@@ -72,7 +72,7 @@
           <v-card      
             style="margin: 4px"  
             class="pa-2"
-            color="#26c6da"
+            color="#311B92"
             dark
             outlined>
             <v-card-title>
