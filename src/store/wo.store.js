@@ -15,8 +15,10 @@ export const wo = {
             location: '',
             engginername: ''
         },
+        update: false,
         dialog: false,
-        lightSearchEngginer: []
+        lightSearchEngginer: [],
+        report_table: []
     },
     actions: {
         async nextList({commit, state}, {date, page}) {
@@ -86,6 +88,23 @@ export const wo = {
             }
             commit('setLoading', false)
         },
+        async reportWorkOrder({commit, state}, {startdate, enddate}) {
+            if(state.loading) return
+
+            commit('removeTableReport')
+            commit('setLoading', true)
+            commit('removeError')
+
+            let res = await manual.workOrderReport({startdate:startdate, enddate:enddate})
+            
+            if(!res.err) {
+                commit('setTableReport', res.json.data.list)
+            } else {
+                commit('setError', res.err)
+            }
+            commit('setUpdate', false)
+            commit('setLoading', false)
+        },
         async detailWorkOrder({commit, state}, id) {
             if(state.loading) return
 
@@ -141,9 +160,15 @@ export const wo = {
         },
         removeError({commit}) {
             commit('removeError')
+        },
+        removeTableReport({commit}) {
+            commit('removeTableReport')
         }
     },
     getters: {
+        getReportTable(state) {
+            return state.report_table
+        },
         getDialog(state) {
             return state.dialog
         },
@@ -164,6 +189,15 @@ export const wo = {
         }
     },
     mutations: {
+        setTableReport(state, list) {
+            state.report_table = list
+        },
+        removeTableReport(state) {
+            state.report_table = []
+        },
+        setUpdate(state, stat) {
+            state.update = stat
+        },
         setDialog(state, stat) {
             state.dialog = stat
         },

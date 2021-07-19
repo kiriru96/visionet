@@ -150,7 +150,8 @@ export default {
           text: "Report", icon: 'mdi-printer', child: [
             { text: "Stock In", icon: 'mdi-download', link: '/stockinreport' },
             { text: "Stock Out", icon: 'mdi-upload', link: '/stockoutreport' },
-            { text: "Stock Opname", icon: 'mdi-clipboard-list', link: '/stockopnamereport'}
+            { text: "Stock Opname", icon: 'mdi-clipboard-list', link: '/stockopnamereport'},
+            { text: "Work Order", icon: "mdi-briefcase", link: '/woreport'}
           ]
         }
       ],

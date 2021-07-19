@@ -309,7 +309,40 @@ async function listWorkOrderEngginer(date, page) {
     return result
 }
 
+async function workOrderReport({startdate, enddate}) {
+    const result = {
+        json: null,
+        err: null
+    }
+
+    let reqconf = config.getconfig();
+    
+    try {
+        const response = await fetch(
+            config.getUrlParams(
+                `${config.endpoint}/reportworkorder`, 
+                {startdate:startdate, enddate:enddate}), reqconf)
+
+        const fetchres = await response.json()
+
+        if(response.status === 200) {
+            if(fetchres.status) {
+                result.json = fetchres
+            } else {
+                result.err = fetchres.msg
+            }
+        } else {
+            result.err = response.statusText
+        }
+    } catch(err) {
+        result.err = err
+    }
+
+    return result
+}
+
 export const manual = {
+    workOrderReport,
     listWorkOrder,
     detailWO,
     insertEngginerWO,

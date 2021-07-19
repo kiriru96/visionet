@@ -250,6 +250,14 @@ const routes = [
       title: 'Settings'
     },
     component: () => import(/* webpackChunkName: 'settings' */'../views/Settings.vue')
+  },
+  {
+    path: '/woreport',
+    name: 'WOReport',
+    meta: {
+      title: 'WO Report',
+    },
+    component: () => import(/* webpackChunkName: 'woreport' */'../views/admin/WOReport.vue')
   }
 ]
 
