@@ -125,7 +125,7 @@ export default {
             idselected: -1,
             search: '',
             headers: [
-                {text: 'ID', value: 'id', sortable: false},
+                
                 {text: 'Name', value: 'fullname', sortable: false},
                 {text: 'Username', value: 'username', sortable: false},
                 {text: 'Actions', value: 'actions', sortable: false}

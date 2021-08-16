@@ -132,7 +132,7 @@ export default {
             alert: false,
             search: '',
             headers: [
-                {text: 'ID', value: 'id', sortable: false},
+                
                 {text: 'Device', value: 'devicename', sortable: false},
                 {text: 'Brand', value: 'brandname', sortable: false},
                 {text: 'Model', value: 'model', sortable: false},

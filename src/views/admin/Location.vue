@@ -123,7 +123,7 @@ export default {
             idselected: -1,
             search: '',
             headers: [
-                {text: 'ID', value: 'id', sortable: false},
+                
                 {text: 'Name', value: 'name', sortable: false},
                 {text: 'Actions', value: 'actions', sortable: false}
             ],
