@@ -213,6 +213,14 @@ const routes = [
     component: () => import(/* webpackChunkName: 'submitwo' */'../views/engginer/SubmitWorkOrder.vue')
   },
   {
+    path: '/engginer/revisiwo',
+    name: 'RevisiWO',
+    meta: {
+      title: 'Revisi WO'
+    },
+    component: () => import(/* webpackChunkName: 'submitwo' */'../views/engginer/SubmitWorkOrder.vue')
+  },
+  {
     path: '/stock',
     name: 'Stock',
     meta: {

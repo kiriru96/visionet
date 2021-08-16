@@ -22,19 +22,21 @@
                     v-for="(item, i) in picList"
                     :key="i">
                     <v-list-item-content>
-                        <v-img
-                            aspect-ratio="1"
-                            contain
-                            block
-                            width="300"
-                            :lazy-src="`http://localhost/visionet-api/public/uploads/${item}`"
-                            :src="`http://localhost/visionet-api/public/uploads/${item}`"
-                            style="margin: 2px">
-                        </v-img>
+                        <v-card>
+                            <v-img
+                                class="white--text align-end"
+                                gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                                :lazy-src="`http://localhost/visionet-api/public/uploads/${item}`"
+                                :src="`http://localhost/visionet-api/public/uploads/${item}`"
+                                style="margin: 2px">
+                            </v-img>
+                            <v-card-title>Description</v-card-title>
+                            <v-card-text>{{descList[i]}}</v-card-text>
+                        </v-card>
                     </v-list-item-content>
                     <v-list-item-content>
                         <v-list-item-action-text>
-                            {{descList[i]}}
+                            
                         </v-list-item-action-text>
                     </v-list-item-content>
                 </v-list-item>

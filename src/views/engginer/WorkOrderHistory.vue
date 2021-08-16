@@ -64,7 +64,7 @@
                         v-model="listProgress"
                         v-for="item in listProgress"
                         :key="item.id"
-                        @click="$router.push({path: '/wosubmitdetail', query: {id: item.id}})">
+                        @click="$router.push({path: '/engginer/revisiwo', query: {id: item.id}})">
                         <v-list-item-avatar>
                             <v-icon class="grey lighten-1" dark>
                                 mdi-folder

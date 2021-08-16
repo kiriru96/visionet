@@ -152,6 +152,21 @@ export const engginerpage = {
             }
             commit('setLoading', false)
         },
+        async editWO({commit, state}, data) {
+            if(state.loading) return
+
+            commit('removeError')
+            commit('setLoading', true)
+
+            let res = await manual.editWO(data)
+
+            if(!res.err) {
+                commit('setError', 'Submit work order done.')
+            } else {
+                commit('setError', res.err)
+            }
+            commit('setLoading', false)
+        },
         async searchEngginer({commit, state}, search) {
             if(state.loading) return
             

@@ -148,7 +148,11 @@ export default {
 
             const {dispatch} = this.$store
 
-            dispatch('engginerpage/inputWO', data)
+            if(this.$route.name === "RevisiWO") {
+                dispatch('engginerpage/editWO', data)
+            } else {
+                dispatch('engginerpage/inputWO', data)
+            }
         }
     },
     computed: {
