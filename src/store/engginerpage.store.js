@@ -23,7 +23,7 @@ export const engginerpage = {
         list_close: [],
         lightSearchEngginer: [],
         date_wo: new Date().toISOString().substr(0, 10),
-        date_history: new Date().toISOString().substr(0, 10),
+        date_history: new Date().toISOString().substr(0, 7),
         pic_list: [],
         desc_list: []
     },

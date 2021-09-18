@@ -8,28 +8,33 @@
                 :return-value.sync="date"
                 transition="scale-transition"
                 offset-y
-                min-width="auto">
+                max-width="290px"
+                min-width="auto"
+              >
                 <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                        v-model="date"
-                        label="Picker in menu"
-                        prepend-icon="mdi-calender"
-                        readonly
-                        v-bind="attrs"
-                        v-on="on">
-                    </v-text-field>
+                  <v-text-field
+                    v-model="date"
+                    label="Picker in menu"
+                    prepend-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
                 </template>
                 <v-date-picker
-                    v-model="date"
-                    no-title
-                    scrollable>
-                    <v-spacer></v-spacer>
-                    <v-btn 
-                        text
-                        color="primary"
-                        @click="menu = false">
-                        Cancel
-                    </v-btn>
+                  v-model="date"
+                  type="month"
+                  no-title
+                  scrollable
+                >
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    text
+                    color="primary"
+                    @click="menu = false"
+                  >
+                    Cancel
+                  </v-btn>
                     <v-btn
                         text
                         color="primary"
@@ -37,7 +42,7 @@
                         Ok
                     </v-btn>
                 </v-date-picker>
-            </v-menu>
+              </v-menu>
             <v-tabs
                 background-color="primary"
                 v-model="tab"
@@ -60,6 +65,7 @@
             <v-tabs-items v-model="tab">
                 <v-tab-item>
                     <v-list-item
+                        three-line
                         style="margin: 5px"
                         v-model="listProgress"
                         v-for="item in listProgress"
@@ -71,8 +77,9 @@
                             </v-icon>
                         </v-list-item-avatar>
                         <v-list-item-content>
-                            <v-list-item-title v-text="item.devicename"></v-list-item-title>
-                            <v-list-item-subtitle v-text="item.customername"></v-list-item-subtitle>
+                            <v-list-item-title v-text="item.customername"></v-list-item-title>
+                            <v-list-item-subtitle v-text="item.devicename"></v-list-item-subtitle>
+                            <v-list-item-subtitle>Model : {{ item.assetmodel }} | Serial Number : {{ item.assetserialnumber }}</v-list-item-subtitle>
                         </v-list-item-content>
                     </v-list-item>
                     <v-btn
@@ -85,6 +92,7 @@
                 </v-tab-item>
                 <v-tab-item>
                     <v-list-item
+                        three-line
                         style="margin: 5px"
                         v-model="listClose"
                         v-for="item in listClose"
@@ -96,8 +104,9 @@
                             </v-icon>
                         </v-list-item-avatar>
                         <v-list-item-content>
-                            <v-list-item-title v-text="item.devicename"></v-list-item-title>
-                            <v-list-item-subtitle v-text="item.customername"></v-list-item-subtitle>
+                            <v-list-item-title v-text="item.customername"></v-list-item-title>
+                            <v-list-item-subtitle v-text="item.devicename"></v-list-item-subtitle>
+                            <v-list-item-subtitle>Model : {{ item.assetmodel }} | Serial Number : {{ item.assetserialnumber }}</v-list-item-subtitle>
                         </v-list-item-content>
                     </v-list-item>
                     <v-btn

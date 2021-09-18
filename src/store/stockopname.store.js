@@ -77,6 +77,7 @@ export let stockopname = {
             
             if(!res.err) {
                 commit('setUpdate', true)
+                commit('setIdSelected', 0)
                 commit('setError', res.json.data)
             } else {
                 commit('setError', res.err)
