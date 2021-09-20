@@ -169,7 +169,7 @@ export const asset = {
                 if(!result.err) {
                     commit('setListLightWarehouse', result.json.data.list)
                 } else {
-                    commit('serError', result.err)
+                    commit('setError', result.err)
                 }
                 commit('setLoadingWarehouse', false)
             }
@@ -210,7 +210,7 @@ export const asset = {
                 if(!result.err) {
                     commit('setListLightCustomer', result.json.data.list)
                 } else {
-                    commit('serError', result.err)
+                    commit('setError', result.err)
                 }
                 commit('setLoadingCustomer', false)
             }
