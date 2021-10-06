@@ -47,7 +47,7 @@ export default {
             return this.$store.getters['wo/getLoading'];
         },
         listEngineer() {
-            return this.$store.getters['wo/getLightSearchEngiener']
+            return this.$store.getters['wo/getLightSearchEngineer']
         }
     },
     watch: {
