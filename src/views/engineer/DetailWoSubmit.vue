@@ -79,30 +79,30 @@ export default {
 
             const {dispatch} = this.$store
 
-            dispatch('engginerpage/detailWorkOrder', this.id)
+            dispatch('engineerpage/detailWorkOrder', this.id)
         }
     },
     computed: {
         responseMsg() {
-            return this.$store.getters['engginerpage/getError']
+            return this.$store.getters['engineerpage/getError']
         },
         woDetail() {
-            return this.$store.getters['engginerpage/getDetail']
+            return this.$store.getters['engineerpage/getDetail']
         },
         picList() {
-            return this.$store.getters['engginerpage/getPicList']
+            return this.$store.getters['engineerpage/getPicList']
         },
         descList() {
-            return this.$store.getters['engginerpage/getDescList']
+            return this.$store.getters['engineerpage/getDescList']
         },
-        engginerSubmitID() {
-            return this.$store.getters['engginerpage/getEngginerSubmitId']
+        engineerSubmitID() {
+            return this.$store.getters['engineerpage/getEngineerSubmitId']
         },
         statusWorkOrderSubmit() {
-            return this.$store.getters['engginerpage/getWorkOrderSubmitStatus']
+            return this.$store.getters['engineerpage/getWorkOrderSubmitStatus']
         },
         isLoading() {
-            return this.$store.getters['engginerpage/getLoading']
+            return this.$store.getters['engineerpage/getLoading']
         }
     },
     watch: {

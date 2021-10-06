@@ -43,7 +43,7 @@
                 v-model="lists"
                 v-for="item in lists"
                 :key="item.id"
-                @click="$router.push({path: '/engginer/submitwo', query: {id: item.id}})">
+                @click="$router.push({path: '/engineer/submitwo', query: {id: item.id}})">
                 <v-list-item-avatar>
                     <v-icon class="grey lighten-1" dark>
                         mdi-folder
@@ -122,38 +122,38 @@ export default {
 
             const {dispatch} = this.$store
 
-            dispatch('engginerpage/reqList', {date: this.date, page: this.page})
+            dispatch('engineerpage/reqList', {date: this.date, page: this.page})
         },
         nextListAPI() {
             if(this.isLoading) return
 
             const {dispatch} = this.$store
 
-            dispatch('engginerpage/nextList', {date: this.date, page: this.page})
+            dispatch('engineerpage/nextList', {date: this.date, page: this.page})
         },
         removeError() {
             const {dispatch} = this.$store
 
-            dispatch('engginerpage/removeError')
+            dispatch('engineerpage/removeError')
         }
     },
     computed: {
         isLoading() {
-            return this.$store.getters['engginerpage/getLoading']
+            return this.$store.getters['engineerpage/getLoading']
         },
         lists() {
-            return this.$store.getters['engginerpage/getList']
+            return this.$store.getters['engineerpage/getList']
         },
         errorMsg() {
-            return this.$store.getters['engginerpage/getError']
+            return this.$store.getters['engineerpage/getError']
         },
         date: {
             get() {
-                return this.$store.getters['engginerpage/getDateWO']
+                return this.$store.getters['engineerpage/getDateWO']
             },
             set(val) {
                 const {dispatch} = this.$store
-                dispatch('engginerpage/updateDateWO', val)
+                dispatch('engineerpage/updateDateWO', val)
             }
         }
     },

@@ -56,7 +56,7 @@
                                     Status
                                 </th>
                                 <th class="text-left">
-                                    Engginer
+                                    Engineer
                                 </th>
                             </tr>
                         </thead>
@@ -67,11 +67,13 @@
                                 <td>{{i+1}}</td>
                                 <td>{{item.devicename}}</td>
                                 <td>{{item.brandname}}</td>
-                                <td>{{item.serial_number}}</td>
+                                <td>{{item.inventory_code}}</td>
                                 <td>{{item.model}}</td>
-                                <td>{{item.count_input }}</td>
+                                <td>{{item.customername}}</td>
+                                <td>{{item.locationname}}</td>
                                 <td>{{item.datecreated}}</td>
-                                <td>{{item.adminname}}</td>
+                                <td>{{item.status_wo}}</td>
+                                <td>{{item.firstname + " " +  item.lastname}}</td>
                             </tr>
                         </tbody>
                     </template>

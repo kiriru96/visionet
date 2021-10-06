@@ -148,7 +148,7 @@ async function insertWO(data) {
     return result
 }
 
-async function insertEngginerWO(data) {
+async function insertEngineerWO(data) {
     let result = {
         json: null,
         err: null
@@ -157,7 +157,7 @@ async function insertEngginerWO(data) {
     let reqconf = config.postdataconfig(data);
 
     try{
-        const response = await fetch(`${config.endpoint}/setengginer`, reqconf)
+        const response = await fetch(`${config.endpoint}/setengineer`, reqconf)
         const fetchres = await response.json()
 
         if(response.status === 200) {
@@ -176,7 +176,7 @@ async function insertEngginerWO(data) {
     return result
 }
 
-async function lightSearchEngginer(search) {
+async function lightSearchEngineer(search) {
     let result = {
         json: null,
         err: null
@@ -187,7 +187,7 @@ async function lightSearchEngginer(search) {
     try {
         const response  = await fetch(
             config.getUrlParams(
-                `${config.endpoint}/light/engginer`, 
+                `${config.endpoint}/light/engineer`, 
                 {search: search}), 
                 reqconf)
 
@@ -273,7 +273,7 @@ async function listProgressWorkOrder(date, page) {
     return result
 }
 
-async function listSubmitEngginer(date, page) {
+async function listSubmitEngineer(date, page) {
     let result = {
         json: null,
         err: null
@@ -284,7 +284,7 @@ async function listSubmitEngginer(date, page) {
     try {
         const response  = await fetch(
             config.getUrlParams(
-                `${config.endpoint}/engginersubmitlist`, 
+                `${config.endpoint}/engineersubmitlist`, 
                 {date: date, page: page}), 
                 reqconf)
         const fetchres  = await response.json()
@@ -305,7 +305,7 @@ async function listSubmitEngginer(date, page) {
     return result
 }
 
-async function listWorkOrderEngginer(date, page) {
+async function listWorkOrderEngineer(date, page) {
     let result = {
         json: null,
         err: null
@@ -316,7 +316,7 @@ async function listWorkOrderEngginer(date, page) {
     try {
         const response  = await fetch(
             config.getUrlParams(
-                `${config.endpoint}/listengginerworkorder`, 
+                `${config.endpoint}/listengineerworkorder`, 
                 {date: date, page: page}), 
                 reqconf)
         const fetchres  = await response.json()
@@ -373,13 +373,13 @@ export const manual = {
     workOrderReport,
     listWorkOrder,
     detailWO,
-    insertEngginerWO,
-    lightSearchEngginer,
-    listWorkOrderEngginer,
+    insertEngineerWO,
+    lightSearchEngineer,
+    listWorkOrderEngineer,
     editWO,
     insertWO,
     listCloseWorkOrder,
     listProgressWorkOrder,
-    listSubmitEngginer,
+    listSubmitEngineer,
     confirmWO
 }

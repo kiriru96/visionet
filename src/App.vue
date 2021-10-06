@@ -22,10 +22,25 @@
           <v-list-item @click="toLocation('/profile')">
             <v-list-item-avatar size="80">
               <v-img
+                v-if="userType == 0"
                 contain
                 :height="120"
-                lazy-src="./assets/avatar.png"
-                src="./assets/avatar.png">
+                lazy-src="./assets/admin.jpg"
+                src="./assets/admin.jpg">
+              </v-img>
+              <v-img
+                v-if="userType == 1 || userType == 2"
+                contain
+                :height="120"
+                lazy-src="./assets/leader.jpg"
+                src="./assets/leader.jpg">
+              </v-img>
+              <v-img
+                v-if="userType == 3"
+                contain
+                :height="120"
+                lazy-src="./assets/engineer.jpg"
+                src="./assets/engineer.jpg">
               </v-img>
             </v-list-item-avatar>
             <v-list-item-title>{{nameAccount}}</v-list-item-title>
@@ -143,7 +158,7 @@ export default {
             { text: "Admin", icon: 'mdi-account', link: '/administrator'},
             { text: "Leader", icon: 'mdi-account', link: '/leader'},
             { text: "Backup Leader", icon: 'mdi-account', link: '/backupleader'},
-            { text: "Engginer", icon: 'mdi-account', link: '/engginer'}
+            { text: "Engineer", icon: 'mdi-account', link: '/engineer'}
           ]
         },
         {
@@ -157,15 +172,15 @@ export default {
       ],
       [
         { text: "WO", icon: 'mdi-map  ', link: '/leader/workorder'},
-        { text: "Engginer Submit Work Order", icon: 'mdi-history  ', link: '/leader/workorderhistory'}
+        { text: "Engineer Submit Work Order", icon: 'mdi-history  ', link: '/leader/workorderhistory'}
       ],
       [
         { text: "WO", icon: 'mdi-map  ', link: '/leader/workorder'},
-        { text: "Engginer Submit Work Order", icon: 'mdi-history  ', link: '/leader/workorderhistory'}
+        { text: "Engineer Submit Work Order", icon: 'mdi-history  ', link: '/leader/workorderhistory'}
       ],
       [
-        { text: "WO", icon: 'mdi-map  ', link: '/engginer/workorder'},
-        { text: "Work Order History", icon: 'mdi-history  ', link: '/engginer/workorderhistory'}
+        { text: "WO", icon: 'mdi-map  ', link: '/engineer/workorder'},
+        { text: "Work Order History", icon: 'mdi-history  ', link: '/engineer/workorderhistory'}
       ]
     ]
   }),

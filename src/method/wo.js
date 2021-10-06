@@ -4,11 +4,11 @@ async function getWorkOrderList() {
 
 }
 
-async function insertWorkOrderEngginer() {
+async function insertWorkOrderEngineer() {
 
 }
 
 export const wo = {
     getWorkOrderList,
-    insertWorkOrderEngginer
+    insertWorkOrderEngineer
 }

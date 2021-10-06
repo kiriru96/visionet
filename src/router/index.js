@@ -93,31 +93,31 @@ const routes = [
     component: () => import(/* webpackChunkName: "leader" */'../views/admin/Leader.vue')
   },
   {
-    path: '/engginer',
-    name: 'Engginer',
+    path: '/engineer',
+    name: 'Engineer',
     meta: {
-      title: 'Engginer',
+      title: 'Engineer',
       back:true
     },
-    component: () => import(/* webpackChunkName: "engginer" */'../views/admin/Engginer.vue')
+    component: () => import(/* webpackChunkName: "engineer" */'../views/admin/Engineer.vue')
   },
   {
-    path: '/engginer/workorder',
+    path: '/engineer/workorder',
     name: 'Work Order',
     meta: {
       title: 'Work Order',
       back: true
     },
-    component: () => import(/* webpackChunkName: "engginerwo" */'../views/engginer/WorkOrder.vue')
+    component: () => import(/* webpackChunkName: "engineerwo" */'../views/engineer/WorkOrder.vue')
   },
   {
-    path: '/engginer/workorderhistory',
+    path: '/engineer/workorderhistory',
     name: 'Work Order Submit History',
     meta: {
       title: 'Work Order Submit History',
       back: true
     },
-    component: () => import(/* webpackChunkName: "engginerwohistory" */'../views/engginer/WorkOrderHistory.vue')
+    component: () => import(/* webpackChunkName: "engineerwohistory" */'../views/engineer/WorkOrderHistory.vue')
   },
   {
     path: '/asset',
@@ -153,7 +153,7 @@ const routes = [
       title: 'Detail',
       back: true
     },
-    component: () => import(/* webpackChunkName: 'detailwo' */'../views/leader/EngginerWorkOrder.vue')
+    component: () => import(/* webpackChunkName: 'detailwo' */'../views/leader/EngineerWorkOrder.vue')
   },
   {
     path: '/administrator',
@@ -205,20 +205,20 @@ const routes = [
     component: () => import(/* webpackChunkName: 'stockopnamereport' */'../views/admin/StockOpnameReport.vue')
   },
   {
-    path: '/engginer/submitwo',
+    path: '/engineer/submitwo',
     name: 'SubmitWO',
     meta: {
       title: 'Submit WO'
     },
-    component: () => import(/* webpackChunkName: 'submitwo' */'../views/engginer/SubmitWorkOrder.vue')
+    component: () => import(/* webpackChunkName: 'submitwo' */'../views/engineer/SubmitWorkOrder.vue')
   },
   {
-    path: '/engginer/revisiwo',
+    path: '/engineer/revisiwo',
     name: 'RevisiWO',
     meta: {
       title: 'Revisi WO'
     },
-    component: () => import(/* webpackChunkName: 'submitwo' */'../views/engginer/SubmitWorkOrder.vue')
+    component: () => import(/* webpackChunkName: 'submitwo' */'../views/engineer/SubmitWorkOrder.vue')
   },
   {
     path: '/stock',
@@ -237,11 +237,11 @@ const routes = [
   },
   {
     path: '/wosubmitdetail',
-    name: 'EngginerWOSubmitDetail',
+    name: 'EngineerWOSubmitDetail',
     meta: {
       title: 'WO Submit Detail'
     },
-    component: () => import(/* webpackChunkName: 'wosubmitdetail' */'../views/engginer/DetailWoSubmit.vue')
+    component: () => import(/* webpackChunkName: 'wosubmitdetail' */'../views/engineer/DetailWoSubmit.vue')
   },
   {
     path: '/stockopname',

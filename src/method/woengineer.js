@@ -12,7 +12,7 @@ async function detailWorkOrder() {
 
 }
 
-export const woengginer = {
+export const woengineer = {
     listWorkOrder,
     submitWorkOrder,
     detailWorkOrder

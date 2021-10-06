@@ -1,6 +1,6 @@
 import {account} from '../method'
 
-export const engginer = {
+export const engineer = {
     namespaced: true,
     state: {
         listItems: [],
@@ -20,7 +20,7 @@ export const engginer = {
             commit('removeError')
             commit('setLoading', true)
 
-            let res = await account.list('engginer', {index: index, rows: rows, search: search, sortby: sortby, sort: sort})
+            let res = await account.list('engineer', {index: index, rows: rows, search: search, sortby: sortby, sort: sort})
 
             if(!res.err) {
                 commit('addAll', {items: res.json.data.list, len: res.json.data.len})
@@ -38,7 +38,7 @@ export const engginer = {
             commit('setLoading', true)
             commit('setSubmit', true)
 
-            let res = await account.submit('engginer', data)
+            let res = await account.submit('engineer', data)
 
             if(!res.err) {
                 commit('setDialog', false)
@@ -53,7 +53,7 @@ export const engginer = {
             commit('setLoading', true)
             commit('setSubmit', true)
 
-            let res = await account.update('engginer', data)
+            let res = await account.update('engineer', data)
 
             if(!res.err) {
                 commit('setDialog', false)
@@ -69,7 +69,7 @@ export const engginer = {
             commit('removeError')
             commit('setLoading', true)
             
-            let res = await account.del('engginer', id)
+            let res = await account.del('engineer', id)
 
             if(!res.err) {
                 commit('setUpdate', true)
@@ -84,7 +84,7 @@ export const engginer = {
             commit('removeError')
             commit('setLoading', true)
             
-            let res = await account.updatePassword('engginer', data)
+            let res = await account.updatePassword('engineer', data)
 
             if(!res.err) {
 

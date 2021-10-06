@@ -6,7 +6,7 @@ const user_type = localStorage.getItem("user_type");
 const name = localStorage.getItem("name")
 
 const initState = token ? {isLogged: true, token: token, loading: false, err_msg: null, user_type: user_type, name: name} : {isLogged: false, token: 'null', loading: false, err_msg: null, user_type: null, name: ''};
-const typeList = ['Admin', 'Leader', 'Backup Leader', 'Enginner'];
+const typeList = ['Admin', 'Leader', 'Backup Leader', 'Engineer'];
 
 export const auth = {
     namespaced: true,

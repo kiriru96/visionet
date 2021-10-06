@@ -160,11 +160,11 @@ export default {
         },
         removeError(){
             const {dispatch} = this.$store;
-            dispatch('engginer/removeError')
+            dispatch('engineer/removeError')
         },
         removeMsg() {
             const {dispatch} = this.$store;
-            dispatch('engginer/removeMsg')
+            dispatch('engineer/removeMsg')
         },
         handleScroll () {
             this.currentY = window.top.scrollY
@@ -183,10 +183,10 @@ export default {
 
             this.idselected = -1
 
-            this.formTitle = 'Add Engginer'
+            this.formTitle = 'Add Engineer'
 
-            dispatch('engginer/removeError')
-            dispatch('engginer/openDialog')
+            dispatch('engineer/removeError')
+            dispatch('engineer/openDialog')
         },
         editAction(item) {
             this.pass = false
@@ -207,11 +207,11 @@ export default {
                 location: {id: location, name: locationname}
             }
 
-            this.formTitle = 'Edit Engginer'
+            this.formTitle = 'Edit Engineer'
 
             const {dispatch} = this.$store
 
-            dispatch('engginer/openDialog')
+            dispatch('engineer/openDialog')
         },
         changePass(item) {
             this.pass = true
@@ -231,7 +231,7 @@ export default {
             
             const {dispatch} = this.$store
 
-            dispatch('engginer/openDialog')
+            dispatch('engineer/openDialog')
         },
         deleteAction(item) {
             const index = this.table.indexOf(item)
@@ -241,7 +241,7 @@ export default {
         },
         closeDialog() {
             const {dispatch} = this.$store
-            dispatch('engginer/closeDialog')
+            dispatch('engineer/closeDialog')
 
             if(this.$refs.submitpanel) {
                 this.$refs.submitpanel.resetForm()
@@ -262,7 +262,7 @@ export default {
             if(this.isLoading) return
 
             const {dispatch} = this.$store
-            dispatch('engginer/deleteList', this.id_server_account)
+            dispatch('engineer/deleteList', this.id_server_account)
 
             this.alert = false
             this.idselected = -1
@@ -287,7 +287,7 @@ export default {
                 this.sorting = !sortDesc[0] ? "ASC" : "DESC"
             }
 
-            dispatch('engginer/reqList', {index: page, rows: itemsPerPage, search: this.search, sortby: this.sortbylast, sort: this.sorting})
+            dispatch('engineer/reqList', {index: page, rows: itemsPerPage, search: this.search, sortby: this.sortbylast, sort: this.sorting})
         },        
         submitAPI() {
             if(this.isLoading) return
@@ -302,10 +302,10 @@ export default {
                     password:       this.forminput.password,
                     location:       this.forminput.location.id
                 }
-                dispatch('engginer/insertList', data)
+                dispatch('engineer/insertList', data)
             }
 
-            dispatch('engginer/closeDialog')
+            dispatch('engineer/closeDialog')
         },
         editAPI() {
             if(this.isLoading) return
@@ -319,10 +319,10 @@ export default {
                     lastname:       this.forminput.lastname,
                     location:       this.forminput.location.id
                 }
-                dispatch('engginer/updateList', data)
+                dispatch('engineer/updateList', data)
             }
 
-            dispatch('engginer/closeDialog')
+            dispatch('engineer/closeDialog')
 
             this.idselected = -1
         },
@@ -333,10 +333,10 @@ export default {
 
             if(this.$refs.changepass.isValid()) {
                 let data = {id: this.forminput.id, password: this.forminput.password}
-                dispatch('engginer/updatePassword', data)
+                dispatch('engineer/updatePassword', data)
             }
 
-            dispatch('engginer/closeDialog')
+            dispatch('engineer/closeDialog')
         },
         deleteAPI() {
             if(this.isLoading) return
@@ -344,25 +344,25 @@ export default {
     },
     computed: {
         updateStat() {
-            return this.$store.getters['engginer/getUpdate']
+            return this.$store.getters['engineer/getUpdate']
         },
         table() {
-            return this.$store.getters['engginer/getAllItems']
+            return this.$store.getters['engineer/getAllItems']
         },
         isLoading() {
-            return this.$store.getters['engginer/getLoading']
+            return this.$store.getters['engineer/getLoading']
         },
         lentable() {
-            return this.$store.getters['engginer/getLenItems']
+            return this.$store.getters['engineer/getLenItems']
         },
         errorMsg() {
-            return this.$store.getters['engginer/getError']
+            return this.$store.getters['engineer/getError']
         },
         dialogStatus() {
-            return this.$store.getters['engginer/getDialog']
+            return this.$store.getters['engineer/getDialog']
         },
         responseMsg() {
-            return this.$store.getters['engginer/getMessage']
+            return this.$store.getters['engineer/getMessage']
         },
         params() {
             return {

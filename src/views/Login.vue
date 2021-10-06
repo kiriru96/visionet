@@ -90,7 +90,7 @@ export default {
             ],
         loadaction: false,
         type: 'Admin',
-        typeList: ['Admin', 'Leader', 'Backup Leader', 'Enginner']
+        typeList: ['Admin', 'Leader', 'Backup Leader', 'Engineer']
     }
   },
   methods: {

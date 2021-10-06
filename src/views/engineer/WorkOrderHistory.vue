@@ -70,7 +70,7 @@
                         v-model="listProgress"
                         v-for="item in listProgress"
                         :key="item.id"
-                        @click="$router.push({path: '/engginer/revisiwo', query: {id: item.id}})">
+                        @click="$router.push({path: '/engineer/revisiwo', query: {id: item.id}})">
                         <v-list-item-avatar>
                             <v-icon class="grey lighten-1" dark>
                                 mdi-folder
@@ -175,16 +175,16 @@ export default {
             const {dispatch} = this.$store
             if(this.tabselected === 'progress') {
                 this.getListAPI(1)
-                dispatch('engginerpage/removeListClose')
+                dispatch('engineerpage/removeListClose')
             } else {
                 this.getListAPI(2)
-                dispatch('engginerpage/removeListProgress')
+                dispatch('engineerpage/removeListProgress')
             }
         },
         removeError() {
             const {dispatch} = this.$store
 
-            dispatch('engginerpage/removeError')
+            dispatch('engineerpage/removeError')
         },
         onProgress() {
             if(this.tabselected === 'progress' || this.listProgress.length > 0) return
@@ -203,14 +203,14 @@ export default {
 
             const {dispatch} = this.$store
 
-            dispatch('engginerpage/nextListProgress', {date: this.date, page: this.page_progress})
+            dispatch('engineerpage/nextListProgress', {date: this.date, page: this.page_progress})
         },
         nextClose() {
             this.page_close += 1
 
             const {dispatch} = this.$store
 
-            dispatch('engginerpage/nextListClose', {date: this.date, page: this.page_close})
+            dispatch('engineerpage/nextListClose', {date: this.date, page: this.page_close})
         },
         getListAPI(type) {
             if(type === 1) {
@@ -218,39 +218,39 @@ export default {
                 
                 const {dispatch} = this.$store
 
-                dispatch('engginerpage/reqListProgress', {date: this.date, page: this.page_progress})
+                dispatch('engineerpage/reqListProgress', {date: this.date, page: this.page_progress})
             } else {
                 this.page_close = 1
                 
                 const {dispatch} = this.$store
 
-                dispatch('engginerpage/reqListClose', {date: this.date, page: this.page_close})
+                dispatch('engineerpage/reqListClose', {date: this.date, page: this.page_close})
             }
         }
     },
     computed: {
         listProgress() {
-            return this.$store.getters['engginerpage/getListProgress']
+            return this.$store.getters['engineerpage/getListProgress']
         },
         listClose() {
-            return this.$store.getters['engginerpage/getListClose']
+            return this.$store.getters['engineerpage/getListClose']
         },
         loadingListProgress() {
-            return this.$store.getters['engginerpage/getLoadingListProgress']
+            return this.$store.getters['engineerpage/getLoadingListProgress']
         },
         loadingListClose() {
-            return this.$store.getters['engginerpage/getLoadingListClose']
+            return this.$store.getters['engineerpage/getLoadingListClose']
         },
         errorMsg() {
-            return this.$store.getters['engginerpage/getError']
+            return this.$store.getters['engineerpage/getError']
         },
         date: {
             get() {
-                return this.$store.getters['engginerpage/getDateHistory']
+                return this.$store.getters['engineerpage/getDateHistory']
             },
             set(val) {
                 const {dispatch} = this.$store
-                dispatch('engginerpage/updateDateHistory', val)
+                dispatch('engineerpage/updateDateHistory', val)
             }
         }
     }

@@ -11,11 +11,11 @@ import {warehouse} from './warehouse.store'
 import {admin} from './admin.store'
 import {leader} from './leader.store'
 import {backupleader} from './backupleader.store'
-import {engginer} from './engginer.store'
+import {engineer} from './engineer.store'
 import {home} from './home.store'
 import {workorder} from './workorder.store'
 import {wo} from './wo.store'
-import {engginerpage} from './engginerpage.store'
+import {engineerpage} from './engineerpage.store'
 import {accounts} from './account.store'
 import {stockin} from './stockin.store'
 import {stockout} from './stockout.store'
@@ -37,12 +37,12 @@ export default new Vuex.Store({
     admin,
     leader,
     backupleader,
-    engginer,
+    engineer,
     home,
     workorder,
     wo,
     accounts,
-    engginerpage,
+    engineerpage,
     stockin,
     stockout,
     stockopname,

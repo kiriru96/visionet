@@ -106,7 +106,7 @@ export default {
 
             const {dispatch} = this.$store
 
-            dispatch('engginerpage/detailWorkOrder', this.id)
+            dispatch('engineerpage/detailWorkOrder', this.id)
         },
         selectImage() {
             if(this.image_list.length <= 3) {
@@ -149,18 +149,18 @@ export default {
             const {dispatch} = this.$store
 
             if(this.$route.name === "RevisiWO") {
-                dispatch('engginerpage/editWO', data)
+                dispatch('engineerpage/editWO', data)
             } else {
-                dispatch('engginerpage/inputWO', data)
+                dispatch('engineerpage/inputWO', data)
             }
         }
     },
     computed: {
         woDetail() {
-            return this.$store.getters['engginerpage/getDetail']
+            return this.$store.getters['engineerpage/getDetail']
         },
         responseMsg() {
-            return this.$store.getters['engginerpage/getError']
+            return this.$store.getters['engineerpage/getError']
         }
     },
     watch: {

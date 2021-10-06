@@ -3,17 +3,17 @@
         ref="form"
         v-model="valid">
         <v-autocomplete
-            v-model="forminput.engginer"
+            v-model="forminput.engineer"
             :loading="isLoading"
-            :items="listEngginer"
-            :search-input.sync="search_engginer"
+            :items="listEngineer"
+            :search-input.sync="search_engineer"
             item-text="username"
             item-value="id"
             cache-items
             class="mx-3"
             hide-no-data
             return-object
-            label="Engginer">
+            label="Engineer">
             <template v-slot:item="data">
                 <v-list-item-content>
                     <v-list-item-title>{{data.item.username}}</v-list-item-title>
@@ -37,7 +37,7 @@ export default {
                 v => v && v.length >= 1 || "Input harus diisi",
                 v => v && v.length <= 50 || "Tidak boleh lebih dari 50 karakter"
             ],
-            search_engginer: ''
+            search_engineer: ''
         }
     },
     methods: {
@@ -46,15 +46,15 @@ export default {
         isLoading() {
             return this.$store.getters['wo/getLoading'];
         },
-        listEngginer() {
-            return this.$store.getters['wo/getLightSearchEngginer']
+        listEngineer() {
+            return this.$store.getters['wo/getLightSearchEngiener']
         }
     },
     watch: {
-        search_engginer(val) {
+        search_engineer(val) {
             if(val?.trim().length >= 2) {
                 const {dispatch} = this.$store
-                dispatch('wo/searchEngginer', val)
+                dispatch('wo/searchEngineer', val)
             }
         }
     }

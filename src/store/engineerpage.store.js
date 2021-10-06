@@ -1,6 +1,6 @@
 import {manual} from '../method'
 
-export const engginerpage = {
+export const engineerpage = {
     namespaced: true,
     state: {
         list: [],
@@ -17,11 +17,11 @@ export const engginerpage = {
             location: ''
         },
         work_order_submit_confirm_status: -1,
-        engginer_submit_id: 0,
+        engineer_submit_id: 0,
         dialog: false,
         list_progress: [],
         list_close: [],
-        lightSearchEngginer: [],
+        lightSearchEngineer: [],
         date_wo: new Date().toISOString().substr(0, 10),
         date_history: new Date().toISOString().substr(0, 7),
         pic_list: [],
@@ -34,7 +34,7 @@ export const engginerpage = {
             commit('removeError')
             commit('setLoading', true)
 
-            let res = await manual.listWorkOrderEngginer(date, page)
+            let res = await manual.listWorkOrderEngineer(date, page)
             
             if(!res.err) {
                 commit('updateList', res.json.data.list)
@@ -111,7 +111,7 @@ export const engginerpage = {
             commit('removeError')
             commit('setLoading', true)
 
-            let res = await manual.listWorkOrderEngginer(date, page)
+            let res = await manual.listWorkOrderEngineer(date, page)
 
             if(!res.err) {
                 commit('setList', res.json.data.list)
@@ -167,16 +167,16 @@ export const engginerpage = {
             }
             commit('setLoading', false)
         },
-        async searchEngginer({commit, state}, search) {
+        async searchEngineer({commit, state}, search) {
             if(state.loading) return
             
             commit('removeError')
             commit('setLoading', true)
 
-            let res = await manual.lightSearchEngginer(search)
+            let res = await manual.lightSearchEngineer(search)
 
             if(!res.err) {
-                commit('setListEngginer', res.json.data.list)
+                commit('setListEngineer', res.json.data.list)
             } else {
                 commit('setError', res.err)
             }
@@ -230,8 +230,8 @@ export const engginerpage = {
         getDialog(state) {
             return state.dialog
         },
-        getLightSearchEngginer(state) {
-            return state.lightSearchEngginer
+        getLightSearchEngineer(state) {
+            return state.lightSearchEngineer
         },
         getLoading(state) {
             return state.loading
@@ -269,8 +269,8 @@ export const engginerpage = {
         getDescList(state) {
             return state.desc_list
         },
-        getEngginerSubmitId(state) {
-            return state.engginer_submit_id
+        getEngineerSubmitId(state) {
+            return state.engineer_submit_id
         },
         getWorkOrderSubmitStatus(state) {
             return state.work_order_submit_confirm_status
@@ -289,14 +289,14 @@ export const engginerpage = {
         setDialog(state, stat) {
             state.dialog = stat
         },
-        setListEngginer(state, list) {
-            state.lightSearchEngginer = list
+        setListEngineer(state, list) {
+            state.lightSearchEngineer = list
         },
         setDetail(state, data) {
             state.pic_list  = JSON.parse(data.pic_list)
             state.desc_list = JSON.parse(data.desc_list)
 
-            state.engginer_submit_id = data.engginer_submit_id
+            state.engineer_submit_id = data.engineer_submit_id
 
             state.detail = {
                 woid: data.work_order_id,

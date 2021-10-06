@@ -8,13 +8,13 @@
                     </v-card-title>
 
                     <v-card-text>
-                        <EngginerInput ref="engginerinput" :forminput="forminput"/>
+                        <EngineerInput ref="engineerinput" :forminput="forminput"/>
                     </v-card-text>
                     
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn color="blue darken-1" text @click="closeDialog">Cancel</v-btn>
-                        <v-btn color="blue darken-1" text @click="sendToEngginer">Save</v-btn>
+                        <v-btn color="blue darken-1" text @click="sendToEngineer">Save</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -44,14 +44,14 @@
                     disabled>
                 </v-text-field>
                 <v-text-field
-                    v-if="dataWO.engginername != null"
-                    v-model="dataWO.engginername"
+                    v-if="dataWO.engineername != null"
+                    v-model="dataWO.engineername"
                     label="Work Order sended to"
                     class="mx-3"
                     disabled>
                 </v-text-field>
-                <v-btn block @click="inputEngginer">
-                    Send To Engginer
+                <v-btn block @click="inputEngineer">
+                    Send To Engineer
                 </v-btn>
             </v-form>
         </v-container>
@@ -80,7 +80,7 @@
 <script>
 export default {
     components: {
-        EngginerInput: () => import('../../components/EngginerInput.vue')
+        EngineerInput: () => import('../../components/EngineerInput.vue')
     },
     created() {
         this.id = this.$route.query.id
@@ -88,10 +88,10 @@ export default {
     },
     data() {
         return {
-            formTitle: 'Send To Engginer',
+            formTitle: 'Send To Engineer',
             forminput: {
                 woid: 0,
-                engginer: {id: 0, name: ''}
+                engineer: {id: 0, name: ''}
             },
             id: 0,
             headers: [
@@ -112,27 +112,27 @@ export default {
 
             dispatch('wo/detailWorkOrder', this.id)
         },
-        inputEngginer() {
+        inputEngineer() {
             this.forminput = {
                 id: this.id,
-                engginer: {id: 0, name: ''}
+                engineer: {id: 0, name: ''}
             }
 
             const {dispatch} = this.$store
 
             dispatch('wo/openDialog')
         },
-        sendToEngginer() {
+        sendToEngineer() {
             if(this.isLoading) return
 
             let data = {
                 idwo: this.forminput.id,
-                idengginer: this.forminput.engginer.id
+                idengineer: this.forminput.engineer.id
             }
             
             const {dispatch} = this.$store
 
-            dispatch('wo/inputEngginer', data)
+            dispatch('wo/inputEngineer', data)
         },
         closeDialog() {
             const {dispatch} = this.$store

@@ -13,11 +13,11 @@ export const wo = {
             serial_number: '',
             customer: '',
             location: '',
-            engginername: ''
+            engineername: ''
         },
         update: false,
         dialog: false,
-        lightSearchEngginer: [],
+        lightSearchEngineer: [],
         report_table: []
     },
     actions: {
@@ -58,7 +58,7 @@ export const wo = {
             commit('removeError')
             commit('setLoading', true)
 
-            let res = await manual.listSubmitEngginer(date, page)
+            let res = await manual.listSubmitEngineer(date, page)
             
             if(!res.err) {
                 commit('updateList', res.json.data.list)
@@ -74,7 +74,7 @@ export const wo = {
             commit('removeError')
             commit('setLoading', true)
 
-            let res = await manual.listSubmitEngginer(date, page)
+            let res = await manual.listSubmitEngineer(date, page)
 
             if(!res.err) {
                 if(next) {
@@ -121,13 +121,13 @@ export const wo = {
             }
             commit('setLoading', false)
         },
-        async inputEngginer({commit, state}, data) {
+        async inputEngineer({commit, state}, data) {
             if(state.loading) return
 
             commit('removeError')
             commit('setLoading', true)
 
-            let res = await manual.insertEngginerWO(data)
+            let res = await manual.insertEngineerWO(data)
 
             if(!res.err) {
                 commit('setDialog', false)
@@ -137,16 +137,16 @@ export const wo = {
             }
             commit('setLoading', false)
         },
-        async searchEngginer({commit, state}, search) {
+        async searchEngineer({commit, state}, search) {
             if(state.loading) return
             
             commit('removeError')
             commit('setLoading', true)
 
-            let res = await manual.lightSearchEngginer(search)
+            let res = await manual.lightSearchEngineer(search)
 
             if(!res.err) {
-                commit('setListEngginer', res.json.data.list)
+                commit('setListEngineer', res.json.data.list)
             } else {
                 commit('setError', res.err)
             }
@@ -172,8 +172,8 @@ export const wo = {
         getDialog(state) {
             return state.dialog
         },
-        getLightSearchEngginer(state) {
-            return state.lightSearchEngginer
+        getLightSearchEngineer(state) {
+            return state.lightSearchEngineer
         },
         getLoading(state) {
             return state.loading
@@ -201,8 +201,8 @@ export const wo = {
         setDialog(state, stat) {
             state.dialog = stat
         },
-        setListEngginer(state, list) {
-            state.lightSearchEngginer = list
+        setListEngineer(state, list) {
+            state.lightSearchEngineer = list
         },
         setDetail(state, data) {
             state.detail = {
@@ -212,7 +212,7 @@ export const wo = {
                 serial_number: data.serial_number,
                 customer: data.customername,
                 location: data.locationname,
-                engginername: data.engginername 
+                engineername: data.engineername 
             }
         },
         updateList(state, list) {
