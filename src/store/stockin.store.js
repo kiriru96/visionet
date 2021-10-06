@@ -186,6 +186,9 @@ export let stockin = {
         },
         removeTableReport({commit}) {
             commit('removeTableReport')
+        },
+        resetListAsset({commit}) {
+            commit('setAssetList', [])
         }
     },
     getters: {

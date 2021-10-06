@@ -70,6 +70,7 @@ export default {
     },
     methods: {
         resetForm() {
+
             this.stockinput = {
                 asset: {
                     assetid: 0,
@@ -80,6 +81,8 @@ export default {
                     quantity: 0
                 }
             }
+
+            this.$store.dispatch('stockin/resetListAsset')
         }
     },
     computed: {
