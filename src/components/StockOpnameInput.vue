@@ -10,7 +10,6 @@
             :search-input.sync="search_asset"
             item-text="devicename"
             item-value="assetid"
-            cache-items
             return-object
             class="mx-3"
             label="Inventory Code">
