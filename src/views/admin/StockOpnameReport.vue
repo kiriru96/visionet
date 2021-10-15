@@ -56,7 +56,7 @@ export default {
             dispatch('stockopname/reqListHistory', {index: page, rows: itemsPerPage, search: this.search, sortby: this.sortbylast, sort: this.sorting})
         },
         printStockOpname(id, date) {
-            window.open(`http://localhost/visionet-api/report/stockopname?id=${id}&date=${date}`)
+            window.open(`https://visionet.xyzcube.xyz/report/stockopname?id=${id}&date=${date}`)
         }
     },
     computed: {

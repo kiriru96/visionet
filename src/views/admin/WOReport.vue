@@ -110,7 +110,7 @@ export default {
         },
         printTable() {
             if(this.reportTable.length > 0 && this.dates.length >= 2) {
-                window.open(`http://localhost/visionet-api/report/workorder?startdate=${this.dates[0]}&enddate=${this.dates[1]}`, '_black')
+                window.open(`https://visionet.xyzcube.xyz/report/workorder?startdate=${this.dates[0]}&enddate=${this.dates[1]}`, '_black')
             }
         }
     },

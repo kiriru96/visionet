@@ -27,8 +27,8 @@
                             contain
                             block
                             width="300"
-                            :lazy-src="`http://localhost/visionet-api/public/uploads/${item}`"
-                            :src="`http://localhost/visionet-api/public/uploads/${item}`"
+                            :lazy-src="`https://visionet.xyzcube.xyz/public/uploads/${item}`"
+                            :src="`https://visionet.xyzcube.xyz/public/uploads/${item}`"
                             style="margin: 2px">
                         </v-img>
                     </v-list-item-content>

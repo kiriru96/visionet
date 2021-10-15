@@ -26,8 +26,8 @@
                             <v-img
                                 class="white--text align-end"
                                 gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                                :lazy-src="`http://localhost/visionet-api/public/uploads/${item}`"
-                                :src="`http://localhost/visionet-api/public/uploads/${item}`"
+                                :lazy-src="`https://visionet.xyzcube.xyz/public/uploads/${item}`"
+                                :src="`https://visionet.xyzcube.xyz/public/uploads/${item}`"
                                 style="margin: 2px">
                             </v-img>
                             <v-card-title>Description</v-card-title>

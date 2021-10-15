@@ -110,6 +110,14 @@
       </v-list>
     </v-navigation-drawer>
     <router-view></router-view>
+    <v-footer padless>
+      <v-col
+        class="text-center"
+        cols="12"
+      >
+        © {{new Date().getFullYear()}} Fahrudin Apandi — <a href="https://raharja.ac.id" target="_blank">Universitas Raharja</a>
+      </v-col>
+    </v-footer>
   </v-app>
 </template>
 
@@ -176,11 +184,11 @@ export default {
       ],
       [
         { text: "WO", icon: 'mdi-map  ', link: '/leader/workorder'},
-        { text: "Engineer Submit Work Order", icon: 'mdi-history  ', link: '/leader/workorderhistory'}
+        { text: "Engineer Submit Work Order", icon: 'mdi-history', link: '/leader/workorderhistory'}
       ],
       [
         { text: "WO", icon: 'mdi-map  ', link: '/engineer/workorder'},
-        { text: "Work Order History", icon: 'mdi-history  ', link: '/engineer/workorderhistory'}
+        { text: "Work Order History", icon: 'mdi-history', link: '/engineer/workorderhistory'}
       ]
     ]
   }),

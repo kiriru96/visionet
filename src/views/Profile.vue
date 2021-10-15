@@ -84,12 +84,6 @@ export default {
             this.password = ''
             this.username = ''
         },
-        submitUsername() {
-
-        },
-        submitPassword() {
-
-        },
         sendUpdateName() {
             const {dispatch} = this.$store
 

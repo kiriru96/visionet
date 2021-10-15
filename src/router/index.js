@@ -270,7 +270,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  base: process.env.NODE_ENV === 'production' ? '/visionet-api/' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/' : '/',
   mode: 'history',
   routes
 })
